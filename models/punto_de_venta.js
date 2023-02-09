@@ -71,6 +71,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
+    codigo_citio_venta: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    codigo_oficina: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
     fecha_creacion_punto: {
       type: DataTypes.DATEONLY,
       allowNull: true,

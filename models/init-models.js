@@ -2,6 +2,7 @@ var DataTypes = require("sequelize").DataTypes;
 var _autorizado = require("./autorizado");
 var _autorizado_administracion = require("./autorizado_administracion");
 var _cliente = require("./cliente");
+var _conceptos = require("./conceptos");
 var _contrato = require("./contrato");
 var _contrato_tipo_servicio = require("./contrato_tipo_servicio");
 var _departamento = require("./departamento");
@@ -38,6 +39,7 @@ function initModels(sequelize) {
   var autorizado = _autorizado(sequelize, DataTypes);
   var autorizado_administracion = _autorizado_administracion(sequelize, DataTypes);
   var cliente = _cliente(sequelize, DataTypes);
+  var conceptos = _conceptos(sequelize, DataTypes);
   var contrato = _contrato(sequelize, DataTypes);
   var contrato_tipo_servicio = _contrato_tipo_servicio(sequelize, DataTypes);
   var departamento = _departamento(sequelize, DataTypes);
@@ -137,6 +139,7 @@ function initModels(sequelize) {
     autorizado,
     autorizado_administracion,
     cliente,
+    conceptos,
     contrato,
     contrato_tipo_servicio,
     departamento,
