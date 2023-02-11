@@ -46,4 +46,17 @@ router.post('/delete', async(req,res,next)=>{
   }
 })
 
+router.patch('/:id', async(req,res,next)=>{
+  try {
+    const {id} = req.params
+    const body = req.body
+    console.log(body);
+    const newAutorizado = await service.update(id,body)
+
+    res.status(201).json(newAutorizado)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router;
