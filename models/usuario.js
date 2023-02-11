@@ -29,11 +29,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     fecha_creacion_usuario: {
       type: DataTypes.DATEONLY,
+      default : new Date(),
       allowNull: false
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      
     }
   }, {
     sequelize,

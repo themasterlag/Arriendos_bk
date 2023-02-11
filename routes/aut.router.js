@@ -22,8 +22,13 @@ router.post(
   try {
     let verify = await veriReg.checkDuplicateUsernameOrEmail(req, res, next)
     if ( verify.statusCode==200) {
-      await service.registro(req.body);
+      verify = await service.registro(req.body);
+      if (verify) {
+        verify = {statusCode: 200, message :"Usuario registrado con exito"};
+      }
     }
+    res.json(verify);
+
   } catch (error) {
     errorHandler.errorHandler(error, req, res, next)
   }
@@ -36,7 +41,6 @@ router.post('/login', async (req, res, next) => {
     const pass = req.body.password;
     const users = await service.login(email, pass);
     res.json(users);
-
   } catch (error) {
     errorHandler.errorHandler(error, req, res, next)
   }
