@@ -1,10 +1,15 @@
 const express = require('express');
+const { array } = require('joi');
 
 const router = express.Router();
 
 const ContratoService = require('./../services/contrato.service');
 
 const service = new ContratoService();
+
+const ContratoConcepto = require('./../services/contratoConcepto.service');
+const contratoConceptoService = new ContratoConcepto();
+
 
 router.get('/', async(req,res,next)=>{
   try {
@@ -29,16 +34,33 @@ router.get('/:id', async(req,res,next)=>{
 router.post('/', async(req,res,next)=>{
   try {
     const body = req.body
-    console.log(body);
-   // const contrato = body.
-    // para crear un contrato necesito:
-    // id pdv, id_usuario(puede ser null),
-   // const newContrato = await service.create(body)
+    let conceptos = body.conceptos.split(",");
+    const contrato = JSON.parse(body.contrato)
+      // para crear un contrato necesito:
+      // id pdv, id_usuario(puede ser null),
+    const newContrato = await service.create(contrato);
 
-    res.status(201).json({
-      estado:'1',
-      id:newContrato,
-      respuesta: 'se agrego correctamente el contrato'})
+    let bandera = true;
+
+    conceptos.forEach(concepto => {
+      let contratoConcepto = contratoConceptoService.create(
+        {id_contrato: newContrato, id_concepto: concepto}
+      )
+      
+      if (!contratoConcepto) {
+        bandera = false;
+      }
+    });
+
+    if (bandera) {
+      res.status(201).json({
+        estado:'1',
+        id:newContrato,
+        respuesta: 'se agrego correctamente el contrato'});
+    }
+    else{
+      next("No se registraron los conceptos")
+    }
   } catch (error) {
     next(error)
   }

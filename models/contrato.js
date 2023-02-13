@@ -61,7 +61,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     poliza: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: true
     },
     id_responsable: {
       type: DataTypes.INTEGER,
