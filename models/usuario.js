@@ -25,15 +25,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    fecha_creacion_usuario: {
-      type: DataTypes.DATEONLY,
       allowNull: false
     },
     password: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    dependencia: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'dependencia',
+        key: 'id_dependencia'
+      }
     }
   }, {
     sequelize,
