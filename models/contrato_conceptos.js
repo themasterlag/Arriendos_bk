@@ -16,11 +16,26 @@ module.exports = function(sequelize, DataTypes) {
         model: 'conceptos',
         key: 'id_concepto'
       }
+    },
+    id_contrato_concepto: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
     }
   }, {
     sequelize,
     tableName: 'contrato_conceptos',
     schema: 'arriendos',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "contrato_conceptos_pkey",
+        unique: true,
+        fields: [
+          { name: "id_contrato_concepto" },
+        ]
+      },
+    ]
   });
 };
