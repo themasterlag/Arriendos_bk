@@ -15,12 +15,12 @@ class AutService{
 
   async registro(data) {
     const usuario = await con.models.usuario.create({
-
         rolid_rol: data.rolid_rol,
         nombres: data.nombres,
         apellidos: data.apellidos,
         email: data.email,
-        password: bcrypt.hashSync(data.password, 8)
+        password: bcrypt.hashSync(data.password, 8),
+        fecha_creacion_usuario: new Date
       });
     return usuario;
   }
