@@ -20,7 +20,7 @@ class AutService{
         apellidos: data.apellidos,
         email: data.email,
         password: bcrypt.hashSync(data.password, 8),
-        fecha_creacion_usuario: new Date
+        dependencia: data.dependencia
       });
     return usuario;
   }
