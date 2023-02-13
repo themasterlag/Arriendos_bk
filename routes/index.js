@@ -26,6 +26,7 @@ const contratoServicioRouter = require('./contratoServicio.router');
 const pagoarriendosRouter = require('./pagoarriendos.router');
 const proPDV = require('./propPuntoVenta.router');
 const conceptosRouter = require('./conceptos.router')
+const contratoConcepto = require('./contratoConceptos.router')
 
 function routerApi(app){
   const router = express.Router();
@@ -55,6 +56,7 @@ function routerApi(app){
   router.use('/contratoservicio', contratoServicioRouter);
   router.use('/preliquidacion', pagoarriendosRouter);
   router.use('/conceptos', conceptosRouter);
+  router.use('/contrato-conceptos', contratoConcepto)
   router.use('/archivos', subirArchivoRouter);
 
   router.use('/aut',autRouter);

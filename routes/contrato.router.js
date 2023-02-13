@@ -30,9 +30,10 @@ router.post('/', async(req,res,next)=>{
   try {
     const body = req.body
     console.log(body);
+   // const contrato = body.
     // para crear un contrato necesito:
     // id pdv, id_usuario(puede ser null),
-    const newContrato = await service.create(body)
+   // const newContrato = await service.create(body)
 
     res.status(201).json({
       estado:'1',
