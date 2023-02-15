@@ -25,23 +25,24 @@ const tipoServicioRouter = require('./tipoServicio.router');
 const contratoServicioRouter = require('./contratoServicio.router');
 const pagoarriendosRouter = require('./pagoarriendos.router');
 const proPDV = require('./propPuntoVenta.router');
-const conceptosRouter = require('./conceptos.router')
-const contratoConcepto = require('./contratoConceptos.router')
+const conceptosRouter = require('./conceptos.router');
+const contratoConceptoRouter = require('./contratoConceptos.router');
+const incrementoRouter = require('./incremento.router');
 
-function routerApi(app){
+function routerApi(app) {
   const router = express.Router();
 
-  app.use('/api/arriendos',router);
+  app.use('/api/arriendos', router);
   router.use('/usuarios', usuarioRouter);
   router.use('/departamentos', departamentoRouter);
-  router.use('/municipios',municipioRouter);
+  router.use('/municipios', municipioRouter);
   router.use('/solicitudes', solicitudRouter);
   router.use('/procesos', procesoRouter);
   router.use('/arrendadores', arrendadorRouter);
   router.use('/tipopersonas', tipoPersonaRouter);
   router.use('/zona', zonaRouter);
   router.use('/microzona', microZonaRouter);
-  router.use('/puntodeventa',puntoDeVentaRouter);
+  router.use('/puntodeventa', puntoDeVentaRouter);
   router.use('/contrato', contratoRouter);
   router.use('/metodopago', metodoPagoRouter);
   router.use('/entidadbancaria', entidadBancariaRouter);
@@ -49,16 +50,17 @@ function routerApi(app){
   router.use('/registrarproceso', registrarPuntoRouter);
   router.use('/autorizado', autorizadoRouter);
   router.use('/responsable', responsableRouter);
-  router.use('/cliente',clienteRouter);
-  router.use('/propietariopunto', proPDV)
+  router.use('/cliente', clienteRouter);
+  router.use('/propietariopunto', proPDV);
   router.use('/tiposervicio', tipoServicioRouter);
   router.use('/tipocuenta', tipoCuentaRouter);
   router.use('/contratoservicio', contratoServicioRouter);
   router.use('/preliquidacion', pagoarriendosRouter);
   router.use('/conceptos', conceptosRouter);
-  router.use('/contrato-conceptos', contratoConcepto)
+  router.use('/contrato-conceptos', contratoConceptoRouter);
+  router.use('/incrementos', incrementoRouter);
   router.use('/archivos', subirArchivoRouter);
 
-  router.use('/aut',autRouter);
+  router.use('/aut', autRouter);
 }
 module.exports = routerApi;

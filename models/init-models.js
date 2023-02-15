@@ -13,6 +13,7 @@ var _entidad_bancaria = require("./entidad_bancaria");
 var _factura_servicio = require("./factura_servicio");
 var _impuestos_bomberil = require("./impuestos_bomberil");
 var _impuestos_reteica = require("./impuestos_reteica");
+var _incremento = require("./incremento");
 var _liquidacion = require("./liquidacion");
 var _metodo_pago = require("./metodo_pago");
 var _microzona = require("./microzona");
@@ -54,6 +55,7 @@ function initModels(sequelize) {
   var factura_servicio = _factura_servicio(sequelize, DataTypes);
   var impuestos_bomberil = _impuestos_bomberil(sequelize, DataTypes);
   var impuestos_reteica = _impuestos_reteica(sequelize, DataTypes);
+  var incremento = _incremento(sequelize, DataTypes);
   var liquidacion = _liquidacion(sequelize, DataTypes);
   var metodo_pago = _metodo_pago(sequelize, DataTypes);
   var microzona = _microzona(sequelize, DataTypes);
@@ -168,6 +170,7 @@ function initModels(sequelize) {
     factura_servicio,
     impuestos_bomberil,
     impuestos_reteica,
+    incremento,
     liquidacion,
     metodo_pago,
     microzona,
