@@ -112,6 +112,8 @@ function initModels(sequelize) {
   entidad_bancaria.hasMany(autorizado, { as: "autorizados", foreignKey: "entidad_bancaria"});
   autorizado_administracion.belongsTo(entidad_bancaria, { as: "entidad_bancaria_entidad_bancarium", foreignKey: "entidad_bancaria"});
   entidad_bancaria.hasMany(autorizado_administracion, { as: "autorizado_administracions", foreignKey: "entidad_bancaria"});
+  contrato.belongsTo(incremento, { as: "incremento_anual_incremento", foreignKey: "incremento_anual"});
+  incremento.hasMany(contrato, { as: "contratos", foreignKey: "incremento_anual"});
   autorizado.belongsTo(metodo_pago, { as: "metodo_pago_metodo_pago", foreignKey: "metodo_pago"});
   metodo_pago.hasMany(autorizado, { as: "autorizados", foreignKey: "metodo_pago"});
   autorizado_administracion.belongsTo(metodo_pago, { as: "metodo_pago_metodo_pago", foreignKey: "metodo_pago"});
@@ -142,6 +144,8 @@ function initModels(sequelize) {
   rol.hasMany(usuario, { as: "usuarios", foreignKey: "rolid_rol"});
   contrato.belongsTo(tipo_contrato, { as: "tipo_contrato_tipo_contrato", foreignKey: "tipo_contrato"});
   tipo_contrato.hasMany(contrato, { as: "contratos", foreignKey: "tipo_contrato"});
+  punto_de_venta.belongsTo(tipo_contrato, { as: "tipo_punto_tipo_contrato", foreignKey: "tipo_punto"});
+  tipo_contrato.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "tipo_punto"});
   autorizado.belongsTo(tipo_cuenta, { as: "id_tipo_cuenta_tipo_cuentum", foreignKey: "id_tipo_cuenta"});
   tipo_cuenta.hasMany(autorizado, { as: "autorizados", foreignKey: "id_tipo_cuenta"});
   autorizado_administracion.belongsTo(tipo_cuenta, { as: "id_tipo_cuenta_tipo_cuentum", foreignKey: "id_tipo_cuenta"});

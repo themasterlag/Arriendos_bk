@@ -83,6 +83,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATEONLY,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_DATE')
+    },
+    tipo_punto: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'tipo_contrato',
+        key: 'id_tipo_contrato'
+      }
     }
   }, {
     sequelize,

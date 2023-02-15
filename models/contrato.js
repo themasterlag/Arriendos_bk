@@ -29,7 +29,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     incremento_anual: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'incremento',
+        key: 'id_incremento'
+      }
     },
     incremento_adicional: {
       type: DataTypes.INTEGER,
