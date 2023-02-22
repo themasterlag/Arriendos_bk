@@ -138,6 +138,12 @@ function initModels(sequelize) {
   punto_de_venta.hasMany(contrato, { as: "contratos", foreignKey: "id_punto_venta"});
   propietario_punto_venta.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(propietario_punto_venta, { as: "propietario_punto_venta", foreignKey: "id_punto_venta"});
+  responsable.belongsTo(responsabilidad, { as: "iva_responsabilidad", foreignKey: "iva"});
+  responsabilidad.hasMany(responsable, { as: "responsables", foreignKey: "iva"});
+  responsable.belongsTo(responsabilidad, { as: "rete_iva_responsabilidad", foreignKey: "rete_iva"});
+  responsabilidad.hasMany(responsable, { as: "rete_iva_responsables", foreignKey: "rete_iva"});
+  responsable.belongsTo(responsabilidad, { as: "rete_fuente_responsabilidad", foreignKey: "rete_fuente"});
+  responsabilidad.hasMany(responsable, { as: "rete_fuente_responsables", foreignKey: "rete_fuente"});
   contrato.belongsTo(responsable, { as: "id_responsable_responsable", foreignKey: "id_responsable"});
   responsable.hasMany(contrato, { as: "contratos", foreignKey: "id_responsable"});
   usuario.belongsTo(rol, { as: "rolid_rol_rol", foreignKey: "rolid_rol"});

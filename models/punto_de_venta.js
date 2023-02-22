@@ -71,7 +71,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    codigo_citio_venta: {
+    codigo_sitio_venta: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
