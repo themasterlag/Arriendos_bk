@@ -29,10 +29,15 @@ class ContratoService {
       include: [
         {
           association: 'id_responsable_responsable',
-          as: 'responsable',
+          include: {
+            association: 'id_cliente_cliente',
+          },
         },
         {
           association: 'id_autorizado_autorizado',
+          include: {
+            association: 'id_cliente_cliente',
+          },
         },
       ],
     });

@@ -45,9 +45,12 @@ router.get('/:id', async (req, res, next) => {
 router.get('/pdv/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const contratos = await service.findOnePdv(id);
-    console.log(contratos);
-    res.json(contratos);
+    let contrato = await service.findOnePdv(id);
+    const { id_contrato } = contrato;
+    const contratoConcepto = await contratoConceptoService.findByContrato(
+      id_contrato
+    );
+    res.json({ contrato, contratoConcepto });
   } catch (error) {
     next(error);
   }
