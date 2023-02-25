@@ -10,7 +10,7 @@ const service = new ContratoService();
 const ContratoConcepto = require('./../services/contratoConcepto.service');
 const contratoConceptoService = new ContratoConcepto();
 
-function registrarConcepotos(conceptos) {
+function registrarConceptos(conceptos) {
   conceptos.forEach(concepto => {
     let contratoConcepto = contratoConceptoService.create(
       {id_contrato: newContrato, id_concepto: concepto}
@@ -53,8 +53,8 @@ router.post('/', async(req,res,next)=>{
 
     let bandera = true;
 
-    if (contratoConcepto) {
-      if(!registrarConcepotos(conceptos)){
+    if (newContrato) {
+      if(!registrarConceptos(conceptos)){
         bandera = false;
       }
     }
@@ -94,8 +94,8 @@ router.patch('/', async(req, res, next)=>{
 
     let bandera = true;
 
-    if (contratoConcepto) {
-      if(!registrarConcepotos(conceptos)){
+    if (newContrato) {
+      if(!registrarConceptos(conceptos)){
         bandera = false;
       }
     }
