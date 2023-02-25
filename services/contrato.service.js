@@ -1,9 +1,7 @@
 const con = require('../libs/sequelize');
 
-class ContratoService{
-  constructor(){
-
-  }
+class ContratoService {
+  constructor() {}
 
   async create(data) {
     const contrato = await con.models.contrato.create(data);
@@ -11,14 +9,13 @@ class ContratoService{
   }
 
   async find() {
-    const data = await con.models.contrato.findAll()
+    const data = await con.models.contrato.findAll();
     return data;
   }
 
   async findOne(id) {
-
     const rta = await con.models.contrato.findByPk(id);
-    if(!rta){
+    if (!rta) {
       throw console.error('no se encontro');
     }
     return rta;
@@ -27,18 +24,26 @@ class ContratoService{
   async findOnePdv(id) {
     const rta = await con.models.contrato.findOne({
       where: {
-        id_punto_venta:id
-      }
+        id_punto_venta: id,
+      },
+      include: [
+        {
+          association: 'id_responsable_responsable',
+          as: 'responsable',
+        },
+        {
+          association: 'id_autorizado_autorizado',
+        },
+      ],
     });
-    if(!rta){
+    if (!rta) {
       throw console.error('no se encontro');
     }
     return rta;
   }
 
   async update(id, changes) {
-
-    const contrato =  await this.findOne(id);
+    const contrato = await this.findOne(id);
 
     const rta = await contrato.update(changes);
 
@@ -46,9 +51,9 @@ class ContratoService{
   }
 
   async delete(id) {
-    const contrato =  await this.findOne(id);
-    await contrato.destroy()
-    return 'eliminado'
+    const contrato = await this.findOne(id);
+    await contrato.destroy();
+    return 'eliminado';
   }
 }
-module.exports= ContratoService;
+module.exports = ContratoService;
