@@ -15,4 +15,13 @@ router.get('/', async(req,res,next)=>{
     }
   })
 
+  router.get('/concepto/', async(req,res,next)=>{
+      try {
+        const conceptos = await service.find();
+        res.json(conceptos);
+      } catch (error) {
+        next(error)
+      }
+    })
+
 module.exports = router;

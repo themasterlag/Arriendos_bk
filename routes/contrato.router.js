@@ -1,5 +1,5 @@
 const express = require('express');
-const { array } = require('joi');
+
 
 const router = express.Router();
 
@@ -42,6 +42,17 @@ router.get('/:id', async(req,res,next)=>{
   }
 })
 
+router.get('/pdv/:id', async(req,res,next)=>{
+  try {
+    const {id} = req.params
+    const contratos = await service.findOnePdv(id);
+    console.log(contratos);
+    res.json(contratos)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/', async(req,res,next)=>{
   try {
     const body = req.body
@@ -53,8 +64,17 @@ router.post('/', async(req,res,next)=>{
 
     let bandera = true;
 
+<<<<<<< Updated upstream
     if (newContrato) {
       if(!registrarConceptos(conceptos)){
+=======
+    conceptos.forEach(concepto => {
+      let contratoConcepto = contratoConceptoService.create(
+        {id_contrato: newContrato, id_concepto: concepto}
+      )
+
+      if (!contratoConcepto) {
+>>>>>>> Stashed changes
         bandera = false;
       }
     }

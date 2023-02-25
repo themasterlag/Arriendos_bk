@@ -24,6 +24,18 @@ class ContratoService{
     return rta;
   }
 
+  async findOnePdv(id) {
+    const rta = await con.models.contrato.findOne({
+      where: {
+        id_punto_venta:id
+      }
+    });
+    if(!rta){
+      throw console.error('no se encontro');
+    }
+    return rta;
+  }
+
   async update(id, changes) {
 
     const contrato =  await this.findOne(id);
