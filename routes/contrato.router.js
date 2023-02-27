@@ -9,6 +9,10 @@ const service = new ContratoService();
 const ContratoConcepto = require('./../services/contratoConcepto.service');
 const contratoConceptoService = new ContratoConcepto();
 
+const ContratoServicioService = require('./../services/contrato_servicio.service');
+
+const contratoServicioService = new ContratoServicioService();
+
 function registrarConceptos(conceptos) {
   conceptos.forEach((concepto) => {
     let contratoConcepto = contratoConceptoService.create({
@@ -50,7 +54,10 @@ router.get('/pdv/:id', async (req, res, next) => {
     const contratoConcepto = await contratoConceptoService.findByContrato(
       id_contrato
     );
-    res.json({ contrato, contratoConcepto });
+    const contratoServicio = await contratoServicioService.findByContrato(
+      id_contrato
+    );
+    res.json({ contrato, contratoConcepto, contratoServicio });
   } catch (error) {
     next(error);
   }
