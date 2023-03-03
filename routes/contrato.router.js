@@ -17,7 +17,7 @@ function registrarConceptos(newContrato,conceptos) {
   let registrados = true;
   conceptos.forEach((concepto) => {
     let contratoConcepto = contratoConceptoService.create({
-      id_contrato: newContrato,
+      id_contrato: newContrato.id_contrato,
       id_concepto: concepto,
     });
 
@@ -77,8 +77,10 @@ router.post('/', async (req, res, next) => {
     let bandera = true;
 
     if (newContrato) {
-      if (!registrarConceptos(newContrato,conceptos)) {
-        bandera = false;
+      if (conceptos != "") {
+        if (!registrarConceptos(newContrato, conceptos)) {
+          bandera = false;
+        }      
       }
     } else {
       bandera = false;
@@ -87,7 +89,7 @@ router.post('/', async (req, res, next) => {
     if (bandera) {
       res.status(201).json({
         estado: '1',
-        id: newContrato,
+        id: newContrato.id_contrato,
         respuesta: 'se agrego correctamente el contrato',
       });
     } else {
@@ -115,10 +117,12 @@ router.patch('/', async (req, res, next) => {
     let oldContrato = await service.findOne(contrato["id_contrato"]);
     let newContrato = await oldContrato.update(contrato);
     let bandera = true;
-    
+
     if (newContrato) {
-      if (!registrarConceptos(newContrato, conceptos)) {
-        bandera = false;
+      if (conceptos != "") {
+        if (!registrarConceptos(newContrato, conceptos)) {
+          bandera = false;
+        }      
       }
     } else {
       bandera = false;
@@ -127,7 +131,7 @@ router.patch('/', async (req, res, next) => {
     if (bandera) {
       res.status(201).json({
         estado: '1',
-        id: newContrato,
+        id: newContrato.id_contrato,
         respuesta: 'se actualizo correctamente el contrato',
       });
     } else {
