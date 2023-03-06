@@ -1,11 +1,7 @@
 const con = require('../libs/sequelize');
 
-
-class PuntoDeVentaService{
-
-  constructor(){
-
-  }
+class PuntoDeVentaService {
+  constructor() {}
 
   async create(data) {
     const punto_venta = await con.models.punto_de_venta.create(data);
@@ -13,23 +9,20 @@ class PuntoDeVentaService{
   }
 
   async find() {
-
     const data = await con.models.punto_de_venta.findAll();
     return data;
   }
 
   async findOne(id) {
-
     const rta = await con.models.punto_de_venta.findByPk(id);
-    if(!rta){
+    if (!rta) {
       throw console.error('no se encontro');
     }
     return rta;
   }
 
   async update(id, changes) {
-
-    const puntoDeVenta =  await this.findOne(id);
+    const puntoDeVenta = await this.findOne(id);
 
     const rta = await puntoDeVenta.update(changes);
 
@@ -37,9 +30,19 @@ class PuntoDeVentaService{
   }
 
   async delete(id) {
-    const puntoDeVenta =  await this.findOne(id);
-    await puntoDeVenta.destroy()
-    return 'eliminado'
+    const puntoDeVenta = await this.findOne(id);
+    await puntoDeVenta.destroy();
+    return 'eliminado';
+  }
+
+  async findPuntoWithoutContrato() {
+    const data = await con.query(
+      `SELECT * FROM arriendos.punto_de_venta
+      WHERE id_punto_venta NOT IN (
+        SELECT id_punto_venta FROM arriendos.contrato
+      )`
+    );
+    return data;
   }
 }
 module.exports = PuntoDeVentaService;
