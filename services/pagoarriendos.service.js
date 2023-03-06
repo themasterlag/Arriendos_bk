@@ -16,11 +16,38 @@ class PagoArriendosService {
     return results;
   }
 
+  async findArriendosByFitler(filter) {
+    const [results] = await con.query(
+      `select  * from arriendos.get_arriendos()`
+    );
+    return results.filter((r) => {
+      if (filter.no_responsable && filter.responsable && filter.efectivo) {
+        return r;
+      } else if (filter.no_responsable && filter.responsable) {
+        return r.iva === 0 || r.iva !== 0;
+      } else if (filter.no_responsable && filter.efectivo) {
+        return r.iva === 0 || r.metodo_pago === 2;
+      } else if (filter.responsable && filter.efectivo) {
+        return r.iva !== 0 || r.metodo_pago === 2;
+      } else if (filter.no_responsable) {
+        return r.iva === 0;
+      } else if (filter.responsable) {
+        return r.iva !== 0;
+      } else if (filter.efectivo) {
+        return r.metodo_pago === 2;
+      } else {
+        return r;
+      }
+    });
+  }
+  /** 
   async findArriendosByFilter(filter) {
+    
     if (filter == 'responsablesIva') {
       const [results] = await con.query(
         ' select * from arriendos.get_arriendos() where iva != 0'
       );
+      console.log(results);
       return results;
     } else if (filter == 'noResponsables') {
       const [results] = await con.query(
@@ -33,7 +60,7 @@ class PagoArriendosService {
       );
       return results;
     } else return [];
-  }
+  }*/
   async findPagados(periodo, anio) {
     const [results] = await con.query(
       `Select distinct * from arriendos.get_arriendos(?, ?)`,

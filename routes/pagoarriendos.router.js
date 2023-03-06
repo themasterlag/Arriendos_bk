@@ -9,17 +9,21 @@ const listadoService = new PagoRealizadoArriendo();
 // Devuelve todo el listado de pagos de arriendos
 router.get('/', async (req, res, next) => {
   try {
-    const listado = await service.findArriendos();
+    const { datosResponsable } = req.query;
+    const filtro = JSON.parse(datosResponsable);
+    const listado = await service.findArriendosByFitler(filtro);
     res.json(listado);
   } catch (error) {
     next(error);
   }
 });
 // Devuelve el listado de pagos de un responsable de iva, un no responsable de iva y un pago en efectivo
-router.get('/:opcion', async (req, res, next) => {
+router.get('/filtro/:opcion', async (req, res, next) => {
   const { opcion } = req.params;
+  console.log(opcion);
   try {
-    const listado = await service.findArriendosByFilter(opcion);
+    // const listado = await service.findArriendosByFilter(opcion);
+    const listado = { opcion: 'opcion' };
     res.json(listado);
   } catch (error) {
     next(error);
