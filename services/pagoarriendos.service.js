@@ -70,7 +70,13 @@ class PagoArriendosService {
     );
     return results;
   }
-
+  async findRegistrosBancolombia() {
+    const [results] =
+      await con.query(`SELECT * from arriendos.get_arriendos() where entidad_bancaria = 'Bancolombia'
+    Order by numero_cuenta ASC
+    `);
+    return results;
+  }
   async findRegistros(periodo, anio) {
     const allRecords = await this.findArriendos();
     const [results] = await con.query(
