@@ -22,7 +22,7 @@ router.get('/bancolombia', async (req, res, next) => {
   const { opcion } = req.params;
   console.log(opcion);
   try {
-    const listado = await service.findRegistrosBancolombia();
+    const listado = await service.findAllArriendosByCodigosSitioVenta(opcion);
     //const listado = { opcion: 'opcion' };
     res.status(200).json(listado);
   } catch (error) {

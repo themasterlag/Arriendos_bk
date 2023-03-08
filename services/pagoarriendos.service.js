@@ -15,6 +15,12 @@ class PagoArriendosService {
   }) */
     return results;
   }
+  async findAllArriendosByCodigosSitioVenta(codigos) {
+    const [results] = await con.query(
+      `select  * from arriendos.get_arriendos() where codigo_sitio_venta in (${codigos})`
+    );
+    return results;
+  }
 
   async findArriendosByFitler(filter) {
     const [results] = await con.query(
