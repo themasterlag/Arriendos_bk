@@ -36,13 +36,13 @@ class PuntoDeVentaService {
   }
 
   async findPuntoWithoutContrato() {
-    const data = await con.query(
+    const [result] = await con.query(
       `SELECT * FROM arriendos.punto_de_venta
       WHERE id_punto_venta NOT IN (
         SELECT id_punto_venta FROM arriendos.contrato
       )`
     );
-    return data;
+    return result;
   }
 }
 module.exports = PuntoDeVentaService;
