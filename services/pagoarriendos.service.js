@@ -77,6 +77,21 @@ class PagoArriendosService {
     `);
     return results;
   }
+  async findRegistrosByOtrosBancos() {
+    const [results] =
+      await con.query(`SELECT * from arriendos.get_arriendos() where entidad_bancaria != 'Bancolombia'
+      Order by entidad_bancaria ASC, nombre ASC
+    `);
+    return results;
+  }
+  async findRegistrosByEfectivo() {
+    const [results] =
+      await con.query(`SELECT * from arriendos.get_arriendos() where metodo_pago = 2
+      Order by cedula ASC
+    `);
+    return results;
+  }
+
   async findRegistros(periodo, anio) {
     const allRecords = await this.findArriendos();
     const [results] = await con.query(

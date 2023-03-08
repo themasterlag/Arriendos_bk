@@ -24,7 +24,24 @@ router.get('/bancolombia', async (req, res, next) => {
   try {
     const listado = await service.findRegistrosBancolombia();
     //const listado = { opcion: 'opcion' };
-    res.json(listado);
+    res.status(200).json(listado);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/otrosbancos', async (req, res, next) => {
+  try {
+    const listado = await service.findRegistrosByOtrosBancos();
+    res.status(200).json(listado);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/efectivo', async (req, res, next) => {
+  try {
+    const listado = await service.findRegistrosByEfectivo();
+    res.status(200).json(listado);
   } catch (error) {
     next(error);
   }
