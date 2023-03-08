@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
 });
 // Devuelve el listado de pagos de un responsable de iva, un no responsable de iva y un pago en efectivo
 router.get('/bancolombia', async (req, res, next) => {
-  const { opcion } = req.params;
+  const { opcion } = req.query;
   console.log(opcion);
   try {
     const listado = await service.findAllArriendosByCodigosSitioVenta(opcion);
