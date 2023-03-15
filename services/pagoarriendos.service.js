@@ -16,12 +16,18 @@ class PagoArriendosService {
     return results;
   }
   async findAllArriendosByCodigosSitioVenta(codigos) {
+    console.log(codigos);
     const [results] = await con.query(
       `select  * from arriendos.get_arriendos() where codigo_sitio_venta in (${codigos})`
     );
     return results;
   }
-
+  async findOneArriendoByCodigoSitioVenta(codigo) {
+    const [results] = await con.query(
+      `select  * from arriendos.get_arriendos() where codigo_sitio_venta = ${codigo}`
+    );
+    return results;
+  }
   async findArriendosByFitler(filter) {
     const [results] = await con.query(
       `select  * from arriendos.get_arriendos()`

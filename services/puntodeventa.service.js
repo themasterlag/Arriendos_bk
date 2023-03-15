@@ -40,7 +40,7 @@ class PuntoDeVentaService {
       `SELECT * FROM arriendos.punto_de_venta
       WHERE id_punto_venta NOT IN (
         SELECT id_punto_venta FROM arriendos.contrato
-      )`
+      ) ORDER BY nombre_comercial ASC`
     );
     return result;
   }

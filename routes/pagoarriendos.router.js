@@ -17,13 +17,21 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+router.get('/sitioventa/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const listado = await service.findAllArriendosByCodigosSitioVenta(id);
+    res.status(200).json(listado);
+  } catch (error) {
+    next(error);
+  }
+});
 // Devuelve el listado de pagos de un responsable de iva, un no responsable de iva y un pago en efectivo
 router.get('/bancolombia', async (req, res, next) => {
   const { opcion } = req.query;
   console.log(opcion);
   try {
-    const listado = await service.findAllArriendosByCodigosSitioVenta(opcion);
-    //const listado = { opcion: 'opcion' };
+    const listado = await service.findOneArriendoByCodigoSitioVenta(opcion);
     res.status(200).json(listado);
   } catch (error) {
     next(error);
