@@ -24,7 +24,7 @@ class PagoArriendosService {
   }
   async findOneArriendoByCodigoSitioVenta(codigo) {
     const [results] = await con.query(
-      `select  * from arriendos.get_arriendos() where codigo_sitio_venta = ${codigo}`
+      `select  * from arriendos.get_arriendos() where codigo_sitio_venta = ${codigo} limit 1`
     );
     return results;
   }

@@ -20,7 +20,7 @@ router.get('/', async (req, res, next) => {
 router.get('/sitioventa/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const listado = await service.findAllArriendosByCodigosSitioVenta(id);
+    const listado = await service.findOneArriendoByCodigoSitioVenta(id);
     res.status(200).json(listado);
   } catch (error) {
     next(error);
@@ -31,7 +31,7 @@ router.get('/bancolombia', async (req, res, next) => {
   const { opcion } = req.query;
   console.log(opcion);
   try {
-    const listado = await service.findOneArriendoByCodigoSitioVenta(opcion);
+    const listado = await service.findAllArriendosByCodigosSitioVenta(opcion);
     res.status(200).json(listado);
   } catch (error) {
     next(error);
