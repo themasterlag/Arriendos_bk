@@ -26,8 +26,19 @@ class PagoArriendosService {
     const [results] = await con.query(
       `select  * from arriendos.get_arriendos() where codigo_sitio_venta = ${codigo} limit 1`
     );
+
     return results;
   }
+  async traerConceptosByCodigoSitioVenta(codigo) {
+    const [results] =
+      await con.query(`Select codigo_concepto, nombre_concepto from arriendos.conceptos
+    where id_concepto in (select id_concepto from arriendos.contrato_conceptos
+               where id_contrato in (Select id_contrato from arriendos.contrato
+                         where id_punto_venta = (select id_punto_venta from arriendos.punto_de_venta
+                                    where codigo_sitio_venta = ${codigo})))`);
+    return results;
+  }
+
   async findArriendosByFitler(filter) {
     const [results] = await con.query(
       `select  * from arriendos.get_arriendos()`

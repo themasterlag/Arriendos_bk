@@ -21,7 +21,8 @@ router.get('/sitioventa/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const listado = await service.findOneArriendoByCodigoSitioVenta(id);
-    res.status(200).json(listado);
+    const listadoConceptos = await service.traerConceptosByCodigoSitioVenta(id);
+    res.status(200).json({ listado, listadoConceptos });
   } catch (error) {
     next(error);
   }
