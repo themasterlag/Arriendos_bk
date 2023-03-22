@@ -31,11 +31,12 @@ class PagoArriendosService {
   }
   async traerConceptosByCodigoSitioVenta(codigo) {
     const [results] =
-      await con.query(`Select codigo_concepto, nombre_concepto from arriendos.conceptos
-    where id_concepto in (select id_concepto from arriendos.contrato_conceptos
-               where id_contrato in (Select id_contrato from arriendos.contrato
-                         where id_punto_venta = (select id_punto_venta from arriendos.punto_de_venta
-                                    where codigo_sitio_venta = ${codigo})))`);
+      await con.query(`SELECT c.codigo_concepto, c.nombre_concepto 
+      FROM arriendos.conceptos c 
+      INNER JOIN arriendos.contrato_conceptos cc ON c.id_concepto = cc.id_concepto 
+      INNER JOIN arriendos.contrato ct ON cc.id_contrato = ct.id_contrato 
+      INNER JOIN arriendos.punto_de_venta pv ON ct.id_punto_venta = pv.id_punto_venta 
+      WHERE pv.codigo_sitio_venta = ${codigo}`);
     return results;
   }
 

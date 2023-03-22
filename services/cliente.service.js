@@ -20,6 +20,15 @@ class ClienteService {
     }
     return rta;
   }
+  async findOneByNumeroDocumento(numero_documento) {
+    const rta = await con.models.cliente.findOne({
+      where: { numero_documento: numero_documento },
+    });
+    if (!rta) {
+      throw console.error('no se encontro');
+    }
+    return rta;
+  }
   async update(id, changes) {
     const cliente = await this.findOne(id);
 
