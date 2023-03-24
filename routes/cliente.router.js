@@ -37,6 +37,17 @@ router.get('/numero_documento/:numero_documento', async (req, res, next) => {
   }
 });
 
+router.patch('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const cliente = await service.update(id, body);
+    res.json(cliente);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/', async (req, res, next) => {
   try {
     const body = req.body;
