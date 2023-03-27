@@ -40,10 +40,28 @@ class PagoArriendosService {
     return results;
   }
 
-  async findArriendosByFitler(filter) {
-    const [results] = await con.query(
-      `select  * from arriendos.get_arriendos()`
-    );
+  async findArriendosByFitler(filter, tipo, rangoFechas) {
+    let query = 
+    `select arriendos.* 
+    from arriendos.get_arriendos() as arriendos 
+    left join arriendos.pago_arriendo 
+      on arriendos.id_contrato = pago_arriendo.id_contrato `
+    
+    if (tipo == 1) {
+      query = query + 
+      `where
+        pago_arriendo.id_contrato is null`;
+      
+    }
+    else{
+      query = query + 
+      `where
+        pago_arriendo.id_contrato is not null
+        and pago_arriendo.fecha_pago BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND (SELECT max(fecha_pago) FROM arriendos.pago_arriendo)`;
+    }
+
+    let [results] = await con.query(query);
+
     return results.filter((r) => {
       if (filter.no_responsable && filter.responsable && filter.efectivo) {
         return r;
