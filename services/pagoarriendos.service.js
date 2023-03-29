@@ -51,7 +51,7 @@ class PagoArriendosService {
       query = query + 
       `where
         pago_arriendo.id_contrato is null
-        and contrato.fecha_inicio_contrato BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND '`+rangoFechas.anio+'-'+rangoFechas.mes+'-31'+`'`;
+        and arriendos.fecha_inicio_contrato BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND '`+rangoFechas.anio+'-'+rangoFechas.mes+'-31'+`'`;
       
     }
     else{
