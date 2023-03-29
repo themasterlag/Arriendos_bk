@@ -50,14 +50,15 @@ class PagoArriendosService {
     if (tipo == 1) {
       query = query + 
       `where
-        pago_arriendo.id_contrato is null`;
+        pago_arriendo.id_contrato is null
+        and contrato.fecha_inicio_contrato BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND '`+rangoFechas.anio+'-'+rangoFechas.mes+'-31'+`'`;
       
     }
     else{
       query = query + 
       `where
         pago_arriendo.id_contrato is not null
-        and pago_arriendo.fecha_pago BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND (SELECT max(fecha_pago) FROM arriendos.pago_arriendo)`;
+        and pago_arriendo.fecha_pago BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND '`+rangoFechas.anio+'-'+rangoFechas.mes+'-31'+`'`;
     }
 
     let [results] = await con.query(query);
