@@ -41,24 +41,52 @@ class PagoArriendosService {
   }
 
   async findArriendosByFitler(filter, tipo, rangoFechas) {
-    let query = 
-    `select arriendos.* 
+    function getLastDayOfMonth(year, month) {
+      console.log(year, month, 'year month');
+      return new Date(year, month, 0).getDate();
+    }
+    let ultimoDiaMes = await getLastDayOfMonth(
+      rangoFechas.anio,
+      rangoFechas.mes
+    );
+    console.log(ultimoDiaMes, 'ultimo dia del mes');
+    let query = `select arriendos.* 
     from arriendos.get_arriendos() as arriendos 
     left join arriendos.pago_arriendo 
-      on arriendos.id_contrato = pago_arriendo.id_contrato `
-    
+      on arriendos.id_contrato = pago_arriendo.id_contrato `;
+
     if (tipo == 1) {
-      query = query + 
-      `where
+      query =
+        query +
+        `where
         pago_arriendo.id_contrato is null
-        and arriendos.fecha_inicio_contrato BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND '`+rangoFechas.anio+'-'+rangoFechas.mes+'-31'+`'`;
-      
-    }
-    else{
-      query = query + 
-      `where
+        and arriendos.fecha_inicio_contrato BETWEEN '` +
+        rangoFechas.anio +
+        '-' +
+        rangoFechas.mes +
+        '-01' +
+        `' AND '` +
+        rangoFechas.anio +
+        '-' +
+        ultimoDiaMes +
+        `'`;
+    } else {
+      query =
+        query +
+        `where
         pago_arriendo.id_contrato is not null
-        and pago_arriendo.fecha_pago BETWEEN '`+rangoFechas.anio+'-'+rangoFechas.mes+'-01'+`' AND '`+rangoFechas.anio+'-'+rangoFechas.mes+'-31'+`'`;
+        and pago_arriendo.fecha_pago BETWEEN '` +
+        rangoFechas.anio +
+        '-' +
+        rangoFechas.mes +
+        '-01' +
+        `' AND '` +
+        rangoFechas.anio +
+        '-' +
+        rangoFechas.mes +
+        '-' +
+        ultimoDiaMes +
+        `'`;
     }
 
     let [results] = await con.query(query);
