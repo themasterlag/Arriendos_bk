@@ -95,6 +95,7 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'contrato',
     schema: 'arriendos',
+    hasTrigger: true,
     timestamps: false,
     indexes: [
       {
