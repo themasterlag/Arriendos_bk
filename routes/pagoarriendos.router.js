@@ -18,6 +18,16 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+router.get('/todos', async (req, res, next) => {
+  try {
+    const listado = await service.findArriendos();
+    res.json(listado);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/sitioventa/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
