@@ -23,7 +23,6 @@ var _pago = require("./pago");
 var _pago_administracion = require("./pago_administracion");
 var _pago_arriendo = require("./pago_arriendo");
 var _pago_concepto = require("./pago_concepto");
-var _pago_concepto_valor = require("./pago_concepto_valor");
 var _pago_detalle = require("./pago_detalle");
 var _pago_servicios = require("./pago_servicios");
 var _periodo = require("./periodo");
@@ -69,7 +68,6 @@ function initModels(sequelize) {
   var pago_administracion = _pago_administracion(sequelize, DataTypes);
   var pago_arriendo = _pago_arriendo(sequelize, DataTypes);
   var pago_concepto = _pago_concepto(sequelize, DataTypes);
-  var pago_concepto_valor = _pago_concepto_valor(sequelize, DataTypes);
   var pago_detalle = _pago_detalle(sequelize, DataTypes);
   var pago_servicios = _pago_servicios(sequelize, DataTypes);
   var periodo = _periodo(sequelize, DataTypes);
@@ -112,6 +110,8 @@ function initModels(sequelize) {
   contrato.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "id_contrato"});
   pago_arriendo.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(pago_arriendo, { as: "pago_arriendos", foreignKey: "id_contrato"});
+  contrato_concepto_valor.belongsTo(contrato_conceptos, { as: "contrato_concepto", foreignKey: "contrato_concepto_id"});
+  contrato_conceptos.hasMany(contrato_concepto_valor, { as: "contrato_concepto_valors", foreignKey: "contrato_concepto_id"});
   municipio.belongsTo(departamento, { as: "id_departamento_departamento", foreignKey: "id_departamento"});
   departamento.hasMany(municipio, { as: "municipios", foreignKey: "id_departamento"});
   usuario.belongsTo(dependencia, { as: "dependencia_dependencium", foreignKey: "dependencia"});
@@ -200,7 +200,6 @@ function initModels(sequelize) {
     pago_administracion,
     pago_arriendo,
     pago_concepto,
-    pago_concepto_valor,
     pago_detalle,
     pago_servicios,
     periodo,

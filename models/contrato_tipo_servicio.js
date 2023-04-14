@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     porcentaje: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {

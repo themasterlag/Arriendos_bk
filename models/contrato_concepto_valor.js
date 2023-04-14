@@ -10,7 +10,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     contrato_concepto_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'contrato_conceptos',
+        key: 'id_contrato_concepto'
+      }
     },
     contrato_concepto_valor: {
       type: DataTypes.INTEGER,

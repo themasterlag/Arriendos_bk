@@ -14,6 +14,10 @@ module.exports = function(sequelize, DataTypes) {
     id_concepto: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    pago_concepto_valor: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

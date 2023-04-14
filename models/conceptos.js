@@ -22,6 +22,14 @@ module.exports = function(sequelize, DataTypes) {
     operacion: {
       type: DataTypes.STRING(10),
       allowNull: true
+    },
+    tipo_concepto: {
+      type: DataTypes.STRING(30),
+      allowNull: true
+    },
+    porcentaje_operacion: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
     }
   }, {
     sequelize,
