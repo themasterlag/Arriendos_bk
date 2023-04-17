@@ -34,7 +34,9 @@ var _punto_de_venta = require("./punto_de_venta");
 var _responsabilidad = require("./responsabilidad");
 var _responsable = require("./responsable");
 var _rol = require("./rol");
+var _saldo_credito = require("./saldo_credito");
 var _solicitud = require("./solicitud");
+var _tipo_concepto = require("./tipo_concepto");
 var _tipo_contrato = require("./tipo_contrato");
 var _tipo_cuenta = require("./tipo_cuenta");
 var _tipo_persona = require("./tipo_persona");
@@ -79,7 +81,9 @@ function initModels(sequelize) {
   var responsabilidad = _responsabilidad(sequelize, DataTypes);
   var responsable = _responsable(sequelize, DataTypes);
   var rol = _rol(sequelize, DataTypes);
+  var saldo_credito = _saldo_credito(sequelize, DataTypes);
   var solicitud = _solicitud(sequelize, DataTypes);
+  var tipo_concepto = _tipo_concepto(sequelize, DataTypes);
   var tipo_contrato = _tipo_contrato(sequelize, DataTypes);
   var tipo_cuenta = _tipo_cuenta(sequelize, DataTypes);
   var tipo_persona = _tipo_persona(sequelize, DataTypes);
@@ -158,6 +162,8 @@ function initModels(sequelize) {
   responsable.hasMany(contrato, { as: "contratos", foreignKey: "id_responsable"});
   usuario.belongsTo(rol, { as: "rolid_rol_rol", foreignKey: "rolid_rol"});
   rol.hasMany(usuario, { as: "usuarios", foreignKey: "rolid_rol"});
+  conceptos.belongsTo(tipo_concepto, { as: "tipo_concepto_tipo_concepto", foreignKey: "tipo_concepto"});
+  tipo_concepto.hasMany(conceptos, { as: "conceptos", foreignKey: "tipo_concepto"});
   contrato.belongsTo(tipo_contrato, { as: "tipo_contrato_tipo_contrato", foreignKey: "tipo_contrato"});
   tipo_contrato.hasMany(contrato, { as: "contratos", foreignKey: "tipo_contrato"});
   punto_de_venta.belongsTo(tipo_contrato, { as: "tipo_punto_tipo_contrato", foreignKey: "tipo_punto"});
@@ -211,7 +217,9 @@ function initModels(sequelize) {
     responsabilidad,
     responsable,
     rol,
+    saldo_credito,
     solicitud,
+    tipo_concepto,
     tipo_contrato,
     tipo_cuenta,
     tipo_persona,

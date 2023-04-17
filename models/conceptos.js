@@ -24,8 +24,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     tipo_concepto: {
-      type: DataTypes.STRING(30),
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'tipo_concepto',
+        key: 'id_tipo_concepto'
+      }
     },
     porcentaje_operacion: {
       type: DataTypes.DOUBLE,

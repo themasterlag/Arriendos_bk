@@ -27,6 +27,7 @@ const pagoarriendosRouter = require('./pagoarriendos.router');
 const proPDV = require('./propPuntoVenta.router');
 const conceptosRouter = require('./conceptos.router');
 const contratoConceptoRouter = require('./contratoConceptos.router');
+const saldoCreditoRouter = require('./saldoCredito.router');
 const incrementoRouter = require('./incremento.router');
 
 function routerApi(app) {
@@ -60,6 +61,7 @@ function routerApi(app) {
   router.use('/contrato-conceptos', contratoConceptoRouter);
   router.use('/incrementos', incrementoRouter);
   router.use('/archivos', subirArchivoRouter);
+  router.use('/saldo-credito', saldoCreditoRouter);
 
   router.use('/aut', autRouter);
 }
