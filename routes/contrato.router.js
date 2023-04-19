@@ -12,16 +12,24 @@ const contratoConceptoService = new ContratoConcepto();
 const ContratoServicioService = require('./../services/contrato_servicio.service');
 
 const contratoServicioService = new ContratoServicioService();
-
-function registrarConceptos(newContrato,conceptos) {
+const ContratoConceptoValorService = require('./../services/contratoConceptoValor.service');
+const contratoConceptoValorService = new ContratoConceptoValorService();
+function registrarConceptos(newContrato, conceptos) {
   let registrados = true;
   conceptos.forEach((concepto) => {
     let contratoConcepto = contratoConceptoService.create({
       id_contrato: newContrato.id_contrato,
       id_concepto: concepto,
     });
-
-    if (!contratoConcepto) {
+    // Si el valor del concepto se encuentra dentro de los conceptos
+    // se registra el valor del concepto y se evalua si se registro
+    console.log(contratoConcepto.id_contrato_concepto, 'id_contrato_concepto');
+    console.log(conceptos.valor, 'valor');
+    let valorconcepto = contratoConceptoValorService.save({
+      id_contrato_concepto: contratoConcepto.id_contrato_concepto,
+      contrato_concepto_valor: conceptos.valor,
+    });
+    if (!contratoConcepto && !valorconcepto) {
       registrados = false;
     }
   });
@@ -70,6 +78,7 @@ router.post('/', async (req, res, next) => {
     const body = req.body;
     let conceptos = body.conceptos.split(',');
     const contrato = JSON.parse(body.contrato);
+    const valor = body.valor;
     // para crear un contrato necesito:
     // id pdv, id_usuario(puede ser null),
     let newContrato = await service.create(contrato);
@@ -77,10 +86,10 @@ router.post('/', async (req, res, next) => {
     let bandera = true;
 
     if (newContrato) {
-      if (conceptos != "") {
+      if (conceptos != '') {
         if (!registrarConceptos(newContrato, conceptos)) {
           bandera = false;
-        }      
+        }
       }
     } else {
       bandera = false;
@@ -114,15 +123,15 @@ router.patch('/', async (req, res, next) => {
     const body = req.body;
     let conceptos = body.conceptos.split(',');
     const contrato = JSON.parse(body.contrato);
-    let oldContrato = await service.findOne(contrato["id_contrato"]);
+    let oldContrato = await service.findOne(contrato['id_contrato']);
     let newContrato = await oldContrato.update(contrato);
     let bandera = true;
 
     if (newContrato) {
-      if (conceptos != "") {
+      if (conceptos != '') {
         if (!registrarConceptos(newContrato, conceptos)) {
           bandera = false;
-        }      
+        }
       }
     } else {
       bandera = false;
