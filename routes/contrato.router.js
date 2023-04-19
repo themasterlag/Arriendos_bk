@@ -22,7 +22,7 @@ function registrarConceptos(newContrato,conceptos) {
     });
 
     if (!contratoConcepto) {
-      bandera = false;
+      registrados = false;
     }
   });
   return registrados;
