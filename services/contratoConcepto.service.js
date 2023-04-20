@@ -6,10 +6,7 @@ class ContratoConceptoService {
   async create(data) {
     const contrato = await con.models.contrato_conceptos.create(data);
     console.log(contrato.id_contrato_concepto);
-    return {
-      id_contrato: contrato.id_contrato,
-      id_contrato_concepto: contrato.id_contrato_concepto,
-    };
+    return contrato.id_contrato_concepto
   }
   async find() {
     const data = await con.models.contrato_conceptos.findAll();

@@ -14,22 +14,25 @@ const ContratoServicioService = require('./../services/contrato_servicio.service
 const contratoServicioService = new ContratoServicioService();
 const ContratoConceptoValorService = require('./../services/contratoConceptoValor.service');
 const contratoConceptoValorService = new ContratoConceptoValorService();
-function registrarConceptos(newContrato, conceptos) {
+function  registrarConceptos(newContrato, conceptos) {
   let registrados = true;
-  conceptos.forEach((concepto) => {
-    let contratoConcepto = contratoConceptoService.create({
+  conceptos.forEach(async (concepto) => {
+
+    let contratoConcepto = await contratoConceptoService.create({
       id_contrato: newContrato.id_contrato,
-      id_concepto: concepto,
+      id_concepto: concepto.id_concepto,
     });
     // Si el valor del concepto se encuentra dentro de los conceptos
     // se registra el valor del concepto y se evalua si se registro
-    console.log(contratoConcepto.id_contrato_concepto, 'id_contrato_concepto');
-    console.log(conceptos.valor, 'valor');
-    let valorconcepto = contratoConceptoValorService.save({
-      id_contrato_concepto: contratoConcepto.id_contrato_concepto,
-      contrato_concepto_valor: conceptos.valor,
-    });
-    if (!contratoConcepto && !valorconcepto) {
+
+      // eslint-disable-next-line no-unused-vars
+      let valorconcepto = contratoConceptoValorService.save({
+        contrato_concepto_id: contratoConcepto,
+        contrato_concepto_valor: concepto.valor,
+      });
+
+
+    if (!contratoConcepto ) {
       registrados = false;
     }
   });
@@ -78,7 +81,7 @@ router.post('/', async (req, res, next) => {
     const body = req.body;
     let conceptos = body.conceptos.split(',');
     const contrato = JSON.parse(body.contrato);
-    const valor = body.valor;
+
     // para crear un contrato necesito:
     // id pdv, id_usuario(puede ser null),
     let newContrato = await service.create(contrato);
@@ -121,7 +124,7 @@ router.post('/delete', async (req, res, next) => {
 router.patch('/', async (req, res, next) => {
   try {
     const body = req.body;
-    let conceptos = body.conceptos.split(',');
+    let conceptos = JSON.parse(body.conceptos);
     const contrato = JSON.parse(body.contrato);
     let oldContrato = await service.findOne(contrato['id_contrato']);
     let newContrato = await oldContrato.update(contrato);
