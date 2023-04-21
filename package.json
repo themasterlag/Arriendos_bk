@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "updateModels": "sequelize-auto -o \"./models\" -d postgres -h localhost -u postgres -p 5432 -x admin -e postgres"
   },
   "keywords": [],
   "author": "",

@@ -14,25 +14,16 @@ const ContratoServicioService = require('./../services/contrato_servicio.service
 const contratoServicioService = new ContratoServicioService();
 const ContratoConceptoValorService = require('./../services/contratoConceptoValor.service');
 const contratoConceptoValorService = new ContratoConceptoValorService();
-function  registrarConceptos(newContrato, conceptos) {
+function registrarConceptos(newContrato, conceptos) {
   let registrados = true;
+  console.log(conceptos, 'conceptos');
   conceptos.forEach(async (concepto) => {
-
     let contratoConcepto = await contratoConceptoService.create({
       id_contrato: newContrato.id_contrato,
       id_concepto: concepto.id_concepto,
+      valor: concepto.valor,
     });
-    // Si el valor del concepto se encuentra dentro de los conceptos
-    // se registra el valor del concepto y se evalua si se registro
-
-      // eslint-disable-next-line no-unused-vars
-      let valorconcepto = contratoConceptoValorService.save({
-        contrato_concepto_id: contratoConcepto,
-        contrato_concepto_valor: concepto.valor,
-      });
-
-
-    if (!contratoConcepto ) {
+    if (!contratoConcepto) {
       registrados = false;
     }
   });
@@ -120,12 +111,32 @@ router.post('/delete', async (req, res, next) => {
     next(error);
   }
 });
+// Valores predeterminados para el objeto contrato
+const defaultContrato = {
+  id_contrato: null,
+  id_punto_venta: null,
+  id_usuario: null,
+  valor_canon: null,
+  incremento_anual: null,
+  incremento_adicional: null,
+  fecha_inicio_contrato: null,
+  fecha_fin_contrato: null,
+  tipo_contrato: null,
+  valor_adminstracion: null,
+  definicion: null,
+  poliza: null,
+  id_responsable: null,
+  id_autorizado: null,
+  id_autorizado_adm: null,
+};
 
 router.patch('/', async (req, res, next) => {
   try {
     const body = req.body;
     let conceptos = JSON.parse(body.conceptos);
-    const contrato = JSON.parse(body.contrato);
+    const contrato = { ...defaultContrato, ...JSON.parse(body.contrato) };
+    console.log('conceptos', conceptos);
+    console.log('contrato', contrato);
     let oldContrato = await service.findOne(contrato['id_contrato']);
     let newContrato = await oldContrato.update(contrato);
     let bandera = true;
@@ -151,6 +162,7 @@ router.patch('/', async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+    console.log('Error details:', error.message, error.stack);
   }
 });
 
