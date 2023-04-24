@@ -9,6 +9,15 @@ class ConceptosService{
         const data = await con.models.conceptos.findAll()
         return data;
       }
+
+    async findTipo(id){
+      const data = await con.models.conceptos.findAll({
+        where: {
+          tipo_concepto: id
+        }
+      })
+        return data;
+    }
     
     async findOne(id) {
     

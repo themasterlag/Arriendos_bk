@@ -9,7 +9,12 @@ class ContratoService {
   }
 
   async find() {
-    const data = await con.models.contrato.findAll();
+    const [data] = await con.query(
+      `select * from arriendos.contrato 
+        inner join arriendos.punto_de_venta 
+          ON punto_de_venta.id_punto_venta = contrato.id_punto_venta
+      order by punto_de_venta.codigo_sitio_venta asc`
+    );
     return data;
   }
 

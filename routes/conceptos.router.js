@@ -26,4 +26,14 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+router.get('/tipo/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const conceptos = await service.findTipo(id);
+    res.status(200).json(conceptos);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
