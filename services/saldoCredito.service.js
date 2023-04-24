@@ -22,15 +22,17 @@ class SaldoCreditoService {
     return rta;
   }
   async update(id, changes) {
-    await con.models.contrato_conceptos.destroy(changes.id_contrato_concepto);
+    const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: changes.id_contrato_concepto } });
+    await conceptoAnterior.destroy();
 
     const concepto = await con.models.contrato_conceptos.create(changes);
     changes["contrato_concepto_id"] = concepto.id_contrato_concepto;
 
-    const saldoCredito = await this.findOne(id);
+    const saldoCredito = await con.models.saldo_credito.findOne({ where: { id_saldo_cretido: changes.id_saldo_cretido } });
     const rta = await saldoCredito.update(changes);
 
     return rta;
+    // return true;
   }
   async delete(id) {
     const saldoCredito = await this.findOne(id);
