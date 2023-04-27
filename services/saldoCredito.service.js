@@ -36,6 +36,8 @@ class SaldoCreditoService {
   }
   async delete(id) {
     const saldoCredito = await this.findOne(id);
+    const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: saldoCredito.id_contrato_concepto } });
+    await conceptoAnterior.destroy();
     await saldoCredito.destroy();
     return 'eliminado';
   }
