@@ -9,10 +9,14 @@ const listadoService = new PagoRealizadoArriendo();
 // Devuelve todo el listado de pagos de arriendos
 router.get('/', async (req, res, next) => {
   try {
-    const filtro = JSON.parse( req.query.datosResponsable);
-    const tipo = JSON.parse( req.query.tipoDatos); // 1 No pagados - 2 Pagados
-    const rangoFechas = JSON.parse( req.query.rangoFechas);
-    const listado = await service.findArriendosByFitler(filtro,tipo,rangoFechas);
+    const filtro = JSON.parse(req.query.datosResponsable);
+    const tipo = JSON.parse(req.query.tipoDatos); // 1 No pagados - 2 Pagados
+    const rangoFechas = JSON.parse(req.query.rangoFechas);
+    const listado = await service.findArriendosByFitler(
+      filtro,
+      tipo,
+      rangoFechas
+    );
     res.json(listado);
   } catch (error) {
     next(error);
@@ -21,7 +25,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/todos', async (req, res, next) => {
   try {
-    const listado = await service.findArriendos();
+    const listado = await service.findPagos();
     res.json(listado);
   } catch (error) {
     next(error);

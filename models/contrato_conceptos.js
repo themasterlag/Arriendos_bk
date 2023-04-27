@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     valor: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.REAL,
       allowNull: true
     }
   }, {

@@ -44,6 +44,9 @@ class ContratoService {
             association: 'id_cliente_cliente',
           },
         },
+        {
+          association: 'id_punto_venta_punto_de_ventum',
+        },
       ],
     });
     if (!rta) {

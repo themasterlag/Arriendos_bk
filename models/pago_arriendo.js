@@ -7,10 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    fecha_pago: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    },
     id_contrato: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -19,36 +15,26 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id_contrato'
       }
     },
-    canon: {
+    valor: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    iva: {
-      type: DataTypes.INTEGER,
+    estado: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: "Estados: pendiente, liquidado, pagado"
+    },
+    fecha_creacion: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    fecha_modificacion: {
+      type: DataTypes.DATEONLY,
       allowNull: true
     },
-    rete_iva: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    rete_fuente: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    reteica: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    bomberil: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    valor_total: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    id_liquidacion: {
-      type: DataTypes.INTEGER,
+    fecha_liquidacion: {
+      type: DataTypes.DATEONLY,
       allowNull: true
     }
   }, {
