@@ -31,7 +31,16 @@ router.get('/todos', async (req, res, next) => {
     next(error);
   }
 });
-
+router.post('/todos', async (req, res, next) => {
+  const { body: pago } = req;
+  try {
+    const pagoCreado = await service.createPago(pago);
+    res.status(201).json(pagoCreado);
+  } catch (error) {
+    next(error);
+    console.log('Error details:', error.message, error.stack);
+  }
+});
 router.get('/sitioventa/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
