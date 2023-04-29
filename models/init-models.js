@@ -2,6 +2,7 @@ var DataTypes = require("sequelize").DataTypes;
 var _autorizado = require("./autorizado");
 var _autorizado_administracion = require("./autorizado_administracion");
 var _cliente = require("./cliente");
+var _concepto_municipio = require("./concepto_municipio");
 var _conceptos = require("./conceptos");
 var _contrato = require("./contrato");
 var _contrato_conceptos = require("./contrato_conceptos");
@@ -48,6 +49,7 @@ function initModels(sequelize) {
   var autorizado = _autorizado(sequelize, DataTypes);
   var autorizado_administracion = _autorizado_administracion(sequelize, DataTypes);
   var cliente = _cliente(sequelize, DataTypes);
+  var concepto_municipio = _concepto_municipio(sequelize, DataTypes);
   var conceptos = _conceptos(sequelize, DataTypes);
   var contrato = _contrato(sequelize, DataTypes);
   var contrato_conceptos = _contrato_conceptos(sequelize, DataTypes);
@@ -102,6 +104,8 @@ function initModels(sequelize) {
   cliente.hasMany(propietario_punto_venta, { as: "propietario_punto_venta", foreignKey: "id_propietario"});
   responsable.belongsTo(cliente, { as: "id_cliente_cliente", foreignKey: "id_cliente"});
   cliente.hasMany(responsable, { as: "responsables", foreignKey: "id_cliente"});
+  concepto_municipio.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
+  conceptos.hasMany(concepto_municipio, { as: "concepto_municipios", foreignKey: "id_concepto"});
   contrato_conceptos.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
   conceptos.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_concepto"});
   contrato_conceptos.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
@@ -130,6 +134,8 @@ function initModels(sequelize) {
   microzona.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "microzona"});
   cliente.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
   municipio.hasMany(cliente, { as: "clientes", foreignKey: "id_municipio"});
+  concepto_municipio.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
+  municipio.hasMany(concepto_municipio, { as: "concepto_municipios", foreignKey: "id_municipio"});
   impuestos_bomberil.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
   municipio.hasMany(impuestos_bomberil, { as: "impuestos_bomberils", foreignKey: "id_municipio"});
   impuestos_reteica.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
@@ -181,6 +187,7 @@ function initModels(sequelize) {
     autorizado,
     autorizado_administracion,
     cliente,
+    concepto_municipio,
     conceptos,
     contrato,
     contrato_conceptos,

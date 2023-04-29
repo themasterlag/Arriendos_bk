@@ -14,6 +14,8 @@ const ContratoServicioService = require('./../services/contrato_servicio.service
 const contratoServicioService = new ContratoServicioService();
 const ContratoConceptoValorService = require('./../services/contratoConceptoValor.service');
 const contratoConceptoValorService = new ContratoConceptoValorService();
+const ConceptoMunicipioService = require('./../services/conceptoMunicipio.service');
+const conceptoMunicipioService = new ConceptoMunicipioService();
 function registrarConceptos(newContrato, conceptos) {
   let registrados = true;
   console.log(conceptos, 'conceptos');
@@ -38,7 +40,16 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
-
+router.get('/concepto-municipio', async (req, res, next) => {
+  try {
+    const conceptoMunicipio =
+      await conceptoMunicipioService.findAllConceptoMunicipio();
+    res.json(conceptoMunicipio);
+  } catch (error) {
+    next(error);
+    console.log('Error details:', error.message, error.stack);
+  }
+});
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -111,6 +122,7 @@ router.post('/delete', async (req, res, next) => {
     next(error);
   }
 });
+
 // Valores predeterminados para el objeto contrato
 const defaultContrato = {
   id_contrato: null,

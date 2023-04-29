@@ -19,21 +19,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    estado: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      comment: "Estados: pendiente, liquidado, pagado"
-    },
-    fecha_creacion: {
+    fecha_liquidacion: {
       type: DataTypes.DATEONLY,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    fecha_modificacion: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    },
-    fecha_liquidacion: {
+    fecha_pago: {
       type: DataTypes.DATEONLY,
       allowNull: true
     }
