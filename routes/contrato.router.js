@@ -14,6 +14,7 @@ const conceptoMunicipioService = new ConceptoMunicipioService();
 function registrarConceptos(newContrato, conceptos) {
   let registrados = true;
   console.log(conceptos, 'conceptos');
+  //conceptos = JSON.parse(conceptos);
   conceptos.forEach(async (concepto) => {
     let contratoConcepto = await contratoConceptoService.create({
       id_contrato: newContrato.id_contrato,
@@ -75,6 +76,7 @@ router.post('/', async (req, res, next) => {
   try {
     const body = req.body;
     let conceptos = body.conceptos.split(',');
+    conceptos = JSON.parse(body.conceptos);
     const contrato = JSON.parse(body.contrato);
 
     // para crear un contrato necesito:

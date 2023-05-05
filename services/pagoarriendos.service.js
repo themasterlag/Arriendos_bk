@@ -1,9 +1,9 @@
 const con = require('../libs/sequelize');
+const { Op } = require('sequelize');
 
 class PagoArriendosService {
   constructor() {}
-  getLastDayOfMonth(year, month) {
-    console.log(year, month, 'year month');
+  async getLastDayOfMonth(year, month) {
     return new Date(year, month, 0).getDate();
   }
   async findPagos() {
@@ -125,12 +125,24 @@ class PagoArriendosService {
 
   async findPagados(fechaInicio, fechaFin) {
     try {
-      const [results] = await con.models.pago_arriendo.findAll({
+      const results = await con.models.pago_arriendo.findAll({
         where: {
           fecha_pago: {
             [Op.between]: [fechaInicio, fechaFin],
           },
         },
+        include: [
+          {
+            model: con.models.contrato,
+            as: 'id_contrato_contrato',
+            include: [
+              {
+                model: con.models.punto_de_venta,
+                as: 'id_punto_venta_punto_de_ventum',
+              },
+            ],
+          },
+        ],
       });
       return results;
     } catch (error) {
@@ -204,9 +216,20 @@ class PagoArriendosService {
     const newLiquidacion = await con.models.liquidacion.create(data);
     return newLiquidacion.id_liquidacion;
   }
-  async findLiquidaciones() {
-    const data = await con.models.liquidacion.findAll();
-    return data;
+  async findNoPagados(fechaInicio, fechaFin, filter) {
+    const [results] = await con.query(
+      `SELECT * from arriendos.calcular_valor_total_filtrado(?,?,?,?,?)`,
+      {
+        replacements: [
+          fechaInicio,
+          fechaFin,
+          filter.no_responsable,
+          filter.responsable,
+          filter.efectivo,
+        ],
+      }
+    );
+    return results;
   }
 }
 

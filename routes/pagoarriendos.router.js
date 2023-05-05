@@ -12,13 +12,42 @@ router.get('/', async (req, res, next) => {
     const filtro = JSON.parse(req.query.datosResponsable);
     const tipo = JSON.parse(req.query.tipoDatos); // 1 No pagados - 2 Pagados
     const rangoFechas = JSON.parse(req.query.rangoFechas);
-    const listado = await service.findArriendosByFitler(
-      filtro,
-      tipo,
-      rangoFechas
-    );
-    res.json(listado);
     const { anio, mes } = JSON.parse(req.query.rangoFechas);
+    const fechaInicio = new Date(`${anio}-${mes}-01`);
+    const fechaFin = new Date(
+      `${anio}-${mes}-${await service.getLastDayOfMonth(anio, mes)}`
+    );
+
+    if (tipo == 1) {
+      const listado = await service.findPagados(fechaInicio, fechaFin);
+      console.log('listado Pagados: ', listado);
+      res.status(200).json(listado);
+    } else {
+      const listado = await service.findNoPagados(
+        fechaInicio,
+        fechaFin,
+        filtro
+      );
+      res.status(200).json(listado);
+    }
+    // const listado = await service.findArriendosByFitler(
+    //   filtro,
+    //   tipo,
+    //   rangoFechas
+    // );
+    // res.json(listado);
+    // const { anio, mes } = JSON.parse(req.query.rangoFechas);
+    // const fechaInicio = new Date(`${anio}-${mes}-01`);
+    // const fechaFin = service.getLastDayOfMonth(fechaInicio);
+    // const listadoDePagos = await service.findPagados(id, anio);
+    // res.status(200).json(listadoDePagos);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/pagados/:anio/:mes', async (req, res, next) => {
+  try {
+    const { anio, mes } = req.params;
     const fechaInicio = new Date(`${anio}-${mes}-01`);
     const fechaFin = service.getLastDayOfMonth(fechaInicio);
     const listadoDePagos = await service.findPagados(id, anio);
@@ -27,7 +56,6 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
-
 router.get('/todos', async (req, res, next) => {
   try {
     const listado = await service.findPagos();
@@ -99,17 +127,6 @@ router.get('/:id/:anio', async (req, res, next) => {
 router.get('/pagados', async (req, res, next) => {
   try {
     const listadoDePagos = await listadoService.getPagos();
-    res.status(200).json(listadoDePagos);
-  } catch (error) {
-    next(error);
-  }
-});
-router.get('/pagados/:anio/:mes', async (req, res, next) => {
-  try {
-    const { anio, mes } = req.params;
-    const fechaInicio = new Date(`${anio}-${mes}-01`);
-    const fechaFin = service.getLastDayOfMonth(fechaInicio);
-    const listadoDePagos = await service.findPagados(id, anio);
     res.status(200).json(listadoDePagos);
   } catch (error) {
     next(error);

@@ -19,11 +19,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    fecha_liquidacion: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
     fecha_pago: {
       type: DataTypes.DATEONLY,
       allowNull: true
