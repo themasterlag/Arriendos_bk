@@ -6,7 +6,6 @@ var _concepto_municipio = require("./concepto_municipio");
 var _conceptos = require("./conceptos");
 var _contrato = require("./contrato");
 var _contrato_conceptos = require("./contrato_conceptos");
-var _contrato_tipo_servicio = require("./contrato_tipo_servicio");
 var _departamento = require("./departamento");
 var _dependencia = require("./dependencia");
 var _dispersion = require("./dispersion");
@@ -24,7 +23,6 @@ var _pago_administracion = require("./pago_administracion");
 var _pago_arriendo = require("./pago_arriendo");
 var _pago_concepto = require("./pago_concepto");
 var _pago_detalle = require("./pago_detalle");
-var _pago_servicios = require("./pago_servicios");
 var _periodo = require("./periodo");
 var _permiso = require("./permiso");
 var _proceso = require("./proceso");
@@ -53,7 +51,6 @@ function initModels(sequelize) {
   var conceptos = _conceptos(sequelize, DataTypes);
   var contrato = _contrato(sequelize, DataTypes);
   var contrato_conceptos = _contrato_conceptos(sequelize, DataTypes);
-  var contrato_tipo_servicio = _contrato_tipo_servicio(sequelize, DataTypes);
   var departamento = _departamento(sequelize, DataTypes);
   var dependencia = _dependencia(sequelize, DataTypes);
   var dispersion = _dispersion(sequelize, DataTypes);
@@ -71,7 +68,6 @@ function initModels(sequelize) {
   var pago_arriendo = _pago_arriendo(sequelize, DataTypes);
   var pago_concepto = _pago_concepto(sequelize, DataTypes);
   var pago_detalle = _pago_detalle(sequelize, DataTypes);
-  var pago_servicios = _pago_servicios(sequelize, DataTypes);
   var periodo = _periodo(sequelize, DataTypes);
   var permiso = _permiso(sequelize, DataTypes);
   var proceso = _proceso(sequelize, DataTypes);
@@ -110,8 +106,6 @@ function initModels(sequelize) {
   conceptos.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_concepto"});
   contrato_conceptos.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_contrato"});
-  contrato_tipo_servicio.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
-  contrato.hasMany(contrato_tipo_servicio, { as: "contrato_tipo_servicios", foreignKey: "id_contrato"});
   pago_administracion.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "id_contrato"});
   pago_arriendo.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
@@ -174,8 +168,6 @@ function initModels(sequelize) {
   tipo_cuenta.hasMany(autorizado, { as: "autorizados", foreignKey: "id_tipo_cuenta"});
   autorizado_administracion.belongsTo(tipo_cuenta, { as: "id_tipo_cuenta_tipo_cuentum", foreignKey: "id_tipo_cuenta"});
   tipo_cuenta.hasMany(autorizado_administracion, { as: "autorizado_administracions", foreignKey: "id_tipo_cuenta"});
-  contrato_tipo_servicio.belongsTo(tipo_servicio, { as: "id_tipo_servicio_tipo_servicio", foreignKey: "id_tipo_servicio"});
-  tipo_servicio.hasMany(contrato_tipo_servicio, { as: "contrato_tipo_servicios", foreignKey: "id_tipo_servicio"});
   contrato.belongsTo(usuario, { as: "id_usuario_usuario", foreignKey: "id_usuario"});
   usuario.hasMany(contrato, { as: "contratos", foreignKey: "id_usuario"});
   usuario_permiso.belongsTo(usuario, { as: "id_usuario_usuario", foreignKey: "id_usuario"});
@@ -191,7 +183,6 @@ function initModels(sequelize) {
     conceptos,
     contrato,
     contrato_conceptos,
-    contrato_tipo_servicio,
     departamento,
     dependencia,
     dispersion,
@@ -209,7 +200,6 @@ function initModels(sequelize) {
     pago_arriendo,
     pago_concepto,
     pago_detalle,
-    pago_servicios,
     periodo,
     permiso,
     proceso,

@@ -18,6 +18,11 @@ router.get('/', async (req, res, next) => {
       rangoFechas
     );
     res.json(listado);
+    const { anio, mes } = JSON.parse(req.query.rangoFechas);
+    const fechaInicio = new Date(`${anio}-${mes}-01`);
+    const fechaFin = service.getLastDayOfMonth(fechaInicio);
+    const listadoDePagos = await service.findPagados(id, anio);
+    res.status(200).json(listadoDePagos);
   } catch (error) {
     next(error);
   }
@@ -99,9 +104,11 @@ router.get('/pagados', async (req, res, next) => {
     next(error);
   }
 });
-router.get('/liquidados/:id/:anio', async (req, res, next) => {
+router.get('/pagados/:anio/:mes', async (req, res, next) => {
   try {
-    const { id, anio } = req.params;
+    const { anio, mes } = req.params;
+    const fechaInicio = new Date(`${anio}-${mes}-01`);
+    const fechaFin = service.getLastDayOfMonth(fechaInicio);
     const listadoDePagos = await service.findPagados(id, anio);
     res.status(200).json(listadoDePagos);
   } catch (error) {

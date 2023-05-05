@@ -2,7 +2,10 @@ const con = require('../libs/sequelize');
 
 class PagoArriendosService {
   constructor() {}
-
+  getLastDayOfMonth(year, month) {
+    console.log(year, month, 'year month');
+    return new Date(year, month, 0).getDate();
+  }
   async findPagos() {
     const [results] = await con.models.pago_arriendo.findAll();
     return results;
@@ -119,35 +122,20 @@ class PagoArriendosService {
       }
     });
   }
-  /** 
-  async findArriendosByFilter(filter) {
-    
-    if (filter == 'responsablesIva') {
-      const [results] = await con.query(
-        ' select * from arriendos.get_arriendos() where iva != 0'
-      );
-      console.log(results);
+
+  async findPagados(fechaInicio, fechaFin) {
+    try {
+      const [results] = await con.models.pago_arriendo.findAll({
+        where: {
+          fecha_pago: {
+            [Op.between]: [fechaInicio, fechaFin],
+          },
+        },
+      });
       return results;
-    } else if (filter == 'noResponsables') {
-      const [results] = await con.query(
-        ' select * from arriendos.get_arriendos() where iva = 0'
-      );
-      return results;
-    } else if (filter == 'efectivo') {
-      const [results] = await con.query(
-        ' select * from arriendos.get_arriendos() where metodo_pago = 2'
-      );
-      return results;
-    } else return [];
-  }*/
-  async findPagados(periodo, anio) {
-    const [results] = await con.query(
-      `Select distinct * from arriendos.get_arriendos(?, ?)`,
-      {
-        replacements: [periodo, anio],
-      }
-    );
-    return results;
+    } catch (error) {
+      console.error('Error al obtener los registros pagados', error);
+    }
   }
   async findRegistrosBancolombia() {
     const [results] =

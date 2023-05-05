@@ -9,11 +9,6 @@ const service = new ContratoService();
 const ContratoConcepto = require('./../services/contratoConcepto.service');
 const contratoConceptoService = new ContratoConcepto();
 
-const ContratoServicioService = require('./../services/contrato_servicio.service');
-
-const contratoServicioService = new ContratoServicioService();
-const ContratoConceptoValorService = require('./../services/contratoConceptoValor.service');
-const contratoConceptoValorService = new ContratoConceptoValorService();
 const ConceptoMunicipioService = require('./../services/conceptoMunicipio.service');
 const conceptoMunicipioService = new ConceptoMunicipioService();
 function registrarConceptos(newContrato, conceptos) {
@@ -69,12 +64,10 @@ router.get('/pdv/:id', async (req, res, next) => {
     const contratoConcepto = await contratoConceptoService.findByContrato(
       id_contrato
     );
-    const contratoServicio = await contratoServicioService.findByContrato(
-      id_contrato
-    );
-    res.json({ contrato, contratoConcepto, contratoServicio });
+    res.json({ contrato, contratoConcepto });
   } catch (error) {
     next(error);
+    //console.log('Error details:', error.message, error.stack);
   }
 });
 
@@ -150,7 +143,16 @@ router.patch('/', async (req, res, next) => {
     console.log('conceptos', conceptos);
     console.log('contrato', contrato);
     let oldContrato = await service.findOne(contrato['id_contrato']);
-    let newContrato = await oldContrato.update(contrato);
+    let newContrato = null;
+    if (oldContrato) {
+      newContrato = await oldContrato.update(contrato);
+      console.log('Contrato actualizado correctamente:', newContrato);
+    } else {
+      console.log(
+        'No se pudo encontrar el contrato con id ',
+        contrato['id_contrato']
+      );
+    }
     let bandera = true;
 
     if (newContrato) {

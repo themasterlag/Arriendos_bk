@@ -22,7 +22,6 @@ const clienteRouter = require('./cliente.router');
 const tipoCuentaRouter = require('./tipoCuenta.router');
 const subirArchivoRouter = require('./archivos.router');
 const tipoServicioRouter = require('./tipoServicio.router');
-const contratoServicioRouter = require('./contratoServicio.router');
 const pagoarriendosRouter = require('./pagoarriendos.router');
 const proPDV = require('./propPuntoVenta.router');
 const conceptosRouter = require('./conceptos.router');
@@ -55,7 +54,6 @@ function routerApi(app) {
   router.use('/propietariopunto', proPDV);
   router.use('/tiposervicio', tipoServicioRouter);
   router.use('/tipocuenta', tipoCuentaRouter);
-  router.use('/contratoservicio', contratoServicioRouter);
   router.use('/preliquidacion', pagoarriendosRouter);
   router.use('/conceptos', conceptosRouter);
   router.use('/contrato-conceptos', contratoConceptoRouter);
