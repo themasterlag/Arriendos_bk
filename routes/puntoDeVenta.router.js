@@ -65,10 +65,15 @@ router.post('/', async (req, res, next) => {
 router.patch('/update', async (req, res, next) => {
   try {
     const body = req.body;
+    const pdv = JSON.parse(body.punto_venta);
     const id = body.id_punto_venta;
     console.log(body);
     const newPuntoDeVenta = await service.update(id, body);
-    res.status(201).json(newPuntoDeVenta);
+    res.status(201).json({
+      estado: '1',
+      id: newPuntoDeVenta.id_punto_venta,
+      respuesta: 'Se actualizo correctamente el contrato',
+    });
   } catch (error) {
     next(error);
   }
