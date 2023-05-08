@@ -7,7 +7,7 @@ class PagoArriendosService {
     return new Date(year, month, 0).getDate();
   }
   async findPagos() {
-    const [results] = await con.models.pago_arriendo.findAll();
+    const results = await con.models.pago_arriendo.findAll();
     return results;
   }
   async savePago(data) {
@@ -230,6 +230,10 @@ class PagoArriendosService {
       }
     );
     return results;
+  }
+  async registrarPagos(data) {
+    const newPago = await con.models.pago_arriendo.create(data);
+    return newPago.id_pago_arriendo;
   }
 }
 

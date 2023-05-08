@@ -30,17 +30,6 @@ router.get('/', async (req, res, next) => {
       );
       res.status(200).json(listado);
     }
-    // const listado = await service.findArriendosByFitler(
-    //   filtro,
-    //   tipo,
-    //   rangoFechas
-    // );
-    // res.json(listado);
-    // const { anio, mes } = JSON.parse(req.query.rangoFechas);
-    // const fechaInicio = new Date(`${anio}-${mes}-01`);
-    // const fechaFin = service.getLastDayOfMonth(fechaInicio);
-    // const listadoDePagos = await service.findPagados(id, anio);
-    // res.status(200).json(listadoDePagos);
   } catch (error) {
     next(error);
   }
@@ -67,8 +56,17 @@ router.get('/todos', async (req, res, next) => {
 router.post('/todos', async (req, res, next) => {
   const { body: pago } = req;
   try {
-    const pagoCreado = await service.createPago(pago);
-    res.status(201).json(pagoCreado);
+    const pagosArray = Array.isArray(pago) ? pago : [pago];
+    const pagosCreado = await Promise.all(
+      pagosArray.map(async (pago) => {
+        return await service.registrarPagos(pago);
+      })
+    );
+    if (!Array.isArray(pago)) {
+      res.status(201).json(pagosCreado[0]);
+    } else {
+      res.status(201).json(pagosCreado);
+    }
   } catch (error) {
     next(error);
     console.log('Error details:', error.message, error.stack);
