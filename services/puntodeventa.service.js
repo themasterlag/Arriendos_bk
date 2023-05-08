@@ -26,6 +26,18 @@ class PuntoDeVentaService {
       where: {
         codigo_sitio_venta: codigo_sitio_venta,
       },
+      include: [
+        {
+          model: con.models.propietario_punto_venta,
+          as: 'propietario_punto_venta',
+          include: [
+            {
+              model: con.models.cliente,
+              as: 'id_propietario_cliente',
+            },
+          ],
+        },
+      ],
     });
     if (!rta) {
       throw console.error('no se encontro');
