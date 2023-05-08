@@ -62,7 +62,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/update', async (req, res, next) => {
+router.patch('/update', async (req, res, next) => {
   try {
     const body = req.body;
     const id = body.id_punto_venta;
