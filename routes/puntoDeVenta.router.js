@@ -23,6 +23,16 @@ router.get('/sincontrato', async (req, res, next) => {
   }
 });
 
+router.get('/codigo-sitventa/:codigo', async (req, res, next) => {
+  try {
+    const { codigo } = req.params;
+    const puntoDeventa = await service.findByCodigoSitioVenta(codigo);
+    res.status(201).json(puntoDeventa);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;

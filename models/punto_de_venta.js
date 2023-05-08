@@ -91,6 +91,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'tipo_contrato',
         key: 'id_tipo_contrato'
       }
+    },
+    fecha_inactivo: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    razon_inactivo: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,

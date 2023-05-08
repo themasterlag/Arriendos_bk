@@ -21,6 +21,18 @@ class PuntoDeVentaService {
     return rta;
   }
 
+  async findByCodigoSitioVenta(codigo_sitio_venta) {
+    const rta = await con.models.punto_de_venta.findOne({
+      where: {
+        codigo_sitio_venta: codigo_sitio_venta,
+      },
+    });
+    if (!rta) {
+      throw console.error('no se encontro');
+    }
+    return rta;
+  }
+
   async update(id, changes) {
     const puntoDeVenta = await this.findOne(id);
 
