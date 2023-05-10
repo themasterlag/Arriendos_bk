@@ -90,6 +90,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'autorizado_administracion',
         key: 'id_autorizado_adm'
       }
+    },
+    'fecha _inactivo': {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    razon_inactivo: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     sequelize,

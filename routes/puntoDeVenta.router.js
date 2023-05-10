@@ -78,6 +78,25 @@ router.patch('/update', async (req, res, next) => {
   }
 });
 
+router.patch('/inhabilitar', async (res, req, next) => {
+  try {
+    const { body: id, fecha_inactivo, razon_inactivo } = req;
+    const resultado = await service.inhabilitarPuntoDeVenta(
+      id,
+      fecha_inactivo,
+      razon_inactivo
+    );
+    res.status(200).json({
+      estado: '1',
+      id: resultado,
+      respuesta: 'Se ha inhabilidato el punto de venta correctamente',
+    });
+  } catch (error) {
+    next(error);
+    console.log('Error details:', error.message, error.stack);
+  }
+});
+
 router.post('/delete', async (req, res, next) => {
   try {
     const { id } = req.body;

@@ -68,5 +68,16 @@ class PuntoDeVentaService {
     );
     return result;
   }
+  async inhabilitarPuntoDeVenta(id, fecha_inactivo, razon_inactivo) {
+    const puntoDeVenta = await this.findOne(id);
+    if (!puntoDeVenta) {
+      throw new Error('No se encontro el punto de venta');
+    }
+    const puntoActualizado = puntoDeVenta.update({
+      fecha_inactivo: fecha_inactivo,
+      razon_inactivo: razon_inactivo,
+    });
+    return puntoActualizado.id_punto_venta;
+  }
 }
 module.exports = PuntoDeVentaService;

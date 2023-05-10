@@ -182,4 +182,22 @@ router.patch('/', async (req, res, next) => {
   }
 });
 
+router.patch('/inhabilitar', async (req, res, next) => {
+  try {
+    const { body: id, fecha_inactivo, razon_inactivo } = req;
+    const resultado = await service.inhabilitarContrato(
+      id,
+      fecha_inactivo,
+      razon_inactivo
+    );
+    res.status(200).json({
+      estado: '1',
+      id: resultado,
+      respuesta: 'Se ha inhabilitado el contrato de forma correcta',
+    });
+  } catch (error) {
+    next(error);
+    console.log('Error details:', error.message, error.stack);
+  }
+});
 module.exports = router;
