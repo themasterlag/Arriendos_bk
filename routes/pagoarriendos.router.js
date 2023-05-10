@@ -37,9 +37,9 @@ router.get('/', async (req, res, next) => {
 router.get('/pagados/:anio/:mes', async (req, res, next) => {
   try {
     const { anio, mes } = req.params;
-    const fechaInicio = new Date(`${anio}-${mes}-01`);
-    const fechaFin = service.getLastDayOfMonth(fechaInicio);
-    const listadoDePagos = await service.findPagados(id, anio);
+    // const fechaInicio = new Date(`${anio}-${mes}-01`);
+    // const fechaFin = service.getLastDayOfMonth(fechaInicio);
+    const listadoDePagos = await service.findPagados(mes, anio);
     res.status(200).json(listadoDePagos);
   } catch (error) {
     next(error);
@@ -57,15 +57,22 @@ router.post('/todos', async (req, res, next) => {
   const { body: pago } = req;
   try {
     const pagosArray = Array.isArray(pago) ? pago : [pago];
+    let response;
     const pagosCreado = await Promise.all(
       pagosArray.map(async (pago) => {
         return await service.registrarPagos(pago);
       })
     );
+    const idPagos = pagosCreado.map((p)=> p.id_pago_arriendo);
+    response={
+      estado : '1',
+      id:idPagos,
+      respuesta: 'Se agregaron correctamente los pagos'
+    }
     if (!Array.isArray(pago)) {
-      res.status(201).json(pagosCreado[0]);
+      res.status(201).json(response);
     } else {
-      res.status(201).json(pagosCreado);
+      res.status(201).json(response);
     }
   } catch (error) {
     next(error);
