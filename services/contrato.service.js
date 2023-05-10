@@ -69,15 +69,13 @@ class ContratoService {
     return 'eliminado';
   }
   async inhabilitarContrato(id, fecha_inactivo, razon_inactivo) {
+    console.log('Service ID: ', id);
     const contrato = await this.findOne(id);
-    if (!contrato) {
-      throw new Error('Contrato no encontrado');
-    }
-    const contratoActualizado = await contrato.update({
+    await contrato.update({
       fecha_inactivo: fecha_inactivo,
       razon_inactivo: razon_inactivo,
     });
-    return contratoActualizado.id_contrato;
+    return contrato.id_contrato;
   }
 }
 module.exports = ContratoService;

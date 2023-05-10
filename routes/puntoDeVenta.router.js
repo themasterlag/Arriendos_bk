@@ -78,9 +78,10 @@ router.patch('/update', async (req, res, next) => {
   }
 });
 
-router.patch('/inhabilitar', async (res, req, next) => {
+router.patch('/inhabilitar', async (req, res, next) => {
   try {
-    const { body: id, fecha_inactivo, razon_inactivo } = req;
+    console.log(res.body);
+    let { id, fecha_inactivo, razon_inactivo } = req.body;
     const resultado = await service.inhabilitarPuntoDeVenta(
       id,
       fecha_inactivo,
@@ -93,7 +94,6 @@ router.patch('/inhabilitar', async (res, req, next) => {
     });
   } catch (error) {
     next(error);
-    console.log('Error details:', error.message, error.stack);
   }
 });
 

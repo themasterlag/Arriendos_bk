@@ -91,7 +91,7 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id_autorizado_adm'
       }
     },
-    'fecha _inactivo': {
+    fecha_inactivo: {
       type: DataTypes.DATEONLY,
       allowNull: true
     },
