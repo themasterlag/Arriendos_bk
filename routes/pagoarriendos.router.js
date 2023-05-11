@@ -4,8 +4,12 @@ const router = express.Router();
 
 const PagoArriendosService = require('./../services/pagoarriendos.service');
 const PagoRealizadoArriendo = require('./../services/pagoRealizadoArriendo.service');
+const ContratoService = require('./../services/contrato.service');
 const service = new PagoArriendosService();
+const serviceContrato = new ContratoService();
 const listadoService = new PagoRealizadoArriendo();
+const ContratoConcepto = require('./../services/contratoConcepto.service');
+const contratoConceptoService = new ContratoConcepto();
 // Devuelve todo el listado de pagos de arriendos
 router.get('/', async (req, res, next) => {
   try {
@@ -34,6 +38,28 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+router.get('/prenomina', async (req, res, next) => {
+  try {
+    const idContratos = JSON.parse(req.query.idContratos);
+    // console.log('idContratos: ', idContratos);
+    let listaContratos = [];
+
+    for (let i = 0; i < idContratos.length; i++) {
+      let contrato =  await serviceContrato.findOne(idContratos[i]);
+      contrato = contrato.toJSON();
+      let conceptos = await contratoConceptoService.findByContrato(contrato.id_contrato);
+
+      contrato["conceptos"] = conceptos;
+      listaContratos.push(contrato);
+    }
+
+    res.status(200).json(listaContratos);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/pagados/:anio/:mes', async (req, res, next) => {
   try {
     const { anio, mes } = req.params;
