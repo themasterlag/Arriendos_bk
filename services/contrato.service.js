@@ -8,7 +8,15 @@ class ContratoService {
     return contrato.id_contrato;
   }
   async findAllContratos() {
-    const result = await con.models.contrato.findAll();
+    const result = await con.models.contrato.findAll({
+      include: [
+        {
+          model: con.models.punto_de_venta,
+          as: 'id_punto_venta_punto_de_ventum',
+          attributes: ['nombre_comercial', 'codigo_sitio_venta'],
+        },
+      ],
+    });
     return result;
   }
   async find() {
