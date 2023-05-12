@@ -7,7 +7,10 @@ class ContratoService {
     const contrato = await con.models.contrato.create(data);
     return contrato.id_contrato;
   }
-
+  async findAllContratos() {
+    const result = await con.models.contrato.findAll();
+    return result;
+  }
   async find() {
     const [data] = await con.query(
       `select * from arriendos.contrato 

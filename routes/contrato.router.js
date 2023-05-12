@@ -30,7 +30,7 @@ function registrarConceptos(newContrato, conceptos) {
 
 router.get('/', async (req, res, next) => {
   try {
-    const contrato = await service.find();
+    const contrato = await service.findAllContratos();
     res.json(contrato);
   } catch (error) {
     next(error);
