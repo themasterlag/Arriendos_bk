@@ -127,7 +127,7 @@ class PagoArriendosService {
     try {
       const results = await con.models.pago_arriendo.findAll({
         where: {
-          fecha_pago: {
+          fecha_periodo: {
             [Op.between]: [fechaInicio, fechaFin],
           },
         },
