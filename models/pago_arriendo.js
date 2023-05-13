@@ -22,6 +22,10 @@ module.exports = function(sequelize, DataTypes) {
     fecha_pago: {
       type: DataTypes.DATEONLY,
       allowNull: true
+    },
+    fecha_periodo: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
     }
   }, {
     sequelize,
