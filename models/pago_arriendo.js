@@ -26,6 +26,10 @@ module.exports = function(sequelize, DataTypes) {
     fecha_periodo: {
       type: DataTypes.DATEONLY,
       allowNull: true
+    },
+    codigo_verificacion: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
