@@ -10,6 +10,8 @@ const serviceContrato = new ContratoService();
 const listadoService = new PagoRealizadoArriendo();
 const ContratoConcepto = require('./../services/contratoConcepto.service');
 const contratoConceptoService = new ContratoConcepto();
+const PagoConcepto = require('./../services/pagoconcepto.service');
+const PagoConceptoService = new PagoConcepto();
 // Devuelve todo el listado de pagos de arriendos
 router.get('/', async (req, res, next) => {
   try {
@@ -55,6 +57,26 @@ router.get('/prenomina', async (req, res, next) => {
     }
 
     res.status(200).json(listaContratos);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/nomina', async (req, res, next) => {
+  try {
+    const idPagos = JSON.parse(req.query.idPagos);
+    let listaPagos = [];
+    
+    for (let i = 0; i < idPagos.length; i++) {
+      let pago =  await service.findOne(idPagos[i]);
+      pago = pago.toJSON();
+      let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
+
+      pago["conceptos"] = conceptos;
+      listaPagos.push(pago);
+    }
+
+    res.status(200).json(listaPagos);
   } catch (error) {
     next(error);
   }

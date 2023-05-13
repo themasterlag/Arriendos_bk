@@ -13,7 +13,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     id_concepto: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'conceptos',
+        key: 'id_concepto'
+      }
     },
     pago_concepto_valor: {
       type: DataTypes.INTEGER,
