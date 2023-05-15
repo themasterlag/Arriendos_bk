@@ -21,8 +21,8 @@ class ContratoService {
   }
   async find() {
     const [data] = await con.query(
-      `select * from arriendos.contrato 
-        inner join arriendos.punto_de_venta 
+      `select * from arriendos.contrato
+        inner join arriendos.punto_de_venta
           ON punto_de_venta.id_punto_venta = contrato.id_punto_venta
       order by punto_de_venta.codigo_sitio_venta asc`
     );
@@ -133,7 +133,7 @@ class ContratoService {
             {
               model: con.models.conceptos,
               as: 'id_concepto_concepto',
-              attributes: ['nombre_concepto'],
+              attributes: ['nombre_concepto', 'codigo_concepto'],
             },
           ],
         },
