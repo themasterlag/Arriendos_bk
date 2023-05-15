@@ -88,5 +88,58 @@ class ContratoService {
     });
     return contrato.id_contrato;
   }
+
+  async traerContratosConConceptos() {
+    const result = await con.models.contrato.findAll({
+      attributes: ['id_contrato'],
+      include: [
+        {
+          model: con.models.autorizado,
+          as: 'id_autorizado_autorizado',
+          attributes: ['metodo_pago', 'entidad_bancaria', 'numero_cuenta'],
+          include: [
+            {
+              model: con.models.cliente,
+              as: 'id_cliente_cliente',
+              attributes: ['numero_documento', 'nombres'],
+            },
+            {
+              model: con.models.entidad_bancaria,
+              as: 'entidad_bancaria_entidad_bancarium',
+            },
+          ],
+        },
+        {
+          model: con.models.punto_de_venta,
+          as: 'id_punto_venta_punto_de_ventum',
+          attributes: [
+            'codigo_sitio_venta',
+            'nombre_comercial',
+            'id_municipio',
+          ],
+          include: [
+            {
+              model: con.models.municipio,
+              as: 'id_municipio_municipio',
+              attributes: ['municipio'],
+            },
+          ],
+        },
+        {
+          model: con.models.contrato_conceptos,
+          as: 'contrato_conceptos',
+          attributes: ['valor'],
+          include: [
+            {
+              model: con.models.conceptos,
+              as: 'id_concepto_concepto',
+              attributes: ['nombre_concepto'],
+            },
+          ],
+        },
+      ],
+    });
+    return result;
+  }
 }
 module.exports = ContratoService;
