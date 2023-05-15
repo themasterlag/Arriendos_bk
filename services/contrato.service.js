@@ -101,7 +101,7 @@ class ContratoService {
             {
               model: con.models.cliente,
               as: 'id_cliente_cliente',
-              attributes: ['numero_documento', 'nombres'],
+              attributes: ['numero_documento', 'nombres', 'tipo_documento', 'razon_social'],
             },
             {
               model: con.models.entidad_bancaria,
