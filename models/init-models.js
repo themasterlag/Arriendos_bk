@@ -138,6 +138,7 @@ function initModels(sequelize) {
   municipio.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "id_municipio"});
   pago_detalle.belongsTo(pago_arriendo, { as: "id_pago_arriendo_pago_arriendo", foreignKey: "id_pago_arriendo"});
   pago_arriendo.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_pago_arriendo"});
+  pago_concepto.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
   pago_administracion.belongsTo(periodo, { as: "periodo_periodo", foreignKey: "periodo"});
   periodo.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "periodo"});
   usuario_permiso.belongsTo(permiso, { as: "id_permiso_permiso", foreignKey: "id_permiso"});
