@@ -136,9 +136,16 @@ function initModels(sequelize) {
   municipio.hasMany(impuestos_reteica, { as: "impuestos_reteicas", foreignKey: "id_municipio"});
   punto_de_venta.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
   municipio.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "id_municipio"});
+  
   pago_detalle.belongsTo(pago_arriendo, { as: "id_pago_arriendo_pago_arriendo", foreignKey: "id_pago_arriendo"});
+  pago_detalle.belongsTo(responsable, { as: "id_responsable_responsable", foreignKey: "id_responsable"});
+  pago_detalle.belongsTo(autorizado, { as: "id_autorizado_autorizado", foreignKey: "id_autorizado"});
+  pago_detalle.belongsTo(autorizado_administracion, { as: "id_autorizado_adm_autorizado_administracion", foreignKey: "id_autorizado_adm"});
+  pago_detalle.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
+
   pago_arriendo.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_pago_arriendo"});
   pago_concepto.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
+
   pago_administracion.belongsTo(periodo, { as: "periodo_periodo", foreignKey: "periodo"});
   periodo.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "periodo"});
   usuario_permiso.belongsTo(permiso, { as: "id_permiso_permiso", foreignKey: "id_permiso"});

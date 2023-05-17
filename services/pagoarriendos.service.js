@@ -21,12 +21,40 @@ class PagoArriendosService {
         id_pago_arriendo: id
       },include: [
         {
-          association: 'pago_detalles',
-        },
+          model: con.models.pago_detalle,
+          as: 'pago_detalles',
+          include: [
+            {
+              model: con.models.responsable,
+              as: 'id_responsable_responsable',
+              include: {
+                association: 'id_cliente_cliente',
+              },
+            },
+            {
+              model: con.models.autorizado,
+              as: 'id_autorizado_autorizado',
+              include: {
+                association: 'id_cliente_cliente',
+              },
+            },
+            {
+              model: con.models.autorizado_administracion,
+              as: 'id_autorizado_adm_autorizado_administracion',
+              include: {
+                association: 'id_cliente_cliente',
+              },
+            },
+            {
+              model: con.models.punto_de_venta,
+              as: 'id_punto_venta_punto_de_ventum'
+            }
+          ]
+        }
       ],
     });
     if (!pago) {
-      throw console.error('no se encontro');
+      throw new Error('no se encontro');
     }
     return pago;
   }

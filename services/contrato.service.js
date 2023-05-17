@@ -30,7 +30,34 @@ class ContratoService {
   }
 
   async findOne(id) {
-    const rta = await con.models.contrato.findByPk(id);
+    const rta = await con.models.contrato.findOne({
+      where: {
+        id_contrato: id,
+      },
+      include: [
+        {
+          association: 'id_autorizado_autorizado',
+          include: {
+            association: 'id_cliente_cliente',
+          },
+        },
+        {
+          association: 'id_responsable_responsable',
+          include: {
+            association: 'id_cliente_cliente',
+          },
+        },
+        {
+          association: 'id_autorizado_adm_autorizado_administracion',
+          include: {
+            association: 'id_cliente_cliente',
+          },
+        },
+        {
+          association: 'id_punto_venta_punto_de_ventum',
+        },
+      ],
+    });
     if (!rta) {
       throw console.error('no se encontro');
     }
