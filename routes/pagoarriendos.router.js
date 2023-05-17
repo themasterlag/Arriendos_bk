@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
   try {
     const filtro = JSON.parse(req.query.datosResponsable);
     const tipo = JSON.parse(req.query.tipoDatos); // 1 No pagados - 2 Pagados
-    const rangoFechas = JSON.parse(req.query.rangoFechas);
+    // const rangoFechas = JSON.parse(req.query. );
     const { anio, mes } = JSON.parse(req.query.rangoFechas);
     const fechaInicio = new Date(`${anio}-${mes}-01`);
     const fechaFin = new Date(
@@ -69,7 +69,8 @@ router.get('/nomina', async (req, res, next) => {
     
     for (let i = 0; i < idPagos.length; i++) {
       let pago =  await service.findOne(idPagos[i]);
-      pago = pago.toJSON();
+      pago = pago[0].toJSON();
+
       let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
 
       pago["conceptos"] = conceptos;
