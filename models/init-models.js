@@ -280,7 +280,7 @@ function initModels(sequelize) {
   });
 
   pago_concepto.belongsTo(pago_arriendo, {
-    as: 'id_pago_arriendo_pago_arriendo',
+    as: 'id_concepto_concepto',
     foreignKey: 'id_pago_arriendo',
   });
   pago_arriendo.hasMany(pago_concepto, {
@@ -292,19 +292,19 @@ function initModels(sequelize) {
     foreignKey: 'id_pago_arriendo',
   });
   pago_detalle.belongsTo(responsable, {
-    as: 'id_responsable_responsable',
+    as: 'responsable',
     foreignKey: 'id_responsable',
   });
   pago_detalle.belongsTo(autorizado, {
-    as: 'id_autorizado_autorizado',
+    as: 'autorizado',
     foreignKey: 'id_autorizado',
   });
   pago_detalle.belongsTo(autorizado_administracion, {
-    as: 'id_autorizado_adm_autorizado_administracion',
+    as: 'autorizado_adm',
     foreignKey: 'id_autorizado_adm',
   });
   pago_detalle.belongsTo(punto_de_venta, {
-    as: 'id_punto_venta_punto_de_ventum',
+    as: 'punto_venta_punto_de_ventum',
     foreignKey: 'id_punto_venta',
   });
 
