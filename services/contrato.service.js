@@ -66,9 +66,6 @@ class ContratoService {
 
   async findOnePdv(id) {
     const rta = await con.models.contrato.findOne({
-      where: {
-        id_punto_venta: id,
-      },
       include: [
         {
           association: 'id_responsable_responsable',
@@ -84,6 +81,7 @@ class ContratoService {
         },
         {
           association: 'id_punto_venta_punto_de_ventum',
+          where: { codigo_sitio_venta: id },
         },
       ],
     });
@@ -116,9 +114,9 @@ class ContratoService {
     return contrato.id_contrato;
   }
 
-  async traerContratosConConceptos() {
+  async traerContratosConConceptos(sitioVenta) {
     const result = await con.models.contrato.findAll({
-      attributes: ['id_contrato'],
+      attributes: ['id_contrato', 'valor_canon'],
       include: [
         {
           model: con.models.autorizado,
@@ -128,7 +126,12 @@ class ContratoService {
             {
               model: con.models.cliente,
               as: 'id_cliente_cliente',
-              attributes: ['numero_documento', 'nombres', 'tipo_documento', 'razon_social'],
+              attributes: [
+                'numero_documento',
+                'nombres',
+                'tipo_documento',
+                'razon_social',
+              ],
             },
             {
               model: con.models.entidad_bancaria,
@@ -139,6 +142,7 @@ class ContratoService {
         {
           model: con.models.punto_de_venta,
           as: 'id_punto_venta_punto_de_ventum',
+          where: { codigo_sitio_venta: sitioVenta },
           attributes: [
             'codigo_sitio_venta',
             'nombre_comercial',
@@ -160,10 +164,93 @@ class ContratoService {
             {
               model: con.models.conceptos,
               as: 'id_concepto_concepto',
-              attributes: ['nombre_concepto', 'codigo_concepto'],
+              attributes: [
+                'nombre_concepto',
+                'codigo_concepto',
+                'tipo_concepto',
+              ],
             },
           ],
         },
+      ],
+    });
+    return result;
+  }
+
+  async traerConceptosPagado(sitioVenta, fecha_periodo) {
+    console.log(sitioVenta, 'SITIO DE VENTA NUMERO TAN');
+    const result = await con.models.contrato.findAll({
+      attributes: ['id_contrato', 'valor_canon'],
+
+      include: [
+        {
+          model: con.models.autorizado,
+          as: 'id_autorizado_autorizado',
+          attributes: ['metodo_pago', 'entidad_bancaria', 'numero_cuenta'],
+          include: [
+            {
+              model: con.models.cliente,
+              as: 'id_cliente_cliente',
+              attributes: [
+                'numero_documento',
+                'nombres',
+                'apellidos',
+                'tipo_documento',
+                'razon_social',
+              ],
+            },
+            {
+              model: con.models.entidad_bancaria,
+              as: 'entidad_bancaria_entidad_bancarium',
+            },
+          ],
+        },
+        {
+          model: con.models.punto_de_venta,
+          as: 'id_punto_venta_punto_de_ventum',
+          where: { codigo_sitio_venta: sitioVenta },
+          attributes: [
+            'codigo_sitio_venta',
+            'nombre_comercial',
+            'id_municipio',
+          ],
+          include: [
+            {
+              model: con.models.municipio,
+              as: 'id_municipio_municipio',
+              attributes: ['municipio'],
+            },
+          ],
+        },
+        {
+          model: con.models.pago_arriendo,
+          as: 'pago_arriendos',
+          where: { fecha_periodo: fecha_periodo },
+          attributes: ['valor', 'fecha_pago', 'fecha_periodo'],
+          include: [
+            {
+              model: con.models.pago_concepto,
+              as: 'pago_conceptos',
+              attributes: ['id_concepto', 'pago_concepto_valor'],
+              include: [
+                {
+                  model: con.models.conceptos,
+                  as: 'id_concepto_concepto',
+                },
+              ],
+            },
+          ],
+        },
+        // {
+        //   model: 'pago_arriendos',
+        //   where: { fecha_periodo: fecha_periodo },
+        //   attributes: ['valor', 'fecha_pago', 'fecha_periodo'],
+        //   include: {
+        //     association: 'id_pago_arriendo_pago_arriendo',
+        //     include: 'id_concepto_concepto',
+        //     attributes: ['id_concepto', 'pago_concepto_valor'],
+        //   },
+        // },
       ],
     });
     return result;

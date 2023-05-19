@@ -9,7 +9,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     id_pago_arriendo: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'pago_arriendo',
+        key: 'id_pago_arriendo'
+      }
     },
     id_concepto: {
       type: DataTypes.INTEGER,

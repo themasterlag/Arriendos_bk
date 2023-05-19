@@ -28,7 +28,31 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     codigo_verificacion: {
+      type: DataTypes.BIGINT,
+      allowNull: true
+    },
+    canon: {
       type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    administracion: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    defiicion: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    poliza: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    },
+    ipc: {
+      type: DataTypes.REAL,
+      allowNull: true
+    },
+    inc_adicional: {
+      type: DataTypes.REAL,
       allowNull: true
     }
   }, {
