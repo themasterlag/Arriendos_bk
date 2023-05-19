@@ -107,10 +107,6 @@ function initModels(sequelize) {
     as: 'contratos',
     foreignKey: 'id_autorizado_adm',
   });
-  pago_detalle.belongsTo(autorizado_administracion, {
-    as: 'id_autorizado_adm_autorizado_administracion',
-    foreignKey: 'id_autorizado_adm',
-  });
   autorizado_administracion.hasMany(pago_detalle, {
     as: 'pago_detalles',
     foreignKey: 'id_autorizado_adm',
@@ -384,10 +380,6 @@ function initModels(sequelize) {
   });
   responsable.hasMany(contrato, {
     as: 'contratos',
-    foreignKey: 'id_responsable',
-  });
-  pago_detalle.belongsTo(responsable, {
-    as: 'id_responsable_responsable',
     foreignKey: 'id_responsable',
   });
   responsable.hasMany(pago_detalle, {
