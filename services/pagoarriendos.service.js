@@ -26,38 +26,44 @@ class PagoArriendosService {
           include: [
             {
               model: con.models.responsable,
-              as: 'id_responsable_responsable',
+              association: "responsable",
               include: {
-                association: 'id_cliente_cliente',
+                model: con.models.cliente,
+                as: 'id_cliente_cliente',
               },
             },
             {
               model: con.models.autorizado,
-              as: 'id_autorizado_autorizado',
+              as: 'autorizado',
               include: {
-                association: 'id_cliente_cliente',
+                model: con.models.cliente,
+                as: 'id_cliente_cliente',
               },
             },
             {
               model: con.models.autorizado_administracion,
-              as: 'id_autorizado_adm_autorizado_administracion',
+              as: 'autorizado_adm',
               include: {
-                association: 'id_cliente_cliente',
+                model: con.models.cliente,
+                as: 'id_cliente_cliente',
               },
             },
             {
               model: con.models.punto_de_venta,
-              as: 'id_punto_venta_punto_de_ventum'
+              as: 'punto_venta_punto_de_ventum'
             }
           ]
         }
       ],
+
     });
     if (!pago) {
       throw new Error('no se encontro');
     }
     return pago;
   }
+
+  
 
   async findArriendos() {
     // let  consulta = 'SELECT arriendos.contrato.valor_canon AS Canon, arriendos.punto_de_venta.nombre_comercial, arriendos.cliente.numero_documento AS cc,arriendos.cliente.nombres AS nombre, CASE WHEN arriendos.responsable.iva = true THEN (arriendos.contrato.valor_canon)*(0.19) ELSE 0 END AS Iva, CASE WHEN arriendos.responsable.rete_iva = true THEN (arriendos.contrato.valor_canon)*(0.19)*(0.15) ELSE 0 END AS RETE_IVA, CASE WHEN arriendos.responsable.rete_fuente = true THEN ((arriendos.contrato.valor_canon)*(0.035)) ELSE 0 END AS RETE_FUENTE, (arriendos.contrato.valor_canon * arriendos.impuestos_reteica.impuesto) AS RETEICA, ((arriendos.contrato.valor_canon * arriendos.impuestos_reteica.impuesto) * arriendos.impuestos_bomberil.impuesto) AS BOMBERIL  FROM  arriendos.contrato,arriendos.punto_de_venta,arriendos.responsable,arriendos.cliente,arriendos.municipio, arriendos.impuestos_reteica, arriendos.impuestos_bomberil  WHERE arriendos.contrato.id_punto_venta = arriendos.punto_de_venta.id_punto_venta AND arriendos.contrato.id_responsable = arriendos.responsable.id_responsable AND arriendos.responsable.id_cliente = arriendos.cliente.id_cliente AND arriendos.punto_de_venta.id_municipio = arriendos.municipio.id_municipio AND arriendos.punto_de_venta.id_municipio = arriendos.impuestos_reteica.id_municipio AND arriendos.punto_de_venta.id_municipio = arriendos.impuestos_bomberil.id_municipio'

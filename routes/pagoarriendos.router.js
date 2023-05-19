@@ -69,6 +69,7 @@ router.get('/nomina', async (req, res, next) => {
     
     for (let i = 0; i < idPagos.length; i++) {
       let pago =  await service.findOne(idPagos[i]);
+      console.log(pago);
       pago = pago[0].toJSON();
 
       let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
