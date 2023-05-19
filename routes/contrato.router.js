@@ -46,9 +46,23 @@ router.get('/concepto-municipio', async (req, res, next) => {
     console.log('Error details:', error.message, error.stack);
   }
 });
-router.get('/pdv', async (req, res, next) => {
+router.get('/pdv-pagado/', async (req, res, next) => {
   try {
-    const contratosConceptos = await service.traerContratosConConceptos();
+    const { id, periodo } = req.body;
+    console.log(req.body);
+    console.log(id, periodo);
+    const contratosConceptos = await service.traerConceptosPagado(id, periodo);
+    res.status(201).json(contratosConceptos);
+  } catch (error) {
+    next(error);
+    console.log('Error details:', error.message, error.stack);
+  }
+});
+router.get('/pdv-nopagado/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const contratosConceptos = await service.traerContratosConConceptos(id);
     res.status(201).json(contratosConceptos);
   } catch (error) {
     next(error);
