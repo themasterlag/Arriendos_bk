@@ -1,54 +1,51 @@
-var DataTypes = require('sequelize').DataTypes;
-var _autorizado = require('./autorizado');
-var _autorizado_administracion = require('./autorizado_administracion');
-var _cliente = require('./cliente');
-var _concepto_municipio = require('./concepto_municipio');
-var _conceptos = require('./conceptos');
-var _contrato = require('./contrato');
-var _contrato_conceptos = require('./contrato_conceptos');
-var _departamento = require('./departamento');
-var _dependencia = require('./dependencia');
-var _dispersion = require('./dispersion');
-var _entidad_bancaria = require('./entidad_bancaria');
-var _factura_servicio = require('./factura_servicio');
-var _impuestos_bomberil = require('./impuestos_bomberil');
-var _impuestos_reteica = require('./impuestos_reteica');
-var _incremento = require('./incremento');
-var _liquidacion = require('./liquidacion');
-var _metodo_pago = require('./metodo_pago');
-var _microzona = require('./microzona');
-var _municipio = require('./municipio');
-var _pago = require('./pago');
-var _pago_administracion = require('./pago_administracion');
-var _pago_arriendo = require('./pago_arriendo');
-var _pago_concepto = require('./pago_concepto');
-var _pago_detalle = require('./pago_detalle');
-var _periodo = require('./periodo');
-var _permiso = require('./permiso');
-var _proceso = require('./proceso');
-var _propietario = require('./propietario');
-var _propietario_punto_venta = require('./propietario_punto_venta');
-var _punto_de_venta = require('./punto_de_venta');
-var _responsabilidad = require('./responsabilidad');
-var _responsable = require('./responsable');
-var _rol = require('./rol');
-var _saldo_credito = require('./saldo_credito');
-var _solicitud = require('./solicitud');
-var _tipo_concepto = require('./tipo_concepto');
-var _tipo_contrato = require('./tipo_contrato');
-var _tipo_cuenta = require('./tipo_cuenta');
-var _tipo_persona = require('./tipo_persona');
-var _tipo_servicio = require('./tipo_servicio');
-var _usuario = require('./usuario');
-var _usuario_permiso = require('./usuario_permiso');
-var _zona = require('./zona');
+var DataTypes = require("sequelize").DataTypes;
+var _autorizado = require("./autorizado");
+var _autorizado_administracion = require("./autorizado_administracion");
+var _cliente = require("./cliente");
+var _concepto_municipio = require("./concepto_municipio");
+var _conceptos = require("./conceptos");
+var _contrato = require("./contrato");
+var _contrato_conceptos = require("./contrato_conceptos");
+var _departamento = require("./departamento");
+var _dependencia = require("./dependencia");
+var _dispersion = require("./dispersion");
+var _entidad_bancaria = require("./entidad_bancaria");
+var _factura_servicio = require("./factura_servicio");
+var _impuestos_bomberil = require("./impuestos_bomberil");
+var _impuestos_reteica = require("./impuestos_reteica");
+var _incremento = require("./incremento");
+var _liquidacion = require("./liquidacion");
+var _metodo_pago = require("./metodo_pago");
+var _microzona = require("./microzona");
+var _municipio = require("./municipio");
+var _pago = require("./pago");
+var _pago_administracion = require("./pago_administracion");
+var _pago_arriendo = require("./pago_arriendo");
+var _pago_concepto = require("./pago_concepto");
+var _pago_detalle = require("./pago_detalle");
+var _periodo = require("./periodo");
+var _permiso = require("./permiso");
+var _proceso = require("./proceso");
+var _propietario = require("./propietario");
+var _propietario_punto_venta = require("./propietario_punto_venta");
+var _punto_de_venta = require("./punto_de_venta");
+var _responsabilidad = require("./responsabilidad");
+var _responsable = require("./responsable");
+var _rol = require("./rol");
+var _saldo_credito = require("./saldo_credito");
+var _solicitud = require("./solicitud");
+var _tipo_concepto = require("./tipo_concepto");
+var _tipo_contrato = require("./tipo_contrato");
+var _tipo_cuenta = require("./tipo_cuenta");
+var _tipo_persona = require("./tipo_persona");
+var _tipo_servicio = require("./tipo_servicio");
+var _usuario = require("./usuario");
+var _usuario_permiso = require("./usuario_permiso");
+var _zona = require("./zona");
 
 function initModels(sequelize) {
   var autorizado = _autorizado(sequelize, DataTypes);
-  var autorizado_administracion = _autorizado_administracion(
-    sequelize,
-    DataTypes
-  );
+  var autorizado_administracion = _autorizado_administracion(sequelize, DataTypes);
   var cliente = _cliente(sequelize, DataTypes);
   var concepto_municipio = _concepto_municipio(sequelize, DataTypes);
   var conceptos = _conceptos(sequelize, DataTypes);
@@ -91,358 +88,102 @@ function initModels(sequelize) {
   var usuario_permiso = _usuario_permiso(sequelize, DataTypes);
   var zona = _zona(sequelize, DataTypes);
 
-  contrato.belongsTo(autorizado, {
-    as: 'id_autorizado_autorizado',
-    foreignKey: 'id_autorizado',
-  });
-  autorizado.hasMany(contrato, {
-    as: 'contratos',
-    foreignKey: 'id_autorizado',
-  });
-  contrato.belongsTo(autorizado_administracion, {
-    as: 'id_autorizado_adm_autorizado_administracion',
-    foreignKey: 'id_autorizado_adm',
-  });
-  autorizado_administracion.hasMany(contrato, {
-    as: 'contratos',
-    foreignKey: 'id_autorizado_adm',
-  });
-  autorizado_administracion.hasMany(pago_detalle, {
-    as: 'pago_detalles',
-    foreignKey: 'id_autorizado_adm',
-  });
-  autorizado.belongsTo(cliente, {
-    as: 'id_cliente_cliente',
-    foreignKey: 'id_cliente',
-  });
-  cliente.hasMany(autorizado, { as: 'autorizados', foreignKey: 'id_cliente' });
-  autorizado_administracion.belongsTo(cliente, {
-    as: 'id_cliente_cliente',
-    foreignKey: 'id_cliente',
-  });
-  cliente.hasMany(autorizado_administracion, {
-    as: 'autorizado_administracions',
-    foreignKey: 'id_cliente',
-  });
-  propietario_punto_venta.belongsTo(cliente, {
-    as: 'id_propietario_cliente',
-    foreignKey: 'id_propietario',
-  });
-  cliente.hasMany(propietario_punto_venta, {
-    as: 'propietario_punto_venta',
-    foreignKey: 'id_propietario',
-  });
-  responsable.belongsTo(cliente, {
-    as: 'id_cliente_cliente',
-    foreignKey: 'id_cliente',
-  });
-  cliente.hasMany(responsable, {
-    as: 'responsables',
-    foreignKey: 'id_cliente',
-  });
-  concepto_municipio.belongsTo(conceptos, {
-    as: 'id_concepto_concepto',
-    foreignKey: 'id_concepto',
-  });
-  conceptos.hasMany(concepto_municipio, {
-    as: 'concepto_municipios',
-    foreignKey: 'id_concepto',
-  });
-  contrato_conceptos.belongsTo(conceptos, {
-    as: 'id_concepto_concepto',
-    foreignKey: 'id_concepto',
-  });
-  conceptos.hasMany(contrato_conceptos, {
-    as: 'contrato_conceptos',
-    foreignKey: 'id_concepto',
-  });
-  contrato_conceptos.belongsTo(contrato, {
-    as: 'id_contrato_contrato',
-    foreignKey: 'id_contrato',
-  });
-  contrato.hasMany(contrato_conceptos, {
-    as: 'contrato_conceptos',
-    foreignKey: 'id_contrato',
-  });
-  pago_administracion.belongsTo(contrato, {
-    as: 'id_contrato_contrato',
-    foreignKey: 'id_contrato',
-  });
-  contrato.hasMany(pago_administracion, {
-    as: 'pago_administracions',
-    foreignKey: 'id_contrato',
-  });
-  pago_arriendo.belongsTo(contrato, {
-    as: 'id_contrato_contrato',
-    foreignKey: 'id_contrato',
-  });
-  contrato.hasMany(pago_arriendo, {
-    as: 'pago_arriendos',
-    foreignKey: 'id_contrato',
-  });
-  municipio.belongsTo(departamento, {
-    as: 'id_departamento_departamento',
-    foreignKey: 'id_departamento',
-  });
-  departamento.hasMany(municipio, {
-    as: 'municipios',
-    foreignKey: 'id_departamento',
-  });
-  usuario.belongsTo(dependencia, {
-    as: 'dependencia_dependencium',
-    foreignKey: 'dependencia',
-  });
-  dependencia.hasMany(usuario, { as: 'usuarios', foreignKey: 'dependencia' });
-  autorizado.belongsTo(entidad_bancaria, {
-    as: 'entidad_bancaria_entidad_bancarium',
-    foreignKey: 'entidad_bancaria',
-  });
-  entidad_bancaria.hasMany(autorizado, {
-    as: 'autorizados',
-    foreignKey: 'entidad_bancaria',
-  });
-  autorizado_administracion.belongsTo(entidad_bancaria, {
-    as: 'entidad_bancaria_entidad_bancarium',
-    foreignKey: 'entidad_bancaria',
-  });
-  entidad_bancaria.hasMany(autorizado_administracion, {
-    as: 'autorizado_administracions',
-    foreignKey: 'entidad_bancaria',
-  });
-  contrato.belongsTo(incremento, {
-    as: 'incremento_anual_incremento',
-    foreignKey: 'incremento_anual',
-  });
-  incremento.hasMany(contrato, {
-    as: 'contratos',
-    foreignKey: 'incremento_anual',
-  });
-  autorizado.belongsTo(metodo_pago, {
-    as: 'metodo_pago_metodo_pago',
-    foreignKey: 'metodo_pago',
-  });
-  metodo_pago.hasMany(autorizado, {
-    as: 'autorizados',
-    foreignKey: 'metodo_pago',
-  });
-  autorizado_administracion.belongsTo(metodo_pago, {
-    as: 'metodo_pago_metodo_pago',
-    foreignKey: 'metodo_pago',
-  });
-  metodo_pago.hasMany(autorizado_administracion, {
-    as: 'autorizado_administracions',
-    foreignKey: 'metodo_pago',
-  });
-  punto_de_venta.belongsTo(microzona, {
-    as: 'microzona_microzona',
-    foreignKey: 'microzona',
-  });
-  microzona.hasMany(punto_de_venta, {
-    as: 'punto_de_venta',
-    foreignKey: 'microzona',
-  });
-  cliente.belongsTo(municipio, {
-    as: 'id_municipio_municipio',
-    foreignKey: 'id_municipio',
-  });
-  municipio.hasMany(cliente, { as: 'clientes', foreignKey: 'id_municipio' });
-  concepto_municipio.belongsTo(municipio, {
-    as: 'id_municipio_municipio',
-    foreignKey: 'id_municipio',
-  });
-  municipio.hasMany(concepto_municipio, {
-    as: 'concepto_municipios',
-    foreignKey: 'id_municipio',
-  });
-  impuestos_bomberil.belongsTo(municipio, {
-    as: 'id_municipio_municipio',
-    foreignKey: 'id_municipio',
-  });
-  municipio.hasMany(impuestos_bomberil, {
-    as: 'impuestos_bomberils',
-    foreignKey: 'id_municipio',
-  });
-  impuestos_reteica.belongsTo(municipio, {
-    as: 'id_municipio_municipio',
-    foreignKey: 'id_municipio',
-  });
-  municipio.hasMany(impuestos_reteica, {
-    as: 'impuestos_reteicas',
-    foreignKey: 'id_municipio',
-  });
-  punto_de_venta.belongsTo(municipio, {
-    as: 'id_municipio_municipio',
-    foreignKey: 'id_municipio',
-  });
-  municipio.hasMany(punto_de_venta, {
-    as: 'punto_de_venta',
-    foreignKey: 'id_municipio',
-  });
-
-  pago_concepto.belongsTo(pago_arriendo, {
-    as: 'id_concepto_concepto',
-    foreignKey: 'id_pago_arriendo',
-  });
-  pago_arriendo.hasMany(pago_concepto, {
-    as: 'pago_conceptos',
-    foreignKey: 'id_pago_arriendo',
-  });
-  pago_detalle.belongsTo(pago_arriendo, {
-    as: 'id_pago_arriendo_pago_arriendo',
-    foreignKey: 'id_pago_arriendo',
-  });
-  pago_detalle.belongsTo(responsable, {
-    as: 'responsable',
-    foreignKey: 'id_responsable',
-  });
-  pago_detalle.belongsTo(autorizado, {
-    as: 'autorizado',
-    foreignKey: 'id_autorizado',
-  });
-  pago_detalle.belongsTo(autorizado_administracion, {
-    as: 'autorizado_adm',
-    foreignKey: 'id_autorizado_adm',
-  });
-  pago_detalle.belongsTo(punto_de_venta, {
-    as: 'punto_venta_punto_de_ventum',
-    foreignKey: 'id_punto_venta',
-  });
-
-  pago_arriendo.hasMany(pago_detalle, {
-    as: 'pago_detalles',
-    foreignKey: 'id_pago_arriendo',
-  });
-
-  pago_administracion.belongsTo(periodo, {
-    as: 'periodo_periodo',
-    foreignKey: 'periodo',
-  });
-  periodo.hasMany(pago_administracion, {
-    as: 'pago_administracions',
-    foreignKey: 'periodo',
-  });
-  usuario_permiso.belongsTo(permiso, {
-    as: 'id_permiso_permiso',
-    foreignKey: 'id_permiso',
-  });
-  permiso.hasMany(usuario_permiso, {
-    as: 'usuario_permisos',
-    foreignKey: 'id_permiso',
-  });
-  solicitud.belongsTo(proceso, {
-    as: 'id_proceso_proceso',
-    foreignKey: 'id_proceso',
-  });
-  proceso.hasMany(solicitud, { as: 'solicituds', foreignKey: 'id_proceso' });
-  contrato.belongsTo(punto_de_venta, {
-    as: 'id_punto_venta_punto_de_ventum',
-    foreignKey: 'id_punto_venta',
-  });
-  punto_de_venta.hasMany(contrato, {
-    as: 'contratos',
-    foreignKey: 'id_punto_venta',
-  });
-  propietario_punto_venta.belongsTo(punto_de_venta, {
-    as: 'id_punto_venta_punto_de_ventum',
-    foreignKey: 'id_punto_venta',
-  });
-  punto_de_venta.hasMany(propietario_punto_venta, {
-    as: 'propietario_punto_venta',
-    foreignKey: 'id_punto_venta',
-  });
-  responsable.belongsTo(responsabilidad, {
-    as: 'iva_responsabilidad',
-    foreignKey: 'iva',
-  });
-  responsabilidad.hasMany(responsable, {
-    as: 'responsables',
-    foreignKey: 'iva',
-  });
-  responsable.belongsTo(responsabilidad, {
-    as: 'rete_iva_responsabilidad',
-    foreignKey: 'rete_iva',
-  });
-  responsabilidad.hasMany(responsable, {
-    as: 'rete_iva_responsables',
-    foreignKey: 'rete_iva',
-  });
-  responsable.belongsTo(responsabilidad, {
-    as: 'rete_fuente_responsabilidad',
-    foreignKey: 'rete_fuente',
-  });
-  responsabilidad.hasMany(responsable, {
-    as: 'rete_fuente_responsables',
-    foreignKey: 'rete_fuente',
-  });
-  contrato.belongsTo(responsable, {
-    as: 'id_responsable_responsable',
-    foreignKey: 'id_responsable',
-  });
-  responsable.hasMany(contrato, {
-    as: 'contratos',
-    foreignKey: 'id_responsable',
-  });
-  responsable.hasMany(pago_detalle, {
-    as: 'pago_detalles',
-    foreignKey: 'id_responsable',
-  });
-  usuario.belongsTo(rol, { as: 'rolid_rol_rol', foreignKey: 'rolid_rol' });
-  rol.hasMany(usuario, { as: 'usuarios', foreignKey: 'rolid_rol' });
-  conceptos.belongsTo(tipo_concepto, {
-    as: 'tipo_concepto_tipo_concepto',
-    foreignKey: 'tipo_concepto',
-  });
-  tipo_concepto.hasMany(conceptos, {
-    as: 'conceptos',
-    foreignKey: 'tipo_concepto',
-  });
-  contrato.belongsTo(tipo_contrato, {
-    as: 'tipo_contrato_tipo_contrato',
-    foreignKey: 'tipo_contrato',
-  });
-  tipo_contrato.hasMany(contrato, {
-    as: 'contratos',
-    foreignKey: 'tipo_contrato',
-  });
-  punto_de_venta.belongsTo(tipo_contrato, {
-    as: 'tipo_punto_tipo_contrato',
-    foreignKey: 'tipo_punto',
-  });
-  tipo_contrato.hasMany(punto_de_venta, {
-    as: 'punto_de_venta',
-    foreignKey: 'tipo_punto',
-  });
-  autorizado.belongsTo(tipo_cuenta, {
-    as: 'id_tipo_cuenta_tipo_cuentum',
-    foreignKey: 'id_tipo_cuenta',
-  });
-  tipo_cuenta.hasMany(autorizado, {
-    as: 'autorizados',
-    foreignKey: 'id_tipo_cuenta',
-  });
-  autorizado_administracion.belongsTo(tipo_cuenta, {
-    as: 'id_tipo_cuenta_tipo_cuentum',
-    foreignKey: 'id_tipo_cuenta',
-  });
-  tipo_cuenta.hasMany(autorizado_administracion, {
-    as: 'autorizado_administracions',
-    foreignKey: 'id_tipo_cuenta',
-  });
-  contrato.belongsTo(usuario, {
-    as: 'id_usuario_usuario',
-    foreignKey: 'id_usuario',
-  });
-  usuario.hasMany(contrato, { as: 'contratos', foreignKey: 'id_usuario' });
-  usuario_permiso.belongsTo(usuario, {
-    as: 'id_usuario_usuario',
-    foreignKey: 'id_usuario',
-  });
-  usuario.hasMany(usuario_permiso, {
-    as: 'usuario_permisos',
-    foreignKey: 'id_usuario',
-  });
-  microzona.belongsTo(zona, { as: 'id_zona_zona', foreignKey: 'id_zona' });
-  zona.hasMany(microzona, { as: 'microzonas', foreignKey: 'id_zona' });
+  contrato.belongsTo(autorizado, { as: "id_autorizado_autorizado", foreignKey: "id_autorizado"});
+  autorizado.hasMany(contrato, { as: "contratos", foreignKey: "id_autorizado"});
+  pago_detalle.belongsTo(autorizado, { as: "id_autorizado_autorizado", foreignKey: "id_autorizado"});
+  autorizado.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_autorizado"});
+  contrato.belongsTo(autorizado_administracion, { as: "id_autorizado_adm_autorizado_administracion", foreignKey: "id_autorizado_adm"});
+  autorizado_administracion.hasMany(contrato, { as: "contratos", foreignKey: "id_autorizado_adm"});
+  pago_detalle.belongsTo(autorizado_administracion, { as: "id_autorizado_adm_autorizado_administracion", foreignKey: "id_autorizado_adm"});
+  autorizado_administracion.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_autorizado_adm"});
+  autorizado.belongsTo(cliente, { as: "id_cliente_cliente", foreignKey: "id_cliente"});
+  cliente.hasMany(autorizado, { as: "autorizados", foreignKey: "id_cliente"});
+  autorizado_administracion.belongsTo(cliente, { as: "id_cliente_cliente", foreignKey: "id_cliente"});
+  cliente.hasMany(autorizado_administracion, { as: "autorizado_administracions", foreignKey: "id_cliente"});
+  propietario_punto_venta.belongsTo(cliente, { as: "id_propietario_cliente", foreignKey: "id_propietario"});
+  cliente.hasMany(propietario_punto_venta, { as: "propietario_punto_venta", foreignKey: "id_propietario"});
+  responsable.belongsTo(cliente, { as: "id_cliente_cliente", foreignKey: "id_cliente"});
+  cliente.hasMany(responsable, { as: "responsables", foreignKey: "id_cliente"});
+  concepto_municipio.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
+  conceptos.hasMany(concepto_municipio, { as: "concepto_municipios", foreignKey: "id_concepto"});
+  contrato_conceptos.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
+  conceptos.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_concepto"});
+  pago_concepto.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
+  conceptos.hasMany(pago_concepto, { as: "pago_conceptos", foreignKey: "id_concepto"});
+  contrato_conceptos.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
+  contrato.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_contrato"});
+  pago_administracion.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
+  contrato.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "id_contrato"});
+  pago_arriendo.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
+  contrato.hasMany(pago_arriendo, { as: "pago_arriendos", foreignKey: "id_contrato"});
+  municipio.belongsTo(departamento, { as: "id_departamento_departamento", foreignKey: "id_departamento"});
+  departamento.hasMany(municipio, { as: "municipios", foreignKey: "id_departamento"});
+  usuario.belongsTo(dependencia, { as: "dependencia_dependencium", foreignKey: "dependencia"});
+  dependencia.hasMany(usuario, { as: "usuarios", foreignKey: "dependencia"});
+  autorizado.belongsTo(entidad_bancaria, { as: "entidad_bancaria_entidad_bancarium", foreignKey: "entidad_bancaria"});
+  entidad_bancaria.hasMany(autorizado, { as: "autorizados", foreignKey: "entidad_bancaria"});
+  autorizado_administracion.belongsTo(entidad_bancaria, { as: "entidad_bancaria_entidad_bancarium", foreignKey: "entidad_bancaria"});
+  entidad_bancaria.hasMany(autorizado_administracion, { as: "autorizado_administracions", foreignKey: "entidad_bancaria"});
+  contrato.belongsTo(incremento, { as: "incremento_anual_incremento", foreignKey: "incremento_anual"});
+  incremento.hasMany(contrato, { as: "contratos", foreignKey: "incremento_anual"});
+  autorizado.belongsTo(metodo_pago, { as: "metodo_pago_metodo_pago", foreignKey: "metodo_pago"});
+  metodo_pago.hasMany(autorizado, { as: "autorizados", foreignKey: "metodo_pago"});
+  autorizado_administracion.belongsTo(metodo_pago, { as: "metodo_pago_metodo_pago", foreignKey: "metodo_pago"});
+  metodo_pago.hasMany(autorizado_administracion, { as: "autorizado_administracions", foreignKey: "metodo_pago"});
+  punto_de_venta.belongsTo(microzona, { as: "microzona_microzona", foreignKey: "microzona"});
+  microzona.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "microzona"});
+  cliente.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
+  municipio.hasMany(cliente, { as: "clientes", foreignKey: "id_municipio"});
+  concepto_municipio.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
+  municipio.hasMany(concepto_municipio, { as: "concepto_municipios", foreignKey: "id_municipio"});
+  impuestos_bomberil.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
+  municipio.hasMany(impuestos_bomberil, { as: "impuestos_bomberils", foreignKey: "id_municipio"});
+  impuestos_reteica.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
+  municipio.hasMany(impuestos_reteica, { as: "impuestos_reteicas", foreignKey: "id_municipio"});
+  punto_de_venta.belongsTo(municipio, { as: "id_municipio_municipio", foreignKey: "id_municipio"});
+  municipio.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "id_municipio"});
+  pago_concepto.belongsTo(pago_arriendo, { as: "id_pago_arriendo_pago_arriendo", foreignKey: "id_pago_arriendo"});
+  pago_arriendo.hasMany(pago_concepto, { as: "pago_conceptos", foreignKey: "id_pago_arriendo"});
+  pago_detalle.belongsTo(pago_arriendo, { as: "id_pago_arriendo_pago_arriendo", foreignKey: "id_pago_arriendo"});
+  pago_arriendo.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_pago_arriendo"});
+  pago_administracion.belongsTo(periodo, { as: "periodo_periodo", foreignKey: "periodo"});
+  periodo.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "periodo"});
+  usuario_permiso.belongsTo(permiso, { as: "id_permiso_permiso", foreignKey: "id_permiso"});
+  permiso.hasMany(usuario_permiso, { as: "usuario_permisos", foreignKey: "id_permiso"});
+  solicitud.belongsTo(proceso, { as: "id_proceso_proceso", foreignKey: "id_proceso"});
+  proceso.hasMany(solicitud, { as: "solicituds", foreignKey: "id_proceso"});
+  contrato.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
+  punto_de_venta.hasMany(contrato, { as: "contratos", foreignKey: "id_punto_venta"});
+  propietario_punto_venta.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
+  punto_de_venta.hasMany(propietario_punto_venta, { as: "propietario_punto_venta", foreignKey: "id_punto_venta"});
+  responsable.belongsTo(responsabilidad, { as: "iva_responsabilidad", foreignKey: "iva"});
+  responsabilidad.hasMany(responsable, { as: "responsables", foreignKey: "iva"});
+  responsable.belongsTo(responsabilidad, { as: "rete_iva_responsabilidad", foreignKey: "rete_iva"});
+  responsabilidad.hasMany(responsable, { as: "rete_iva_responsables", foreignKey: "rete_iva"});
+  responsable.belongsTo(responsabilidad, { as: "rete_fuente_responsabilidad", foreignKey: "rete_fuente"});
+  responsabilidad.hasMany(responsable, { as: "rete_fuente_responsables", foreignKey: "rete_fuente"});
+  contrato.belongsTo(responsable, { as: "id_responsable_responsable", foreignKey: "id_responsable"});
+  responsable.hasMany(contrato, { as: "contratos", foreignKey: "id_responsable"});
+  pago_detalle.belongsTo(responsable, { as: "id_responsable_responsable", foreignKey: "id_responsable"});
+  responsable.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_responsable"});
+  usuario.belongsTo(rol, { as: "rolid_rol_rol", foreignKey: "rolid_rol"});
+  rol.hasMany(usuario, { as: "usuarios", foreignKey: "rolid_rol"});
+  conceptos.belongsTo(tipo_concepto, { as: "tipo_concepto_tipo_concepto", foreignKey: "tipo_concepto"});
+  tipo_concepto.hasMany(conceptos, { as: "conceptos", foreignKey: "tipo_concepto"});
+  contrato.belongsTo(tipo_contrato, { as: "tipo_contrato_tipo_contrato", foreignKey: "tipo_contrato"});
+  tipo_contrato.hasMany(contrato, { as: "contratos", foreignKey: "tipo_contrato"});
+  punto_de_venta.belongsTo(tipo_contrato, { as: "tipo_punto_tipo_contrato", foreignKey: "tipo_punto"});
+  tipo_contrato.hasMany(punto_de_venta, { as: "punto_de_venta", foreignKey: "tipo_punto"});
+  autorizado.belongsTo(tipo_cuenta, { as: "id_tipo_cuenta_tipo_cuentum", foreignKey: "id_tipo_cuenta"});
+  tipo_cuenta.hasMany(autorizado, { as: "autorizados", foreignKey: "id_tipo_cuenta"});
+  autorizado_administracion.belongsTo(tipo_cuenta, { as: "id_tipo_cuenta_tipo_cuentum", foreignKey: "id_tipo_cuenta"});
+  tipo_cuenta.hasMany(autorizado_administracion, { as: "autorizado_administracions", foreignKey: "id_tipo_cuenta"});
+  contrato.belongsTo(usuario, { as: "id_usuario_usuario", foreignKey: "id_usuario"});
+  usuario.hasMany(contrato, { as: "contratos", foreignKey: "id_usuario"});
+  usuario_permiso.belongsTo(usuario, { as: "id_usuario_usuario", foreignKey: "id_usuario"});
+  usuario.hasMany(usuario_permiso, { as: "usuario_permisos", foreignKey: "id_usuario"});
+  microzona.belongsTo(zona, { as: "id_zona_zona", foreignKey: "id_zona"});
+  zona.hasMany(microzona, { as: "microzonas", foreignKey: "id_zona"});
 
   return {
     autorizado,

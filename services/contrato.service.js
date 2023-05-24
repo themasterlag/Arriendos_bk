@@ -178,7 +178,6 @@ class ContratoService {
   }
 
   async traerConceptosPagado(sitioVenta, fecha_periodo) {
-    console.log(sitioVenta, 'SITIO DE VENTA NUMERO TAN');
     const result = await con.models.contrato.findAll({
       attributes: ['id_contrato', 'valor_canon'],
 

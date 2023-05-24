@@ -48,9 +48,9 @@ router.get('/concepto-municipio', async (req, res, next) => {
 });
 router.get('/pdv-pagado/', async (req, res, next) => {
   try {
-    const { id, periodo } = req.body;
-    console.log(req.body);
-    console.log(id, periodo);
+    const { id, periodo } = req.query;
+    console.log(req.query);
+
     const contratosConceptos = await service.traerConceptosPagado(id, periodo);
     res.status(201).json(contratosConceptos);
   } catch (error) {
