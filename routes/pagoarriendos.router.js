@@ -113,6 +113,8 @@ router.post('/todos', async (req, res, next) => {
         return await service.registrarPagos(pago);
       })
     );
+    console.clear();
+    console.log(pagosCreado);
     const idPagos = pagosCreado.map((p)=> p.id_pago_arriendo);
     response={
       estado : '1',
