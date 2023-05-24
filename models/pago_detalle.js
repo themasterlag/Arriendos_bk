@@ -18,7 +18,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     id_punto_venta: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'punto_de_venta',
+        key: 'id_punto_venta'
+      }
     },
     id_tipo_contrato: {
       type: DataTypes.INTEGER,

@@ -154,6 +154,8 @@ function initModels(sequelize) {
   proceso.hasMany(solicitud, { as: "solicituds", foreignKey: "id_proceso"});
   contrato.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(contrato, { as: "contratos", foreignKey: "id_punto_venta"});
+  pago_detalle.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
+  punto_de_venta.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_punto_venta"});
   propietario_punto_venta.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(propietario_punto_venta, { as: "propietario_punto_venta", foreignKey: "id_punto_venta"});
   responsable.belongsTo(responsabilidad, { as: "iva_responsabilidad", foreignKey: "iva"});
