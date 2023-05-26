@@ -12,6 +12,8 @@ const ContratoConcepto = require('./../services/contratoConcepto.service');
 const contratoConceptoService = new ContratoConcepto();
 const PagoConcepto = require('./../services/pagoconcepto.service');
 const PagoConceptoService = new PagoConcepto();
+const SaldoCredito = require('./../services/saldoCredito.service');
+const SaldoCreditoService = new SaldoCredito();
 // Devuelve todo el listado de pagos de arriendos
 router.get('/', async (req, res, next) => {
   try {
@@ -107,14 +109,22 @@ router.post('/todos', async (req, res, next) => {
   const { body: pago } = req;
   try {
     const pagosArray = Array.isArray(pago) ? pago : [pago];
+    pagosArray.forEach(async (pago) => {
+      let conceptos = await contratoConceptoService.findByContrato(pago.id_contrato);
+      if (conceptos){
+        conceptos.forEach(async concepto => {
+          let saldo = await SaldoCreditoService.descontarSaldoByIdConcepto(concepto.id_contrato_concepto, concepto.valor);
+        });
+      }
+    });
+
     let response;
     const pagosCreado = await Promise.all(
       pagosArray.map(async (pago) => {
         return await service.registrarPagos(pago);
       })
     );
-    console.clear();
-    console.log(pagosCreado);
+
     const idPagos = pagosCreado.map((p)=> p.id_pago_arriendo);
     response={
       estado : '1',

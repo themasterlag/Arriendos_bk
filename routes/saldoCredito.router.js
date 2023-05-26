@@ -40,7 +40,7 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   try {
     const body = req.body;
-    const newSaldoCredito = await service.update(body.id_saldo_cretido, body);
+    const newSaldoCredito = await service.update(body.id_saldo_credito, body);
 
     res.status(201).json(newSaldoCredito);
   } catch (error) {

@@ -17,7 +17,16 @@ class SaldoCreditoService {
   async findOne(id) {
     const rta = await con.models.saldo_credito.findByPk(id);
     if (!rta) {
-      throw console.error('no se encontro');
+      console.error('no se encontro');
+    }
+    return rta;
+  }
+  async findOneByIdContratoConcepto(id) {
+    const [rta] = await con.models.saldo_credito.findAll(
+      { where: { contrato_concepto_id: id } }
+    );
+    if (!rta) {
+      console.error('no se encontro');
     }
     return rta;
   }
@@ -28,7 +37,7 @@ class SaldoCreditoService {
     const concepto = await con.models.contrato_conceptos.create(changes);
     changes["contrato_concepto_id"] = concepto.id_contrato_concepto;
 
-    const saldoCredito = await con.models.saldo_credito.findOne({ where: { id_saldo_cretido: changes.id_saldo_cretido } });
+    const saldoCredito = await con.models.saldo_credito.findOne({ where: { id_saldo_credito: changes.id_saldo_credito } });
     const rta = await saldoCredito.update(changes);
 
     return rta;
@@ -49,6 +58,23 @@ class SaldoCreditoService {
         inner join arriendos.conceptos on conceptos.id_concepto = con.id_concepto`
     );
     return data;
+  }
+
+  async descontarSaldoByIdConcepto(id_contrato_concepto, valor) {
+    const saldoCredito = await this.findOneByIdContratoConcepto(id_contrato_concepto);
+    let newSaldoCredito;
+
+    if (saldoCredito) {
+      let saldo = (saldoCredito.credito_saldo - valor);
+      newSaldoCredito = await con.query(
+        `UPDATE arriendos.saldo_credito
+            SET credito_saldo = `+ saldo +`
+          WHERE id_saldo_credito = `+ saldoCredito.id_saldo_credito +` 
+            AND (NOW() BETWEEN fecha_inicio and fecha_fin)`
+      );
+    }
+
+    return newSaldoCredito;
   }
 }
 module.exports = SaldoCreditoService;
