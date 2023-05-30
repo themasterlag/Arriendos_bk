@@ -18,15 +18,16 @@ class PagoArriendosService {
   async findOne(id) {
     const pago = await con.models.pago_arriendo.findAll({
       where: {
-        id_pago_arriendo: id
-      },include: [
+        id_pago_arriendo: id,
+      },
+      include: [
         {
           model: con.models.pago_detalle,
           as: 'pago_detalles',
           include: [
             {
               model: con.models.responsable,
-              association: "responsable",
+              association: 'responsable',
               include: {
                 model: con.models.cliente,
                 as: 'id_cliente_cliente',
@@ -50,20 +51,17 @@ class PagoArriendosService {
             },
             {
               model: con.models.punto_de_venta,
-              as: 'punto_venta_punto_de_ventum'
-            }
-          ]
-        }
+              as: 'punto_venta_punto_de_ventum',
+            },
+          ],
+        },
       ],
-
     });
     if (!pago) {
       throw new Error('no se encontro');
     }
     return pago;
   }
-
-  
 
   async findArriendos() {
     // let  consulta = 'SELECT arriendos.contrato.valor_canon AS Canon, arriendos.punto_de_venta.nombre_comercial, arriendos.cliente.numero_documento AS cc,arriendos.cliente.nombres AS nombre, CASE WHEN arriendos.responsable.iva = true THEN (arriendos.contrato.valor_canon)*(0.19) ELSE 0 END AS Iva, CASE WHEN arriendos.responsable.rete_iva = true THEN (arriendos.contrato.valor_canon)*(0.19)*(0.15) ELSE 0 END AS RETE_IVA, CASE WHEN arriendos.responsable.rete_fuente = true THEN ((arriendos.contrato.valor_canon)*(0.035)) ELSE 0 END AS RETE_FUENTE, (arriendos.contrato.valor_canon * arriendos.impuestos_reteica.impuesto) AS RETEICA, ((arriendos.contrato.valor_canon * arriendos.impuestos_reteica.impuesto) * arriendos.impuestos_bomberil.impuesto) AS BOMBERIL  FROM  arriendos.contrato,arriendos.punto_de_venta,arriendos.responsable,arriendos.cliente,arriendos.municipio, arriendos.impuestos_reteica, arriendos.impuestos_bomberil  WHERE arriendos.contrato.id_punto_venta = arriendos.punto_de_venta.id_punto_venta AND arriendos.contrato.id_responsable = arriendos.responsable.id_responsable AND arriendos.responsable.id_cliente = arriendos.cliente.id_cliente AND arriendos.punto_de_venta.id_municipio = arriendos.municipio.id_municipio AND arriendos.punto_de_venta.id_municipio = arriendos.impuestos_reteica.id_municipio AND arriendos.punto_de_venta.id_municipio = arriendos.impuestos_bomberil.id_municipio'
@@ -268,7 +266,7 @@ class PagoArriendosService {
     return newLiquidacion.id_liquidacion;
   }
   async findNoPagados(fechaInicio, fechaFin, filter) {
-    const [results] = await con.query(
+    const [contratos] = await con.query(
       `SELECT * from arriendos.calcular_valor_total_filtrado(?,?,?,?,?)`,
       {
         replacements: [
@@ -280,8 +278,26 @@ class PagoArriendosService {
         ],
       }
     );
-    return results;
+
+    // Iterar sobre los contratos para obtener los conceptos
+    for (const contrato of contratos) {
+      const conceptos = await con.models.contrato_conceptos.findAll({
+        where: {
+          id_contrato: contrato.id_contrato,
+        },
+        include: {
+          model: con.models.conceptos,
+          as: 'id_concepto_concepto',
+        },
+      });
+
+      // Añadir los conceptos al objeto contrato
+      contrato.conceptos = conceptos;
+    }
+
+    return contratos;
   }
+
   async registrarPagos(data) {
     const newPago = await con.models.pago_arriendo.create(data);
     return newPago.id_pago_arriendo;
