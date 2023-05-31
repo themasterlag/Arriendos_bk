@@ -180,7 +180,6 @@ class ContratoService {
   async traerConceptosPagado(sitioVenta, fecha_periodo) {
     const result = await con.models.contrato.findAll({
       attributes: ['id_contrato', 'valor_canon'],
-
       include: [
         {
           model: con.models.autorizado,
@@ -253,6 +252,43 @@ class ContratoService {
       ],
     });
     return result;
+  }
+  async getCodigoSitioVenta(filter) {
+    let whereCondition = {};
+
+    switch (filter) {
+      case 'Bancolombia':
+        whereCondition = { '$entidad_bancaria.nombre$': 'Bancolombia' };
+        break;
+      case 'Otros Bancos':
+        whereCondition = {
+          '$entidad_bancaria.nombre$': { [Op.ne]: 'Bancolombia' },
+        };
+        break;
+      case 'Efectivo':
+        whereCondition = { '$tipo_pago.nombre$': 'Efectivo' };
+        break;
+      case 'Todos los Bancos':
+        // No necesita filtrar por entidad bancaria
+        break;
+      default:
+        throw new Error('Filtro no válido');
+    }
+
+    const result = await con.models.autorizado.findAll({
+      where: whereCondition,
+      include: [
+        {
+          model: con.models.entidad_bancaria,
+          as: 'entidad_bancaria',
+          attributes: [],
+        },
+        { model: con.models.tipo_pago, as: 'tipo_pago', attributes: [] },
+      ],
+      attributes: ['codigo_sitio_venta'],
+    });
+
+    return result.map((r) => r.codigo_sitio_venta);
   }
 }
 module.exports = ContratoService;

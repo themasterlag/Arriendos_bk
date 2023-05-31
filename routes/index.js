@@ -61,7 +61,7 @@ function routerApi(app) {
   router.use('/incrementos', incrementoRouter);
   router.use('/archivos', subirArchivoRouter);
   router.use('/saldo-credito', saldoCreditoRouter);
-  router.use('/pago-conceptos');
+  router.use('/pago-conceptos', pagoConceptoRouter);
   router.use('/aut', autRouter);
 }
 module.exports = routerApi;
