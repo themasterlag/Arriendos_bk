@@ -35,7 +35,7 @@ class PagoConceptoService {
       throw new Error('Pago Concepto no encontrado');
     }
 
-    pagoConcepto.pago_concepto_valor = pagoConceptoData.newValor;
+    pagoConcepto.pago_concepto_valor = pagoConceptoData.valor;
     await pagoConcepto.save();
 
     return pagoConcepto;

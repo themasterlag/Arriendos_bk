@@ -28,6 +28,7 @@ const conceptosRouter = require('./conceptos.router');
 const contratoConceptoRouter = require('./contratoConceptos.router');
 const saldoCreditoRouter = require('./saldoCredito.router');
 const incrementoRouter = require('./incremento.router');
+const pagoConceptoRouter = require('./pagoconcepto.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -60,7 +61,7 @@ function routerApi(app) {
   router.use('/incrementos', incrementoRouter);
   router.use('/archivos', subirArchivoRouter);
   router.use('/saldo-credito', saldoCreditoRouter);
-
+  router.use('/pago-conceptos');
   router.use('/aut', autRouter);
 }
 module.exports = routerApi;
