@@ -300,7 +300,8 @@ class PagoArriendosService {
 
   async registrarPagos(data) {
     const newPago = await con.models.pago_arriendo.create(data);
-    return newPago.id_pago_arriendo;
+    return {id_pago_arriendo:newPago.id_pago_arriendo,
+            id_contrato: newPago.id_contrato};
   }
 }
 

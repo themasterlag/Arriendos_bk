@@ -128,7 +128,7 @@ router.post('/todos', async (req, res, next) => {
     const idPagos = pagosCreado.map((p)=> p.id_pago_arriendo);
     response={
       estado : '1',
-      id:idPagos,
+      id:pagosCreado,
       respuesta: 'Se agregaron correctamente los pagos'
     }
     if (!Array.isArray(pago)) {
