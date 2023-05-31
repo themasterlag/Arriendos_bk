@@ -10,7 +10,9 @@ router.post('/update-conceptos', async (req, res, next) => {
     const conceptosActualizar = req.body;
     const result = await service.updatePagoConceptoValor(conceptosActualizar);
     res.status(201).json(result);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

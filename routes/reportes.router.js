@@ -6,7 +6,11 @@ const service = new ContratoService();
 router.get('/:filtro', async (req, res, next) => {
   try {
     const filter = req.params;
-  } catch (error) {}
+    const result = await service.getCodigoSitioVenta(filter);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
