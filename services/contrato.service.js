@@ -1,5 +1,5 @@
 const con = require('../libs/sequelize');
-
+const { Op } = require('sequelize');
 class ContratoService {
   constructor() {}
 
@@ -253,42 +253,57 @@ class ContratoService {
     });
     return result;
   }
-  async getCodigoSitioVenta(filter) {
-    let whereCondition = {};
+  async findCodigoSitioVentaByFilter(filter) {
+    let whereConditionEntidadBancaria = {};
+    let whereConditionAutorizado = {};
 
     switch (filter) {
       case 'Bancolombia':
-        whereCondition = { '$entidad_bancaria.nombre$': 'Bancolombia' };
+        whereConditionEntidadBancaria = { entidad_bancaria: filter };
         break;
-      case 'Otros Bancos':
-        whereCondition = {
-          '$entidad_bancaria.nombre$': { [Op.ne]: 'Bancolombia' },
+      case 'otros-bancos':
+        whereConditionEntidadBancaria = {
+          entidad_bancaria: { [Op.ne]: 'Bancolombia' },
         };
         break;
-      case 'Efectivo':
-        whereCondition = { '$tipo_pago.nombre$': 'Efectivo' };
+      case 'efectivo':
+        whereConditionAutorizado = { metodo_pago: 2 };
         break;
-      case 'Todos los Bancos':
-        // No necesita filtrar por entidad bancaria
+      case 'todos los bancos':
+        // no se aplica filtro en este caso, por lo tanto, las condiciones where se quedan vacías
         break;
       default:
-        throw new Error('Filtro no válido');
+        throw new Error('Filter not recognized');
     }
 
-    const result = await con.models.autorizado.findAll({
-      where: whereCondition,
+    const results = await con.models.contrato.findAll({
       include: [
         {
-          model: con.models.entidad_bancaria,
-          as: 'entidad_bancaria',
-          attributes: [],
+          model: con.models.autorizado,
+          as: 'id_autorizado_autorizado',
+          where: whereConditionAutorizado, // aplicamos aquí la condición where para autorizado
+          include: [
+            {
+              model: con.models.entidad_bancaria,
+              as: 'entidad_bancaria_entidad_bancarium',
+              where: whereConditionEntidadBancaria, // aplicamos aquí la condición where para entidad bancaria
+            },
+          ],
         },
-        { model: con.models.tipo_pago, as: 'tipo_pago', attributes: [] },
+        {
+          model: con.models.punto_de_venta,
+          as: 'id_punto_venta_punto_de_ventum',
+          attributes: ['codigo_sitio_venta'],
+        },
       ],
-      attributes: ['codigo_sitio_venta'],
     });
 
-    return result.map((r) => r.codigo_sitio_venta);
+    // Extraer los codigos de sitio de venta de los resultados
+    const codigosSitioVenta = results.map(
+      (result) => result.id_punto_venta_punto_de_ventum.codigo_sitio_venta
+    );
+
+    return codigosSitioVenta;
   }
 }
 module.exports = ContratoService;
