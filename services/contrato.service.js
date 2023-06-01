@@ -259,7 +259,7 @@ class ContratoService {
 
     switch (filter) {
       case 'bancolombia':
-        whereConditionEntidadBancaria = { entidad_bancaria: filter };
+        whereConditionEntidadBancaria = { entidad_bancaria: 'Bancolombia' };
         break;
       case 'otros-bancos':
         whereConditionEntidadBancaria = {
