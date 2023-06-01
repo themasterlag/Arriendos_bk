@@ -258,7 +258,7 @@ class ContratoService {
     let whereConditionAutorizado = {};
 
     switch (filter) {
-      case 'Bancolombia':
+      case 'bancolombia':
         whereConditionEntidadBancaria = { entidad_bancaria: filter };
         break;
       case 'otros-bancos':
@@ -269,7 +269,7 @@ class ContratoService {
       case 'efectivo':
         whereConditionAutorizado = { metodo_pago: 2 };
         break;
-      case 'todos los bancos':
+      case 'todos-bancos':
         // no se aplica filtro en este caso, por lo tanto, las condiciones where se quedan vacías
         break;
       default:
