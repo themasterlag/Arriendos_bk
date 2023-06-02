@@ -116,7 +116,12 @@ class ContratoService {
 
   async traerContratosConConceptos(sitioVenta) {
     const result = await con.models.contrato.findAll({
-      attributes: ['id_contrato', 'valor_canon', 'fecha_inicio_contrato'],
+      attributes: [
+        'id_contrato',
+        'valor_canon',
+        'fecha_inicio_contrato',
+        'fecha_fin_contrato',
+      ],
       include: [
         {
           model: con.models.autorizado,
