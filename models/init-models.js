@@ -8,6 +8,7 @@ var _contrato = require("./contrato");
 var _contrato_conceptos = require("./contrato_conceptos");
 var _departamento = require("./departamento");
 var _dependencia = require("./dependencia");
+var _detalle_calculo_concepto = require("./detalle_calculo_concepto");
 var _dispersion = require("./dispersion");
 var _entidad_bancaria = require("./entidad_bancaria");
 var _factura_servicio = require("./factura_servicio");
@@ -53,6 +54,7 @@ function initModels(sequelize) {
   var contrato_conceptos = _contrato_conceptos(sequelize, DataTypes);
   var departamento = _departamento(sequelize, DataTypes);
   var dependencia = _dependencia(sequelize, DataTypes);
+  var detalle_calculo_concepto = _detalle_calculo_concepto(sequelize, DataTypes);
   var dispersion = _dispersion(sequelize, DataTypes);
   var entidad_bancaria = _entidad_bancaria(sequelize, DataTypes);
   var factura_servicio = _factura_servicio(sequelize, DataTypes);
@@ -90,11 +92,11 @@ function initModels(sequelize) {
 
   contrato.belongsTo(autorizado, { as: "id_autorizado_autorizado", foreignKey: "id_autorizado"});
   autorizado.hasMany(contrato, { as: "contratos", foreignKey: "id_autorizado"});
-  pago_detalle.belongsTo(autorizado, { as: "autorizado", foreignKey: "id_autorizado"});
+  pago_detalle.belongsTo(autorizado, { as: "id_autorizado_autorizado", foreignKey: "id_autorizado"});
   autorizado.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_autorizado"});
   contrato.belongsTo(autorizado_administracion, { as: "id_autorizado_adm_autorizado_administracion", foreignKey: "id_autorizado_adm"});
   autorizado_administracion.hasMany(contrato, { as: "contratos", foreignKey: "id_autorizado_adm"});
-  pago_detalle.belongsTo(autorizado_administracion, { as: "autorizado_adm", foreignKey: "id_autorizado_adm"});
+  pago_detalle.belongsTo(autorizado_administracion, { as: "id_autorizado_adm_autorizado_administracion", foreignKey: "id_autorizado_adm"});
   autorizado_administracion.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_autorizado_adm"});
   autorizado.belongsTo(cliente, { as: "id_cliente_cliente", foreignKey: "id_cliente"});
   cliente.hasMany(autorizado, { as: "autorizados", foreignKey: "id_cliente"});
@@ -108,10 +110,14 @@ function initModels(sequelize) {
   conceptos.hasMany(concepto_municipio, { as: "concepto_municipios", foreignKey: "id_concepto"});
   contrato_conceptos.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
   conceptos.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_concepto"});
+  detalle_calculo_concepto.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
+  conceptos.hasMany(detalle_calculo_concepto, { as: "detalle_calculo_conceptos", foreignKey: "id_concepto"});
   pago_concepto.belongsTo(conceptos, { as: "id_concepto_concepto", foreignKey: "id_concepto"});
   conceptos.hasMany(pago_concepto, { as: "pago_conceptos", foreignKey: "id_concepto"});
   contrato_conceptos.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_contrato"});
+  detalle_calculo_concepto.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
+  contrato.hasMany(detalle_calculo_concepto, { as: "detalle_calculo_conceptos", foreignKey: "id_contrato"});
   pago_administracion.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "id_contrato"});
   pago_arriendo.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
@@ -154,7 +160,7 @@ function initModels(sequelize) {
   proceso.hasMany(solicitud, { as: "solicituds", foreignKey: "id_proceso"});
   contrato.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(contrato, { as: "contratos", foreignKey: "id_punto_venta"});
-  pago_detalle.belongsTo(punto_de_venta, { as: "punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
+  pago_detalle.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_punto_venta"});
   propietario_punto_venta.belongsTo(punto_de_venta, { as: "id_punto_venta_punto_de_ventum", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(propietario_punto_venta, { as: "propietario_punto_venta", foreignKey: "id_punto_venta"});
@@ -166,7 +172,7 @@ function initModels(sequelize) {
   responsabilidad.hasMany(responsable, { as: "rete_fuente_responsables", foreignKey: "rete_fuente"});
   contrato.belongsTo(responsable, { as: "id_responsable_responsable", foreignKey: "id_responsable"});
   responsable.hasMany(contrato, { as: "contratos", foreignKey: "id_responsable"});
-  pago_detalle.belongsTo(responsable, { as: "responsable", foreignKey: "id_responsable"});
+  pago_detalle.belongsTo(responsable, { as: "id_responsable_responsable", foreignKey: "id_responsable"});
   responsable.hasMany(pago_detalle, { as: "pago_detalles", foreignKey: "id_responsable"});
   usuario.belongsTo(rol, { as: "rolid_rol_rol", foreignKey: "rolid_rol"});
   rol.hasMany(usuario, { as: "usuarios", foreignKey: "rolid_rol"});
@@ -197,6 +203,7 @@ function initModels(sequelize) {
     contrato_conceptos,
     departamento,
     dependencia,
+    detalle_calculo_concepto,
     dispersion,
     entidad_bancaria,
     factura_servicio,

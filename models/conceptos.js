@@ -34,6 +34,10 @@ module.exports = function(sequelize, DataTypes) {
     porcentaje_operacion: {
       type: DataTypes.DOUBLE,
       allowNull: true
+    },
+    incremento: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
