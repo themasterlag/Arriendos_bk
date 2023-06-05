@@ -173,6 +173,7 @@ class ContratoService {
                 'nombre_concepto',
                 'codigo_concepto',
                 'tipo_concepto',
+                'incremento',
               ],
             },
           ],
