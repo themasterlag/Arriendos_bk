@@ -310,5 +310,14 @@ class ContratoService {
 
     return codigosSitioVenta;
   }
+  async darIncrementoCanon(id_contrato) {
+    const [result] = await con.query(
+      `Select * from arriendos.calcular_canon_con_incremento(?)`,
+      {
+        replacements: [id_contrato],
+      }
+    );
+    return result;
+  }
 }
 module.exports = ContratoService;
