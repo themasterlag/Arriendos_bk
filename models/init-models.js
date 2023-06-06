@@ -15,6 +15,7 @@ var _factura_servicio = require("./factura_servicio");
 var _impuestos_bomberil = require("./impuestos_bomberil");
 var _impuestos_reteica = require("./impuestos_reteica");
 var _incremento = require("./incremento");
+var _incremento_contrato = require("./incremento_contrato");
 var _liquidacion = require("./liquidacion");
 var _metodo_pago = require("./metodo_pago");
 var _microzona = require("./microzona");
@@ -61,6 +62,7 @@ function initModels(sequelize) {
   var impuestos_bomberil = _impuestos_bomberil(sequelize, DataTypes);
   var impuestos_reteica = _impuestos_reteica(sequelize, DataTypes);
   var incremento = _incremento(sequelize, DataTypes);
+  var incremento_contrato = _incremento_contrato(sequelize, DataTypes);
   var liquidacion = _liquidacion(sequelize, DataTypes);
   var metodo_pago = _metodo_pago(sequelize, DataTypes);
   var microzona = _microzona(sequelize, DataTypes);
@@ -118,6 +120,8 @@ function initModels(sequelize) {
   contrato.hasMany(contrato_conceptos, { as: "contrato_conceptos", foreignKey: "id_contrato"});
   detalle_calculo_concepto.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(detalle_calculo_concepto, { as: "detalle_calculo_conceptos", foreignKey: "id_contrato"});
+  incremento_contrato.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
+  contrato.hasMany(incremento_contrato, { as: "incremento_contratos", foreignKey: "id_contrato"});
   pago_administracion.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
   contrato.hasMany(pago_administracion, { as: "pago_administracions", foreignKey: "id_contrato"});
   pago_arriendo.belongsTo(contrato, { as: "id_contrato_contrato", foreignKey: "id_contrato"});
@@ -210,6 +214,7 @@ function initModels(sequelize) {
     impuestos_bomberil,
     impuestos_reteica,
     incremento,
+    incremento_contrato,
     liquidacion,
     metodo_pago,
     microzona,
