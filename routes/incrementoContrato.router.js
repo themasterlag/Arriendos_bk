@@ -40,4 +40,10 @@ router.post('/guardar', async (req, res, next) => {
     next(error);
   }
 });
+router.patch('/update-incremento-contrato', async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = router;

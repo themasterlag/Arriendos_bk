@@ -185,7 +185,7 @@ class ContratoService {
 
   async traerConceptosPagado(sitioVenta, fecha_periodo) {
     const result = await con.models.contrato.findAll({
-      attributes: ['id_contrato', 'valor_canon'],
+      attributes: ['id_contrato', 'valor_canon', 'fecha_inicio_contrato','fecha_fin_contrato'],
       include: [
         {
           model: con.models.autorizado,
@@ -241,6 +241,23 @@ class ContratoService {
                   model: con.models.conceptos,
                   as: 'id_concepto_concepto',
                 },
+              ],
+            },
+          ],
+        },
+        {
+          model: con.models.contrato_conceptos,
+          as: 'contrato_conceptos',
+          attributes: ['valor'],
+          include: [
+            {
+              model: con.models.conceptos,
+              as: 'id_concepto_concepto',
+              attributes: [
+                'nombre_concepto',
+                'codigo_concepto',
+                'tipo_concepto',
+                'incremento',
               ],
             },
           ],
@@ -319,6 +336,15 @@ class ContratoService {
       }
     );
     return result;
+  }
+  async aplicarIncrementoValorCanon(id_contrato, valor_canon) {
+    try {
+      const cambios = { valor_canon: valor_canon };
+      await this.update(id_contrato, cambios);
+      console.log('Valor del canon actualizado con éxito');
+    } catch (error) {
+      console.error('Error al intentar actualizar el valor del canon: ', error);
+    }
   }
 }
 module.exports = ContratoService;
