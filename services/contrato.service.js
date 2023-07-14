@@ -59,7 +59,7 @@ class ContratoService {
       ],
     });
     if (!rta) {
-      throw console.error('no se encontro');
+      throw Error('no se encontro');
     }
     return rta;
   }
@@ -86,7 +86,7 @@ class ContratoService {
       ],
     });
     if (!rta) {
-      throw console.error('no se encontro');
+      throw Error('no se encontro');
     }
     return rta;
   }
@@ -341,8 +341,8 @@ class ContratoService {
     try {
       const cambios = { valor_canon: valor_canon };
       await this.update(id_contrato, cambios);
-      console.log('Valor del canon actualizado con éxito');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error al intentar actualizar el valor del canon: ', error);
     }
   }

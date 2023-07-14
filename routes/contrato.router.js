@@ -43,7 +43,7 @@ router.get('/concepto-municipio', async (req, res, next) => {
     res.json(conceptoMunicipio);
   } catch (error) {
     next(error);
-    console.log('Error details:', error.message, error.stack);
+    Error('Error details:', error.message, error.stack);
   }
 });
 router.get('/pdv-pagado/', async (req, res, next) => {
@@ -55,7 +55,7 @@ router.get('/pdv-pagado/', async (req, res, next) => {
     res.status(201).json(contratosConceptos);
   } catch (error) {
     next(error);
-    console.log('Error details:', error.message, error.stack);
+    Error('Error details:', error.message, error.stack);
   }
 });
 router.get('/pdv-nopagado/:id', async (req, res, next) => {
@@ -66,7 +66,7 @@ router.get('/pdv-nopagado/:id', async (req, res, next) => {
     res.status(201).json(contratosConceptos);
   } catch (error) {
     next(error);
-    console.log('Error details:', error.message, error.stack);
+    Error('Error details:', error.message, error.stack);
   }
 });
 router.get('/:id', async (req, res, next) => {
@@ -91,7 +91,7 @@ router.get('/pdv/:id', async (req, res, next) => {
     res.json({ contrato, contratoConcepto });
   } catch (error) {
     next(error);
-    //console.log('Error details:', error.message, error.stack);
+    Error('Error details:', error.message, error.stack);
   }
 });
 
@@ -166,7 +166,7 @@ router.patch('/', async (req, res, next) => {
     let conceptos = JSON.parse(body.conceptos);
     const contrato = { ...defaultContrato, ...JSON.parse(body.contrato) };
     console.log('conceptos', conceptos);
-    console.log('contrato', contrato);
+    console.log('contrato - valor del canon:', contrato.valor_canon);
     let oldContrato = await service.findOne(contrato['id_contrato']);
     let newContrato = null;
     if (oldContrato) {
@@ -201,7 +201,7 @@ router.patch('/', async (req, res, next) => {
     }
   } catch (error) {
     next(error);
-    console.log('Error details:', error.message, error.stack);
+    Error('Error details:', error.message, error.stack);
   }
 });
 
@@ -220,7 +220,16 @@ router.patch('/inhabilitar', async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    console.log('Error details:', error.message, error.stack);
   }
 });
+// router.patch('/aplicar-incremento', async(req,res,next)=>{
+//   try {
+//     const body = req.body
+//     let conceptos = body.conceptos
+//     let contrato = {...defaultContrato, ...JSON.parse(body.contrato)}
+//     let oldContrato = await service.findOne(contrato['id_contrato'])
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 module.exports = router;

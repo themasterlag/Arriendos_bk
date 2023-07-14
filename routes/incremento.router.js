@@ -31,6 +31,14 @@ router.put('/:id', async (req, res, next) => {
     const { id } = req.params;
     const body = req.body;
     const incremento = await service.update(id, body);
+    console.log('Actualizacion: ', incremento);
+    if(!incremento){
+      res.status(201).json({
+        estado: '1',
+        actualizado:incremento,
+        respuesta: 'se actualizo correctamente el incremento' 
+      })
+    }
   } catch (error) {
     next(error);
   }
