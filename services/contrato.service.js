@@ -230,7 +230,7 @@ class ContratoService {
           model: con.models.pago_arriendo,
           as: 'pago_arriendos',
           where: { fecha_periodo: fecha_periodo },
-          attributes: ['valor', 'fecha_pago', 'fecha_periodo'],
+          attributes: ['valor', 'fecha_pago', 'fecha_periodo', 'canon'],
           include: [
             {
               model: con.models.pago_concepto,
