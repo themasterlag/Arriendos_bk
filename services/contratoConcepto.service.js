@@ -6,7 +6,7 @@ class ContratoConceptoService {
   async create(data) {
     const contrato = await con.models.contrato_conceptos.create(data);
     console.log(contrato.id_contrato_concepto);
-    return contrato.id_contrato_concepto
+    return contrato.id_contrato_concepto;
   }
   async find() {
     const data = await con.models.contrato_conceptos.findAll();
@@ -45,6 +45,12 @@ class ContratoConceptoService {
     const contrato = await this.findOne(id);
     await contrato.destroy();
     return 'eliminado';
+  }
+
+  async updateValorConcepto(id, valor) {
+    const contratoConcepto = await this.findOne(id);
+    const rta = await contratoConcepto.update({ valor });
+    return rta;
   }
 }
 module.exports = ContratoConceptoService;

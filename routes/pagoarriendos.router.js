@@ -28,7 +28,7 @@ router.get('/', async (req, res, next) => {
 
     if (tipo == 1) {
       const listado = await service.findPagados(fechaInicio, fechaFin);
-      console.log('listado Pagados: ', listado);
+      
       res.status(200).json(listado);
     } else {
       const listado = await service.findNoPagados(
