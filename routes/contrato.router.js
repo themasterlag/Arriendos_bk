@@ -216,7 +216,7 @@ router.patch('/actualizar-contrato-incremento', async (req,res,next)=>{
         for(let concepto of conceptos){
           
           let {id_contrato_concepto, valor}= concepto
-
+          valor = Math.round(valor)
          let respuesta= await contratoConceptoService.update(id_contrato_concepto, {valor})
          console.log(respuesta.valor);
         }
