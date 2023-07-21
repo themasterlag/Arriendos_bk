@@ -22,7 +22,15 @@ class PagoConceptoService {
     });
     return results;
   }
-
+  async findByPagoArriendoAndConcepto(pago_arriendo, concepto){
+      const result = await con.models.pago_concepto.findOne({
+        where:{
+          id_pago_arriendo: pago_arriendo,
+          id_concepto: concepto,
+        }
+      })
+      return result;
+  }
   async updatePagoConceptoValor(pagoConceptoData) {
     let pagoConcepto = await con.models.pago_concepto.findOne({
       where: {

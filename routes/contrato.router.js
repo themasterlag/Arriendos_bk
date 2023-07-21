@@ -205,6 +205,33 @@ router.patch('/', async (req, res, next) => {
   }
 });
 
+router.patch('/actualizar-contrato-incremento', async (req,res,next)=>{
+  try {
+    const arrayIncremento = req.body
+    for(let contratoIncremento of arrayIncremento){
+      let {id_contrato, valor_canon, conceptos} = contratoIncremento
+     let respuesContrato = await service.update(id_contrato, {valor_canon})
+      console.log(respuesContrato.id_contrato);
+    
+        for(let concepto of conceptos){
+          
+          let {id_contrato_concepto, valor}= concepto
+
+         let respuesta= await contratoConceptoService.update(id_contrato_concepto, {valor})
+         console.log(respuesta.valor);
+        }
+      
+    }
+    res.status(200).json({
+      estado: '1',
+      respuesta: 'Se actualizaron correctamente los contratos y conceptos'
+    })
+
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.patch('/inhabilitar', async (req, res, next) => {
   try {
     const { id, fecha_inactivo, razon_inactivo } = req.body;

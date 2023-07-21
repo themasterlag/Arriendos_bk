@@ -21,9 +21,9 @@ class ContratoConceptoService {
     return rta;
   }
   async update(id, changes) {
-    const contrato = await this.findOne(id);
+    const contratoConcepto = await this.findOne(id);
 
-    const rta = await contrato.update(changes);
+    const rta = await contratoConcepto.update(changes);
 
     return rta;
   }
