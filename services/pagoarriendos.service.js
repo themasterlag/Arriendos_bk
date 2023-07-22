@@ -303,6 +303,88 @@ class PagoArriendosService {
     return {id_pago_arriendo:newPago.id_pago_arriendo,
             id_contrato: newPago.id_contrato};
   }
+
+  //metodo para devolver la info pagada de contratos de un rango de fechas y banco o si es efectivo
+  // 5 2022
+  async findReportePorFechaYTipoPago(year,month, tipoReporte){
+    let whereConditionEntidadBancaria = {};
+    let whereConditionAutorizado = {};
+    switch (tipoReporte) {
+      case 'bancolombia':
+        whereConditionEntidadBancaria = { entidad_bancaria: 'Bancolombia' };
+        break;
+      case 'otros-bancos':
+        whereConditionEntidadBancaria = {
+          entidad_bancaria: { [Op.ne]: 'Bancolombia' },
+        };
+        break;
+      case 'efectivo':
+        whereConditionAutorizado = { metodo_pago: 2 };
+        break;
+      case 'todos-bancos':
+        // no se aplica filtro en este caso, por lo tanto, las condiciones where se quedan vacías
+        break;
+      default:
+        throw new Error('Filter not recognized');
+    }
+    const result = await con.models.pago_arriendo.findAll({
+     // where: con.literal(`EXTRACT(YEAR FROM fecha_pago) = ${year} AND EXTRACT(MONTH FROM fecha_pago) = ${month}`),
+      attributes: ['id_pago','canon'],
+      include:[
+        
+        {
+          model : con.models.contrato,
+          as: 'id_contrato_contrato',
+          attributes: ['id_contrato'],
+          include:[
+            {
+              model: con.models.autorizado,
+              as: 'id_autorizado_autorizado',
+              attributes:['numero_cuenta'],  
+              where: whereConditionAutorizado,
+              include:[
+                {
+                  model: con.models.entidad_bancaria,
+                  as: 'entidad_bancaria_entidad_bancarium',
+                  attributes: ['entidad_bancaria'],
+                  where: whereConditionEntidadBancaria,
+                },
+                {
+                  model: con.models.cliente,
+                  as: 'id_cliente_cliente',
+                  attributes: [
+                    'numero_documento',
+                    'nombres',
+                    'apellidos',
+                    'tipo_documento',
+                    'razon_social',
+                    'digito_verificacion'
+                  ],
+                }
+              ]
+            },
+            {
+              model:con.models.punto_de_venta,
+              as: 'id_punto_venta_punto_de_ventum',
+              attributes: ['codigo_sitio_venta', 'nombre_comercial',],
+              include:[
+                {
+                  model: con.models.municipio,
+                  as: 'id_municipio_municipio',
+                  attributes: ['municipio'],
+                },
+              ],
+            },
+          ],
+        },
+       // aqui seria la parte de pago_conceptos
+      
+      ]
+    })
+    console.log(result);
+    return result
+  }
+  
 }
 
 module.exports = PagoArriendosService;
