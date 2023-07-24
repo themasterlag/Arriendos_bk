@@ -314,6 +314,7 @@ class PagoArriendosService {
         whereConditionEntidadBancaria = { entidad_bancaria: 'Bancolombia' };
         break;
       case 'otros-bancos':
+        
         whereConditionEntidadBancaria = {
           entidad_bancaria: { [Op.ne]: 'Bancolombia' },
         };
@@ -328,7 +329,6 @@ class PagoArriendosService {
         throw new Error('Filter not recognized');
     }
     const result = await con.models.pago_arriendo.findAll({
-      where: con.literal('EXTRACT(YEAR FROM fecha_periodo) = '+year+' AND EXTRACT(MONTH FROM fecha_periodo) = '+month),
       attributes: ['id_pago_arriendo','canon'],
       include:[
         
@@ -336,18 +336,21 @@ class PagoArriendosService {
           model : con.models.contrato,
           as: 'contratodetalle',
           attributes: ['id_contrato'],
+          required: true,
           include:[
             {
               model: con.models.autorizado,
               as: 'autdetalle',
               attributes:['numero_cuenta'],  
               where: whereConditionAutorizado,
+              required: true,
               include:[
                 {
                   model: con.models.entidad_bancaria,
                   as: 'entidadbancaria',
                   attributes: ['entidad_bancaria'],
                   where: whereConditionEntidadBancaria,
+                  require: true,
                 },
                 {
                   model: con.models.cliente,
@@ -391,7 +394,8 @@ class PagoArriendosService {
         ]
        }
       
-      ]
+      ],
+      where: con.literal('EXTRACT(YEAR FROM fecha_periodo) = '+year+' AND EXTRACT(MONTH FROM fecha_periodo) = '+month),
     })
     
     return result
