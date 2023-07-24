@@ -23,35 +23,35 @@ class PagoArriendosService {
       include: [
         {
           model: con.models.pago_detalle,
-          as: 'pago_detalles',
+          as: 'pagodetalle',
           include: [
             {
               model: con.models.responsable,
-              association: 'responsable',
+              association: 'responsabledetalle',
               include: {
                 model: con.models.cliente,
-                as: 'id_cliente_cliente',
+                as: 'clientedetalle',
               },
             },
             {
               model: con.models.autorizado,
-              as: 'autorizado',
+              as: 'autdetalle',
               include: {
                 model: con.models.cliente,
-                as: 'id_cliente_cliente',
+                as: 'clientedetalle',
               },
             },
             {
               model: con.models.autorizado_administracion,
-              as: 'autorizado_adm',
+              as: 'autadmdetalle',
               include: {
                 model: con.models.cliente,
-                as: 'id_cliente_cliente',
+                as: 'clientedetalle',
               },
             },
             {
               model: con.models.punto_de_venta,
-              as: 'punto_venta_punto_de_ventum',
+              as: 'pvdetalle',
             },
           ],
         },
@@ -183,11 +183,11 @@ class PagoArriendosService {
         include: [
           {
             model: con.models.contrato,
-            as: 'id_contrato_contrato',
+            as: 'contratodetalle',
             include: [
               {
                 model: con.models.punto_de_venta,
-                as: 'id_punto_venta_punto_de_ventum',
+                as: 'pvdetalle',
               },
             ],
           },
@@ -287,7 +287,7 @@ class PagoArriendosService {
         },
         include: {
           model: con.models.conceptos,
-          as: 'id_concepto_concepto',
+          as: 'conceptodetalle',
         },
       });
 
@@ -329,29 +329,29 @@ class PagoArriendosService {
     }
     const result = await con.models.pago_arriendo.findAll({
      // where: con.literal(`EXTRACT(YEAR FROM fecha_pago) = ${year} AND EXTRACT(MONTH FROM fecha_pago) = ${month}`),
-      attributes: ['id_pago','canon'],
+      attributes: ['id_pago_arriendo','canon'],
       include:[
         
         {
           model : con.models.contrato,
-          as: 'id_contrato_contrato',
+          as: 'contratodetalle',
           attributes: ['id_contrato'],
           include:[
             {
               model: con.models.autorizado,
-              as: 'id_autorizado_autorizado',
+              as: 'autdetalle',
               attributes:['numero_cuenta'],  
               where: whereConditionAutorizado,
               include:[
                 {
                   model: con.models.entidad_bancaria,
-                  as: 'entidad_bancaria_entidad_bancarium',
+                  as: 'entidadbancaria',
                   attributes: ['entidad_bancaria'],
                   where: whereConditionEntidadBancaria,
                 },
                 {
                   model: con.models.cliente,
-                  as: 'id_cliente_cliente',
+                  as: 'clientedetalle',
                   attributes: [
                     'numero_documento',
                     'nombres',
@@ -365,12 +365,12 @@ class PagoArriendosService {
             },
             {
               model:con.models.punto_de_venta,
-              as: 'id_punto_venta_punto_de_ventum',
+              as: 'pvdetalle',
               attributes: ['codigo_sitio_venta', 'nombre_comercial',],
               include:[
                 {
                   model: con.models.municipio,
-                  as: 'id_municipio_municipio',
+                  as: 'municipiodetalle',
                   attributes: ['municipio'],
                 },
               ],
@@ -378,6 +378,18 @@ class PagoArriendosService {
           ],
         },
        // aqui seria la parte de pago_conceptos
+       {
+        model: con.models.pago_concepto,
+        as: 'contconceptos',
+        attributes: ['pago_concepto_valor', 'id_concepto'],
+        include:[
+          {
+            model: con.models.conceptos,
+            as : 'conceptodetalle',
+           attributes: ['codigo_concepto','nombre_concepto']
+          }
+        ]
+       }
       
       ]
     })

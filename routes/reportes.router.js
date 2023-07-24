@@ -22,6 +22,7 @@ router.get('/contratos-periodo/:mes/:anio/:filtro', async ( req, res, next)=>{
     const mes = req.params.mes
     const year = req.params.anio
     const filtro = req.params.filtro
+    console.log('mes ', mes, '\naño ', year, '\nfiltro', filtro);
     const reportes = await pagoArriendoService.findReportePorFechaYTipoPago(year,mes,filtro)
     res.status(200).json(reportes)
 

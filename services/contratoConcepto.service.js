@@ -35,7 +35,7 @@ class ContratoConceptoService {
       },
       include: [
         {
-          association: 'id_concepto_concepto',
+          association: 'conceptodetalle',
         },
       ],
     });

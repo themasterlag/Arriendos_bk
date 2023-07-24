@@ -51,6 +51,7 @@ router.put('/', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const saldoCredito = await service.delete(id);
     res.status(201).json(saldoCredito);
   } catch (error) {

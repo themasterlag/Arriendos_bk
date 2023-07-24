@@ -29,11 +29,11 @@ class PuntoDeVentaService {
       include: [
         {
           model: con.models.propietario_punto_venta,
-          as: 'propietario_punto_venta',
+          as: 'proppv',
           include: [
             {
               model: con.models.cliente,
-              as: 'id_propietario_cliente',
+              as: 'propcliente',
             },
           ],
         },

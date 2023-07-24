@@ -1,4 +1,5 @@
 const con = require('../libs/sequelize');
+// eslint-disable-next-line no-unused-vars
 const { Op } = require('sequelize');
 
 class PagoConceptoService {
@@ -16,7 +17,7 @@ class PagoConceptoService {
       },
       include: [
         {
-          association: 'id_concepto_concepto',
+          association: 'conceptodetalle',
         },
       ],
     });

@@ -12,7 +12,7 @@ class ContratoService {
       include: [
         {
           model: con.models.punto_de_venta,
-          as: 'id_punto_venta_punto_de_ventum',
+          as: 'pvdetalle',
           attributes: ['nombre_comercial', 'codigo_sitio_venta'],
         },
       ],
@@ -36,25 +36,25 @@ class ContratoService {
       },
       include: [
         {
-          association: 'id_autorizado_autorizado',
+          association: 'autdetalle',
           include: {
-            association: 'id_cliente_cliente',
+            association: 'clientedetalle',
           },
         },
         {
-          association: 'id_responsable_responsable',
+          association: 'responsabledetalle',
           include: {
-            association: 'id_cliente_cliente',
+            association: 'clientedetalle',
           },
         },
         {
-          association: 'id_autorizado_adm_autorizado_administracion',
+          association: 'autadmdetalle',
           include: {
-            association: 'id_cliente_cliente',
+            association: 'clientedetalle',
           },
         },
         {
-          association: 'id_punto_venta_punto_de_ventum',
+          association: 'pvdetalle',
         },
       ],
     });
@@ -63,24 +63,23 @@ class ContratoService {
     }
     return rta;
   }
-
   async findOnePdv(id) {
     const rta = await con.models.contrato.findOne({
       include: [
         {
-          association: 'id_responsable_responsable',
+          association: 'responsabledetalle',
           include: {
-            association: 'id_cliente_cliente',
+            association: 'clientedetalle',
           },
         },
         {
-          association: 'id_autorizado_autorizado',
+          association: 'autdetalle',
           include: {
-            association: 'id_cliente_cliente',
+            association: 'clientedetalle',
           },
         },
         {
-          association: 'id_punto_venta_punto_de_ventum',
+          association: 'pvdetalle',
           where: { codigo_sitio_venta: id },
         },
       ],
@@ -125,12 +124,12 @@ class ContratoService {
       include: [
         {
           model: con.models.autorizado,
-          as: 'id_autorizado_autorizado',
+          as: 'autdetalle',
           attributes: ['metodo_pago', 'entidad_bancaria', 'numero_cuenta'],
           include: [
             {
               model: con.models.cliente,
-              as: 'id_cliente_cliente',
+              as: 'clientedetalle',
               attributes: [
                 'numero_documento',
                 'nombres',
@@ -140,13 +139,13 @@ class ContratoService {
             },
             {
               model: con.models.entidad_bancaria,
-              as: 'entidad_bancaria_entidad_bancarium',
+              as: 'entidadbancaria',
             },
           ],
         },
         {
           model: con.models.punto_de_venta,
-          as: 'id_punto_venta_punto_de_ventum',
+          as: 'pvdetalle',
           where: { codigo_sitio_venta: sitioVenta },
           attributes: [
             'codigo_sitio_venta',
@@ -156,19 +155,19 @@ class ContratoService {
           include: [
             {
               model: con.models.municipio,
-              as: 'id_municipio_municipio',
+              as: 'municipiodetalle',
               attributes: ['municipio'],
             },
           ],
         },
         {
           model: con.models.contrato_conceptos,
-          as: 'contrato_conceptos',
+          as: 'contconceptos',
           attributes: ['valor'],
           include: [
             {
               model: con.models.conceptos,
-              as: 'id_concepto_concepto',
+              as: 'conceptodetalle',
               attributes: [
                 'nombre_concepto',
                 'codigo_concepto',
@@ -189,12 +188,12 @@ class ContratoService {
       include: [
         {
           model: con.models.autorizado,
-          as: 'id_autorizado_autorizado',
+          as: 'autdetalle',
           attributes: ['metodo_pago', 'entidad_bancaria', 'numero_cuenta'],
           include: [
             {
               model: con.models.cliente,
-              as: 'id_cliente_cliente',
+              as: 'clientedetalle',
               attributes: [
                 'numero_documento',
                 'nombres',
@@ -205,13 +204,13 @@ class ContratoService {
             },
             {
               model: con.models.entidad_bancaria,
-              as: 'entidad_bancaria_entidad_bancarium',
+              as: 'entidadbancaria',
             },
           ],
         },
         {
           model: con.models.punto_de_venta,
-          as: 'id_punto_venta_punto_de_ventum',
+          as: 'pvdetalle',
           where: { codigo_sitio_venta: sitioVenta },
           attributes: [
             'codigo_sitio_venta',
@@ -221,25 +220,25 @@ class ContratoService {
           include: [
             {
               model: con.models.municipio,
-              as: 'id_municipio_municipio',
+              as: 'municipiodetalle',
               attributes: ['municipio'],
             },
           ],
         },
         {
           model: con.models.pago_arriendo,
-          as: 'pago_arriendos',
+          as: 'pagoarrdetalle',
           where: { fecha_periodo: fecha_periodo },
           attributes: ['valor', 'fecha_pago', 'fecha_periodo', 'canon'],
           include: [
             {
               model: con.models.pago_concepto,
-              as: 'pago_conceptos',
+              as: 'contconceptos',
               attributes: ['id_concepto', 'pago_concepto_valor'],
               include: [
                 {
                   model: con.models.conceptos,
-                  as: 'id_concepto_concepto',
+                  as: 'conceptodetalle',
                 },
               ],
             },
@@ -247,12 +246,12 @@ class ContratoService {
         },
         {
           model: con.models.contrato_conceptos,
-          as: 'contrato_conceptos',
+          as: 'contconceptos',
           attributes: ['valor'],
           include: [
             {
               model: con.models.conceptos,
-              as: 'id_concepto_concepto',
+              as: 'conceptodetalle',
               attributes: [
                 'nombre_concepto',
                 'codigo_concepto',
@@ -303,19 +302,19 @@ class ContratoService {
       include: [
         {
           model: con.models.autorizado,
-          as: 'id_autorizado_autorizado',
+          as: 'autdetalle',
           where: whereConditionAutorizado, // aplicamos aquí la condición where para autorizado
           include: [
             {
               model: con.models.entidad_bancaria,
-              as: 'entidad_bancaria_entidad_bancarium',
+              as: 'entidadbancaria',
               where: whereConditionEntidadBancaria, // aplicamos aquí la condición where para entidad bancaria
             },
           ],
         },
         {
           model: con.models.punto_de_venta,
-          as: 'id_punto_venta_punto_de_ventum',
+          as: 'pvdetalle',
           attributes: ['codigo_sitio_venta'],
         },
       ],

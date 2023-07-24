@@ -1,4 +1,5 @@
 const con = require('../libs/sequelize');
+// eslint-disable-next-line no-unused-vars
 const { Op } = require('sequelize');
 class IncrementoContratoService {
   constructor() {}
