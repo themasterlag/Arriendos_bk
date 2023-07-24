@@ -386,7 +386,7 @@ class PagoArriendosService {
           {
             model: con.models.conceptos,
             as : 'conceptodetalle',
-           attributes: ['codigo_concepto','nombre_concepto']
+           attributes: ['codigo_concepto','nombre_concepto', 'tipo_concepto']
           }
         ]
        }
