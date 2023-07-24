@@ -328,7 +328,7 @@ class PagoArriendosService {
         throw new Error('Filter not recognized');
     }
     const result = await con.models.pago_arriendo.findAll({
-     // where: con.literal(`EXTRACT(YEAR FROM fecha_pago) = ${year} AND EXTRACT(MONTH FROM fecha_pago) = ${month}`),
+      where: con.literal('EXTRACT(YEAR FROM fecha_periodo) = '+year+' AND EXTRACT(MONTH FROM fecha_periodo) = '+month),
       attributes: ['id_pago_arriendo','canon'],
       include:[
         
@@ -393,7 +393,7 @@ class PagoArriendosService {
       
       ]
     })
-    console.log(result);
+    
     return result
   }
   
