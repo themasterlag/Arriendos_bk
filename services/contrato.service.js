@@ -133,6 +133,7 @@ class ContratoService {
               attributes: [
                 'numero_documento',
                 'nombres',
+                'apellidos',
                 'tipo_documento',
                 'razon_social',
               ],
