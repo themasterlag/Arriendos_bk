@@ -122,10 +122,17 @@ router.post('/todos', async (req, res, next) => {
     const pagosCreado = await Promise.all(
       pagosArray.map(async (pago) => {
         let pago_arriendo = await service.registrarPagos(pago);
+        
         pago.conceptos.forEach( async concepto =>{
           let pago_concepto = await PagoConceptoService.findByPagoArriendoAndConcepto(pago_arriendo.id_pago_arriendo, concepto.id_concepto)
-          pago_concepto.pago_concepto_valor = Math.floor(concepto.valor)
+          console.log('Pago concepto :', pago_concepto,' concepto ', concepto);
+          try {
+            pago_concepto.pago_concepto_valor = Math.floor(concepto.valor)
           await  pago_concepto.save({fields:['pago_concepto_valor']})
+          } catch (error) {
+            next(error)
+          }
+          
         })
         return pago_arriendo
       })
