@@ -5,7 +5,7 @@ class ContratoService {
 
   async create(data) {
     const contrato = await con.models.contrato.create(data);
-    return contrato.id_contrato;
+    return contrato;
   }
   async findAllContratos() {
     const result = await con.models.contrato.findAll({

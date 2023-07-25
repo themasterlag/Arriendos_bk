@@ -13,6 +13,7 @@ const ConceptoMunicipioService = require('./../services/conceptoMunicipio.servic
 const conceptoMunicipioService = new ConceptoMunicipioService();
 function registrarConceptos(newContrato, conceptos) {
   let registrados = true;
+  console.log(newContrato, 'contrato');
   console.log(conceptos, 'conceptos');
   //conceptos = JSON.parse(conceptos);
   conceptos.forEach(async (concepto) => {
@@ -105,7 +106,7 @@ router.post('/', async (req, res, next) => {
     // para crear un contrato necesito:
     // id pdv, id_usuario(puede ser null),
     let newContrato = await service.create(contrato);
-
+    console.log('nuevo contrato', newContrato);
     let bandera = true;
 
     if (newContrato) {
