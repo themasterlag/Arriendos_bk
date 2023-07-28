@@ -31,6 +31,7 @@ const incrementoRouter = require('./incremento.router');
 const pagoConceptoRouter = require('./pagoconcepto.router');
 const reportesRouter = require('./reportes.router');
 const IncrementoContratoRouter = require('./incrementoContrato.router');
+const procesosRouter = require('./procesos.router')
 function routerApi(app) {
   const router = express.Router();
 
@@ -65,6 +66,7 @@ function routerApi(app) {
   router.use('/pago-conceptos', pagoConceptoRouter);
   router.use('/reportes', reportesRouter);
   router.use('/incremento-contrato', IncrementoContratoRouter);
+  router.use('/procesos', procesosRouter)
   router.use('/aut', autRouter);
 }
 module.exports = routerApi;
