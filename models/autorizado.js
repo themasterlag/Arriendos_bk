@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     numero_cuenta: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: true
     },
     id_tipo_cuenta: {

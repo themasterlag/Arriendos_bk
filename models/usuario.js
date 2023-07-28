@@ -38,6 +38,30 @@ module.exports = function(sequelize, DataTypes) {
         model: 'dependencia',
         key: 'id_dependencia'
       }
+    },
+    tipo_documento: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    proceso: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'proceso',
+        key: 'id_proceso'
+      }
+    },
+    subproceso: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'subproceso',
+        key: 'id_subproceso'
+      }
+    },
+    numero_documento: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

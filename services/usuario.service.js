@@ -30,6 +30,14 @@ class UsuarioService {
     //return { id };
   }
 
+  async findByDocumento(documento){
+    const rta = await con.models.usuario.findOne({
+      where:{
+        numero_documento: documento
+      }
+    })
+    return rta
+  }
   async update(id, changes) {
 
     const usuario =  await this.findOne(id);

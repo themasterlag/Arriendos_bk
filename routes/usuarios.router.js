@@ -30,6 +30,25 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/todos', async (req, res, next)=>{
+  try {
+    const usuarios = await service.find()
+    res.json(usuarios).status(200)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/documento/:id', async (req, res, next)=>{
+  try {
+    const { id } = req.params
+    const usuario = await service.findByDocumento(id)
+    res.status(200).json(usuario)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;

@@ -1,6 +1,7 @@
 var DataTypes = require("sequelize").DataTypes;
 var _autorizado = require("./autorizado");
 var _autorizado_administracion = require("./autorizado_administracion");
+var _cargo = require("./cargo");
 var _cliente = require("./cliente");
 var _concepto_municipio = require("./concepto_municipio");
 var _conceptos = require("./conceptos");
@@ -19,6 +20,8 @@ var _incremento_contrato = require("./incremento_contrato");
 var _liquidacion = require("./liquidacion");
 var _metodo_pago = require("./metodo_pago");
 var _microzona = require("./microzona");
+var _modulo = require("./modulo");
+var _modulo_permiso = require("./modulo_permiso");
 var _municipio = require("./municipio");
 var _pago = require("./pago");
 var _pago_administracion = require("./pago_administracion");
@@ -27,6 +30,7 @@ var _pago_concepto = require("./pago_concepto");
 var _pago_detalle = require("./pago_detalle");
 var _periodo = require("./periodo");
 var _permiso = require("./permiso");
+var _permiso_detalle = require("./permiso_detalle");
 var _proceso = require("./proceso");
 var _propietario = require("./propietario");
 var _propietario_punto_venta = require("./propietario_punto_venta");
@@ -36,6 +40,7 @@ var _responsable = require("./responsable");
 var _rol = require("./rol");
 var _saldo_credito = require("./saldo_credito");
 var _solicitud = require("./solicitud");
+var _subproceso = require("./subproceso");
 var _tipo_concepto = require("./tipo_concepto");
 var _tipo_contrato = require("./tipo_contrato");
 var _tipo_cuenta = require("./tipo_cuenta");
@@ -48,6 +53,7 @@ var _zona = require("./zona");
 function initModels(sequelize) {
   var autorizado = _autorizado(sequelize, DataTypes);
   var autorizado_administracion = _autorizado_administracion(sequelize, DataTypes);
+  var cargo = _cargo(sequelize, DataTypes);
   var cliente = _cliente(sequelize, DataTypes);
   var concepto_municipio = _concepto_municipio(sequelize, DataTypes);
   var conceptos = _conceptos(sequelize, DataTypes);
@@ -66,6 +72,8 @@ function initModels(sequelize) {
   var liquidacion = _liquidacion(sequelize, DataTypes);
   var metodo_pago = _metodo_pago(sequelize, DataTypes);
   var microzona = _microzona(sequelize, DataTypes);
+  var modulo = _modulo(sequelize, DataTypes);
+  var modulo_permiso = _modulo_permiso(sequelize, DataTypes);
   var municipio = _municipio(sequelize, DataTypes);
   var pago = _pago(sequelize, DataTypes);
   var pago_administracion = _pago_administracion(sequelize, DataTypes);
@@ -74,6 +82,7 @@ function initModels(sequelize) {
   var pago_detalle = _pago_detalle(sequelize, DataTypes);
   var periodo = _periodo(sequelize, DataTypes);
   var permiso = _permiso(sequelize, DataTypes);
+  var permiso_detalle = _permiso_detalle(sequelize, DataTypes);
   var proceso = _proceso(sequelize, DataTypes);
   var propietario = _propietario(sequelize, DataTypes);
   var propietario_punto_venta = _propietario_punto_venta(sequelize, DataTypes);
@@ -83,6 +92,7 @@ function initModels(sequelize) {
   var rol = _rol(sequelize, DataTypes);
   var saldo_credito = _saldo_credito(sequelize, DataTypes);
   var solicitud = _solicitud(sequelize, DataTypes);
+  var subproceso = _subproceso(sequelize, DataTypes);
   var tipo_concepto = _tipo_concepto(sequelize, DataTypes);
   var tipo_contrato = _tipo_contrato(sequelize, DataTypes);
   var tipo_cuenta = _tipo_cuenta(sequelize, DataTypes);
@@ -99,6 +109,8 @@ function initModels(sequelize) {
   autorizado_administracion.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_autorizado_adm"});
   pago_detalle.belongsTo(autorizado_administracion, { as: "autadmdetalle", foreignKey: "id_autorizado_adm"});
   autorizado_administracion.hasMany(pago_detalle, { as: "pddetalle", foreignKey: "id_autorizado_adm"});
+  permiso_detalle.belongsTo(cargo, { as: "cargo", foreignKey: "id_cargo"});
+  cargo.hasMany(permiso_detalle, { as: "permisodetalle", foreignKey: "id_cargo"});
   autorizado.belongsTo(cliente, { as: "clientedetalle", foreignKey: "id_cliente"});
   cliente.hasMany(autorizado, { as: "autorizadosdetalle", foreignKey: "id_cliente"});
   autorizado_administracion.belongsTo(cliente, { as: "clientedetalle", foreignKey: "id_cliente"});
@@ -141,6 +153,8 @@ function initModels(sequelize) {
   metodo_pago.hasMany(autorizado_administracion, { as: "autadmdetalle", foreignKey: "metodo_pago"});
   punto_de_venta.belongsTo(microzona, { as: "microzona1", foreignKey: "microzona"});
   microzona.hasMany(punto_de_venta, { as: "pdvdetalle", foreignKey: "microzona"});
+  modulo_permiso.belongsTo(modulo, { as: "modulodetalle", foreignKey: "id_modulo"});
+  modulo.hasMany(modulo_permiso, { as: "modulopermiso", foreignKey: "id_modulo"});
   cliente.belongsTo(municipio, { as: "municipiodetalle", foreignKey: "id_municipio"});
   municipio.hasMany(cliente, { as: "clientes", foreignKey: "id_municipio"});
   concepto_municipio.belongsTo(municipio, { as: "municipiodetalle", foreignKey: "id_municipio"});
@@ -156,11 +170,19 @@ function initModels(sequelize) {
   pago_detalle.belongsTo(pago_arriendo, { as: "pagoarrdetalle", foreignKey: "id_pago_arriendo"});
   pago_arriendo.hasMany(pago_detalle, { as: "pagodetalle", foreignKey: "id_pago_arriendo"});
   pago_administracion.belongsTo(periodo, { as: "periododetalle", foreignKey: "periodo"});
-  periodo.hasMany(pago_administracion, { as: "pagoadmdetalle", foreignKey: "periodo"});
-  usuario_permiso.belongsTo(permiso, { as: "permiso1", foreignKey: "id_permiso"});
+  periodo.hasMany(pago_administracion, { as: "pagoadmdetalle", foreignKey: "periodo"}); 
+  modulo_permiso.belongsTo(permiso, { as: "permiso", foreignKey: "id_permiso"});
+  permiso.hasMany(modulo_permiso, { as: "modulopermiso", foreignKey: "id_permiso"});
+  permiso_detalle.belongsTo(permiso, { as: "permiso", foreignKey: "id_permiso"});
+  permiso.hasMany(permiso_detalle, { as: "permisodetalle", foreignKey: "id_permiso"});
+  usuario_permiso.belongsTo(permiso, { as: "permiso", foreignKey: "id_permiso"});
   permiso.hasMany(usuario_permiso, { as: "usuarioperm", foreignKey: "id_permiso"});
   solicitud.belongsTo(proceso, { as: "proceso1", foreignKey: "id_proceso"});
   proceso.hasMany(solicitud, { as: "solicitud1", foreignKey: "id_proceso"});
+  subproceso.belongsTo(proceso, { as: "proceso", foreignKey: "id_proceso"});
+  proceso.hasMany(subproceso, { as: "subproceso", foreignKey: "id_proceso"});
+  usuario.belongsTo(proceso, { as: "procesodetalle", foreignKey: "proceso"});
+  proceso.hasMany(usuario, { as: "usuarios", foreignKey: "proceso"});
   contrato.belongsTo(punto_de_venta, { as: "pvdetalle", foreignKey: "id_punto_venta"});
   punto_de_venta.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_punto_venta"});
   pago_detalle.belongsTo(punto_de_venta, { as: "pvdetalle", foreignKey: "id_punto_venta"});
@@ -179,6 +201,10 @@ function initModels(sequelize) {
   responsable.hasMany(pago_detalle, { as: "pagodetalle", foreignKey: "id_responsable"});
   usuario.belongsTo(rol, { as: "rol", foreignKey: "rolid_rol"});
   rol.hasMany(usuario, { as: "usuarios", foreignKey: "rolid_rol"});
+  permiso_detalle.belongsTo(subproceso, { as: "subprocesodetalle", foreignKey: "id_subproceso"});
+  subproceso.hasMany(permiso_detalle, { as: "permisodetalle", foreignKey: "id_subproceso"});
+  usuario.belongsTo(subproceso, { as: "subprocesodetalle", foreignKey: "subproceso"});
+  subproceso.hasMany(usuario, { as: "usuarios", foreignKey: "subproceso"});
   conceptos.belongsTo(tipo_concepto, { as: "tipoconcepto", foreignKey: "tipo_concepto"});
   tipo_concepto.hasMany(conceptos, { as: "conceptos", foreignKey: "tipo_concepto"});
   contrato.belongsTo(tipo_contrato, { as: "tipocontrato", foreignKey: "tipo_contrato"});
@@ -199,6 +225,7 @@ function initModels(sequelize) {
   return {
     autorizado,
     autorizado_administracion,
+    cargo,
     cliente,
     concepto_municipio,
     conceptos,
@@ -217,6 +244,8 @@ function initModels(sequelize) {
     liquidacion,
     metodo_pago,
     microzona,
+    modulo,
+    modulo_permiso,
     municipio,
     pago,
     pago_administracion,
@@ -225,6 +254,7 @@ function initModels(sequelize) {
     pago_detalle,
     periodo,
     permiso,
+    permiso_detalle,
     proceso,
     propietario,
     propietario_punto_venta,
@@ -234,6 +264,7 @@ function initModels(sequelize) {
     rol,
     saldo_credito,
     solicitud,
+    subproceso,
     tipo_concepto,
     tipo_contrato,
     tipo_cuenta,
