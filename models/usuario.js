@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rolid_rol: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'rol',
         key: 'id_rol'
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     apellidos: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     email: {
       type: DataTypes.STRING(255),

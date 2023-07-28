@@ -42,7 +42,7 @@ function routerApi(app) {
   router.use('/departamentos', departamentoRouter);
   router.use('/municipios', municipioRouter);
   router.use('/solicitudes', solicitudRouter);
-  router.use('/procesos', procesoRouter);
+ // router.use('/procesos', procesoRouter);
   router.use('/arrendadores', arrendadorRouter);
   router.use('/tipopersonas', tipoPersonaRouter);
   router.use('/zona', zonaRouter);
