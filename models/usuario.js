@@ -62,6 +62,15 @@ module.exports = function(sequelize, DataTypes) {
     numero_documento: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    Sexo: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    estado: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
     }
   }, {
     sequelize,

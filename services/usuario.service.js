@@ -52,6 +52,16 @@ class UsuarioService {
     await usuario.destroy()
     return 'eliminado'
   }
+  async habilitarUsuario(id){
+    const usuario = await this.findOne(id)
+    usuario.update({ estado: 0 })
+    return 'habilitado'
+  }
+  async inhabilitarUsuario(id){
+    const usuario = await this.findOne(id)
+    usuario.update({ estado: 1 })
+    return 'deshabilitado'
+  }
 }
 
 module.exports = UsuarioService;

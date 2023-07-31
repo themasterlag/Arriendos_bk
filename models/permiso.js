@@ -3,6 +3,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('permiso', {
     id_permiso: {
       autoIncrement: true,
+      autoIncrementIdentity: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true

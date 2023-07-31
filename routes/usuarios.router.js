@@ -84,11 +84,21 @@ router.patch('/update',
     }
   });
 
-router.post('/delete',
+router.patch('/inhabilitar',
   async (req, res, next) => {
     try {
       const id = req.body.id;
-      const newCategory = await service.delete(id);
+      const newCategory = await service.inhabilitarUsuario(id);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      next(error);
+    }
+  });
+  router.patch('/habilitar',
+  async (req, res, next) => {
+    try {
+      const id = req.body.id;
+      const newCategory = await service.habilitarUsuario(id);
       res.status(201).json(newCategory);
     } catch (error) {
       next(error);
