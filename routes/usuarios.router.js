@@ -71,7 +71,7 @@ router.post('/',
     }
   });
 
-router.post('/update',
+router.patch('/update',
   async (req, res, next) => {
     try {
       const body = req.body
