@@ -325,6 +325,7 @@ class PagoArriendosService {
         orderType = 'ORDER BY "contratodetalle->autdetalle->entidadbancaria".entidad_bancaria ASC, nombres ASC, apellidos  ASC'
         break;
       case 'efectivo':
+        
         whereConditionAutorizado = { metodo_pago: 2 };
         // orderCondition = [[{ model: con.models.cliente, as: 'clientedetalle' }, 'numero_documento', 'ASC']];
         orderType = ' ORDER BY numero_documento ASC'
@@ -335,8 +336,9 @@ class PagoArriendosService {
       default:
         throw new Error('Filter not recognized');
     }
+    
     const result = await con.models.pago_arriendo.findAll({
-      attributes: ['id_pago_arriendo','canon'],
+      attributes: ['id_pago_arriendo','canon', 'fecha_periodo'],
       include:[
         
         {
@@ -357,7 +359,7 @@ class PagoArriendosService {
                   as: 'entidadbancaria',
                   attributes: ['entidad_bancaria'],
                   where: whereConditionEntidadBancaria,
-                  require: true,
+                 required: false,
                 },
                 {
                   model: con.models.cliente,
@@ -392,17 +394,20 @@ class PagoArriendosService {
         model: con.models.pago_concepto,
         as: 'contconceptos',
         attributes: ['pago_concepto_valor', 'id_concepto'],
+        
         include:[
           {
             model: con.models.conceptos,
             as : 'conceptodetalle',
-           attributes: ['codigo_concepto','nombre_concepto', 'tipo_concepto']
+           attributes: ['codigo_concepto','nombre_concepto', 'tipo_concepto'],
+          
           }
         ]
        }
       
       ],
-      where: con.literal('EXTRACT(YEAR FROM fecha_periodo) = '+year+' AND EXTRACT(MONTH FROM fecha_periodo) = '+month, orderType),
+     
+      where: con.literal('EXTRACT(YEAR FROM fecha_periodo) = '+year+' AND EXTRACT(MONTH FROM fecha_periodo) = '+month+ orderType),
      // order: orderCondition
     })
     
