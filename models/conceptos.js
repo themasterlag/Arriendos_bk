@@ -38,6 +38,10 @@ module.exports = function(sequelize, DataTypes) {
     incremento: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    concepto_asociado: {
+      type: DataTypes.STRING(10),
+      allowNull: true
     }
   }, {
     sequelize,
