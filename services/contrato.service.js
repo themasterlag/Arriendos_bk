@@ -14,9 +14,6 @@ class ContratoService {
           model: con.models.punto_de_venta,
           as: 'pvdetalle',
           attributes: ['nombre_comercial', 'codigo_sitio_venta'],
-          order: [
-            ['codigo_sitio_venta', 'ASC'],
-          ]
         },
         {
           model: con.models.responsable,
@@ -30,7 +27,9 @@ class ContratoService {
           ]
         },
       ],
-      
+      order: [
+        [{ model: con.models.punto_de_venta, as: 'pvdetalle' }, 'codigo_sitio_venta', 'ASC']
+      ]
     });
     return result;
   }
