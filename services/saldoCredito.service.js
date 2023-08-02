@@ -55,7 +55,8 @@ class SaldoCreditoService {
       `select  * from arriendos.saldo_credito as cre
         inner join arriendos.contrato_conceptos as con on cre.contrato_concepto_id = con.id_contrato_concepto
         inner join arriendos.contrato as contr on con.id_contrato = contr.id_contrato
-        inner join arriendos.conceptos on conceptos.id_concepto = con.id_concepto`
+        inner join arriendos.conceptos on conceptos.id_concepto = con.id_concepto
+        inner join arriendos.punto_de_venta as punto on punto.id_punto_venta = contr.id_punto_venta`
     );
     return data;
   }

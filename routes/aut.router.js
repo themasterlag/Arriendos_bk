@@ -36,14 +36,17 @@ router.post(
 
 
 router.post('/login', async (req, res, next) => {
+  respuesta = null;
   try {
     const email = req.body.email;
     const pass = req.body.password;
     const users = await service.login(email, pass);
-    res.json(users);
+    respuesta = users;
   } catch (error) {
-    errorHandler.errorHandler(error, req, res, next)
+    // errorHandler.errorHandler(error, req, res, next)
+    res.status(401).send(error);
   }
+  res.json(respuesta);
 });
 
 module.exports = router;

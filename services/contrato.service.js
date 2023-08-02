@@ -14,8 +14,23 @@ class ContratoService {
           model: con.models.punto_de_venta,
           as: 'pvdetalle',
           attributes: ['nombre_comercial', 'codigo_sitio_venta'],
+          order: [
+            ['codigo_sitio_venta', 'ASC'],
+          ]
+        },
+        {
+          model: con.models.responsable,
+          as: 'responsabledetalle',
+          include: [
+            {
+              model: con.models.cliente,
+              as: 'clientedetalle',
+              attributes: ['numero_documento']
+            }
+          ]
         },
       ],
+      
     });
     return result;
   }

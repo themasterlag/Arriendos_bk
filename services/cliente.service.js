@@ -9,7 +9,11 @@ class ClienteService {
   }
 
   async find() {
-    const data = await con.models.cliente.findAll();
+    const data = await con.models.cliente.findAll({
+      order: [
+        ['numero_documento', 'ASC']
+      ]
+    });
     return data;
   }
 

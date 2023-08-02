@@ -6,7 +6,11 @@ class ConceptosService{
 
     }
     async find() {
-        const data = await con.models.conceptos.findAll()
+        const data = await con.models.conceptos.findAll({
+          order: [
+            ['codigo_concepto', 'ASC']
+          ]
+        })
         return data;
       }
 

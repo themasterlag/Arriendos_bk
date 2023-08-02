@@ -9,7 +9,11 @@ class PuntoDeVentaService {
   }
 
   async find() {
-    const data = await con.models.punto_de_venta.findAll();
+    const data = await con.models.punto_de_venta.findAll({
+      order: [
+        ['codigo_sitio_venta', 'ASC'],
+      ]
+    });
     return data;
   }
 
