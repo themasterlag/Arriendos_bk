@@ -15,6 +15,15 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/asociados', async ( req, res, next) => {
+  try {
+    const conceptos = await service.findWhitAsociado();
+    res.status(200).json(conceptos);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -35,5 +44,6 @@ router.get('/tipo/:id', async (req, res, next) => {
     next(error);
   }
 });
+
 
 module.exports = router;

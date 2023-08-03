@@ -31,6 +31,17 @@ class ConceptosService{
         }
         return rta;
       }
+
+    async findWhitAsociado(){
+      const data = await con.models.conceptos.findAll({
+        where: {
+          concepto_asociado: {
+            [con.Sequelize.Op.ne]: null
+          }
+        }
+      })
+        return data;
+    }  
 }
 
 
