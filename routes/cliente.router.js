@@ -49,19 +49,24 @@ router.patch('/:id', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
+  respuesta = null;
+  codigo = 201;
+
   try {
     const body = req.body;
     console.log(body);
     const newCliente = await service.create(body);
 
-    res.status(201).json({
+    respuesta = {
       estado: '1',
       id: newCliente,
       respuesta: 'se agrego correctamente el cliente',
-    });
+    };
   } catch (error) {
-    next(error);
+    respuesta = error;
   }
+
+  res.status(codigo).json(respuesta);
 });
 
 router.post('/delete', async (req, res, next) => {

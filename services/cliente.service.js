@@ -4,7 +4,15 @@ class ClienteService {
   constructor() {}
   async create(data) {
     console.log(data);
-    const cliente = await con.models.cliente.create(data);
+    const rta = await con.models.cliente.findAll({
+      where: {numero_documento: data.numero_documento},
+    });
+    if (!rta) {
+      const cliente = await con.models.cliente.create(data);
+    }
+    else {
+      throw console.error('Ya existe un tercero con el numero de documento');
+    }
     return cliente.id_cliente;
   }
 
