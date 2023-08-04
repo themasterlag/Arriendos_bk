@@ -7,7 +7,11 @@ class EntidadBancariaService{
   }
 
   async find(){
-    const data = await con.models.entidad_bancaria.findAll();
+    const data = await con.models.entidad_bancaria.findAll({
+      order: [
+        ['entidad_bancaria', 'ASC']
+      ]
+    });
 
     return data;
   }
