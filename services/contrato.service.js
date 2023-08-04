@@ -77,8 +77,8 @@ class ContratoService {
     }
     return rta;
   }
-  async findOnePdv(id) {
-    const rta = await con.models.contrato.findOne({
+  async findByPdv(id) {
+    const rta = await con.models.contrato.findAll({
       include: [
         {
           association: 'responsabledetalle',
@@ -94,9 +94,11 @@ class ContratoService {
         },
         {
           association: 'pvdetalle',
-          where: { codigo_sitio_venta: id },
         },
       ],
+      where: {
+        '$pvdetalle.codigo_sitio_venta$': id      
+      }
     });
     if (!rta) {
       throw Error('no se encontro');

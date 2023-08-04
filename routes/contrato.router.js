@@ -84,12 +84,17 @@ router.get('/:id', async (req, res, next) => {
 router.get('/pdv/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    let contrato = await service.findOnePdv(id);
-    const { id_contrato } = contrato;
-    const contratoConcepto = await contratoConceptoService.findByContrato(
-      id_contrato
-    );
-    res.json({ contrato, contratoConcepto });
+    let contrato = await service.findByPdv(id);
+
+    respuesta = [];
+
+    for (const contr of contrato) {
+      const { id_contrato } = contr;
+      const contratoConcepto = await contratoConceptoService.findByContrato(id_contrato);
+      respuesta.push({ contrato:contr, contratoConcepto});
+    };
+
+    res.json(respuesta);
   } catch (error) {
     next(error);
     Error('Error details:', error.message, error.stack);
