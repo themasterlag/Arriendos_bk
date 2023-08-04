@@ -37,16 +37,18 @@ router.post(
 
 router.post('/login', async (req, res, next) => {
   respuesta = null;
+  codigo = 200;
   try {
     const email = req.body.email;
     const pass = req.body.password;
     const users = await service.login(email, pass);
     respuesta = users;
   } catch (error) {
+    codigo = 401;
+    respuesta = error;
     // errorHandler.errorHandler(error, req, res, next)
-    res.status(401).send(error);
   }
-  res.json(respuesta);
+  res.status(codigo).send(respuesta);
 });
 
 module.exports = router;
