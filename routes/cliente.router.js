@@ -64,6 +64,7 @@ router.post('/', async (req, res, next) => {
     };
   } catch (error) {
     respuesta = error;
+    codigo = 400;
   }
 
   res.status(codigo).json(respuesta);
