@@ -129,7 +129,7 @@ class ContratoService {
     return contrato.id_contrato;
   }
 
-  async traerContratosConConceptos(sitioVenta) {
+  async traerContratosConConceptos(id) {
     const result = await con.models.contrato.findAll({
       attributes: [
         'id_contrato',
@@ -163,7 +163,6 @@ class ContratoService {
         {
           model: con.models.punto_de_venta,
           as: 'pvdetalle',
-          where: { codigo_sitio_venta: sitioVenta },
           attributes: [
             'codigo_sitio_venta',
             'nombre_comercial',
@@ -195,6 +194,7 @@ class ContratoService {
           ],
         },
       ],
+      where: { id_contrato: id },
     });
     return result;
   }
@@ -228,7 +228,6 @@ class ContratoService {
         {
           model: con.models.punto_de_venta,
           as: 'pvdetalle',
-          where: { codigo_sitio_venta: sitioVenta },
           attributes: [
             'codigo_sitio_venta',
             'nombre_comercial',
@@ -289,6 +288,7 @@ class ContratoService {
         //   },
         // },
       ],
+      where: { id_contrato: id },
     });
     return result;
   }
