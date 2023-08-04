@@ -11,7 +11,7 @@ class ClienteService {
       const cliente = await con.models.cliente.create(data);
     }
     else {
-      throw ('Ya existe un tercero con el numero de documento');
+      throw {message: 'Ya existe un tercero con el numero de documento'}
     }
     return cliente.id_cliente;
   }
