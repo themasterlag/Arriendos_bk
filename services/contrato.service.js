@@ -199,7 +199,7 @@ class ContratoService {
     return result;
   }
 
-  async traerConceptosPagado(sitioVenta, fecha_periodo) {
+  async traerConceptosPagado(id, fecha_periodo) {
     const result = await con.models.contrato.findAll({
       attributes: ['id_contrato', 'valor_canon', 'fecha_inicio_contrato','fecha_fin_contrato'],
       include: [
