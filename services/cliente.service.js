@@ -3,18 +3,18 @@ const con = require('../libs/sequelize');
 class ClienteService {
   constructor() {}
   async create(data) {
-    console.log(data);
     let cliente = null;
     const rta = await con.models.cliente.findAll({
       where: {numero_documento: data.numero_documento},
     });
 
-    if (!rta) {
+    if (rta.length == 0) {
       cliente = await con.models.cliente.create(data);
     }
     else {
       throw {message: 'Ya existe un tercero con el numero de documento'}
     }
+    
     return cliente.id_cliente;
   }
 

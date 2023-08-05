@@ -54,7 +54,6 @@ router.post('/', async (req, res, next) => {
 
   try {
     const body = req.body;
-    console.log(body);
     const newCliente = await service.create(body);
 
     respuesta = {
