@@ -9,7 +9,11 @@ class MunicipioService{
   }
 
   async find(){
-    const data = con.models.municipio.findAll();
+    const data = con.models.municipio.findAll({
+      order: [
+        ['municipio', 'ASC']
+      ]
+    });
     return data;
   }
   async findOne(id){
@@ -23,7 +27,10 @@ class MunicipioService{
     const rta = await con.models.municipio.findAll({
       where: {
         id_departamento: id
-      }
+      },
+      order: [
+        ['municipio', 'ASC']
+      ]
     })
     if(!rta){
       throw console.error('No se encontro');
