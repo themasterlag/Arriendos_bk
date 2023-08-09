@@ -31,13 +31,15 @@ const incrementoRouter = require('./incremento.router');
 const pagoConceptoRouter = require('./pagoconcepto.router');
 const reportesRouter = require('./reportes.router');
 const IncrementoContratoRouter = require('./incrementoContrato.router');
-const procesosRouter = require('./procesos.router')
-const permisoRouter = require('./permiso.router')
+const procesosRouter = require('./procesos.router');
+const permisoRouter = require('./permiso.router');
+const cargoRouter = require('./cargo.router');
 
 function routerApi(app) {
   const router = express.Router();
 
   app.use('/api/arriendos', router);
+  router.use("/cargos", cargoRouter);
   router.use('/usuarios', usuarioRouter);
   router.use('/departamentos', departamentoRouter);
   router.use('/municipios', municipioRouter);

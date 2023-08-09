@@ -8,7 +8,7 @@ class CargoService{
     async create(data) {
         const cargo = await con.models.cargo.create(data);
         return cargo;
-      }
+    }
     async find(){
         const cargos = await con.models.cargo.findAll()
         return cargos

@@ -20,7 +20,13 @@ class AutService{
         apellidos: data.apellidos,
         email: data.email,
         password: bcrypt.hashSync(data.password, 8),
-        dependencia: data.dependencia
+        dependencia: null,
+        tipo_documento: data.tipo_documento,
+        proceso: data.proceso,
+        subproceso: data.subproceso,
+        numero_documento: data.numero_documento,
+        Sexo: data.sexo,
+        estado: 1
       });
     return usuario;
   }
