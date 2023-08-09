@@ -18,7 +18,7 @@ router.use(function (req, res, next) {
 });
 
 router.post(
-  "/signup", async (req, res, next) => {
+  "/singup", async (req, res, next) => {
   try {
     let verify = await veriReg.checkDuplicateUsernameOrEmail(req, res, next)
     if ( verify.statusCode==200) {
