@@ -41,14 +41,13 @@ class UsuarioService {
     return rta
   }
   async update(id, changes) {
-
     const usuario =  await this.findOne(id);
     
     if (!changes.password) {
       changes.password = usuario.password;
     }
     else{
-      changes.password = bcrypt.hashSync(data.password, 8);
+      changes.password = bcrypt.hashSync( changes.password.toString(), 8);
     }
 
     const rta = await usuario.update(changes);
