@@ -35,7 +35,7 @@ router.get('/todos', async (req, res, next)=>{
     const usuarios = await service.find();
     res.json(usuarios).status(200);
   } catch (error) {
-    res.json(usuarios).status(error.codigo);
+    res.json(error).status(error.codigo);
   }
 })
 
