@@ -6,9 +6,9 @@ var checkDuplicateUsernameOrEmail =   async (req, res) => {
   let usuario =  await User.findOne({where: {email: req.body.email}})
 
     if (usuario) {
-      return {
+      throw {
         statusCode: 409,
-        message: "Failed! Email is already in use!"
+        message: "Email de usuario ya existe"
       };
     }
     return {statusCode: 200, message :"Email disponible"};
