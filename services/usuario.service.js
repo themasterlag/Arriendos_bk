@@ -37,7 +37,8 @@ class UsuarioService {
       where:{
         numero_documento: documento
       }
-    })
+    });
+    
     if(!rta){
       throw {message:'no se encontro el usuario', codigo:404};
     }

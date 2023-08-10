@@ -35,7 +35,7 @@ router.get('/todos', async (req, res, next)=>{
     const usuarios = await service.find();
     res.json(usuarios).status(200);
   } catch (error) {
-    res.json(error).status(error.codigo);
+    res.status(error.codigo).json(error);
   }
 })
 
@@ -45,7 +45,7 @@ router.get('/documento/:id', async (req, res, next)=>{
     const usuario = await service.findByDocumento(id)
     res.status(200).json(usuario)
   } catch (error) {
-    res.json(error).status(error.codigo);
+    res.status(error.codigo).json(error);
   }
 })
 
