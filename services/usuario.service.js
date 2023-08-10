@@ -23,7 +23,7 @@ class UsuarioService {
     //const client = await con();
     const rta = await con.models.usuario.findByPk(id);
     if(!rta){
-      throw console.error('no se encontro');
+      throw {message:'no se encontro', codigo:404};
     }
     return rta;
 
@@ -41,13 +41,9 @@ class UsuarioService {
   async update(id, changes) {
 
     const usuario =  await this.findOne(id);
-    if(!usuario){
-      throw console.error({message:'no se encontro'});
-    }
-    else{
-      if (!changes.password) {
-        changes.password = usuario.password;
-      }
+    
+    if (!changes.password) {
+      changes.password = usuario.password;
     }
 
     const rta = await usuario.update(changes);

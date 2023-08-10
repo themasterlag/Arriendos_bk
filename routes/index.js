@@ -38,7 +38,7 @@ const cargoRouter = require('./cargo.router');
 
 function routerApi(app) {
   const router = express.Router();
-
+  
   app.use('/api/arriendos', router);
   router.use("/cargos", cargoRouter);
   router.use('/usuarios', usuarioRouter);

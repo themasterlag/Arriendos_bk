@@ -76,11 +76,10 @@ router.patch('/update',
     try {
       const body = req.body
       const id = body.id_usuario;
-      console.log(body);
       const newCategory = await service.update(id, body);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).json(error);
     }
   });
 

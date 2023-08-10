@@ -63,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    Sexo: {
+    sexo: {
       type: DataTypes.STRING(100),
       allowNull: true
     },
