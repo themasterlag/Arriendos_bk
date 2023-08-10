@@ -47,7 +47,6 @@ var _tipo_cuenta = require("./tipo_cuenta");
 var _tipo_persona = require("./tipo_persona");
 var _tipo_servicio = require("./tipo_servicio");
 var _usuario = require("./usuario");
-var _usuario_permiso = require("./usuario_permiso");
 var _zona = require("./zona");
 
 function initModels(sequelize) {
@@ -99,7 +98,6 @@ function initModels(sequelize) {
   var tipo_persona = _tipo_persona(sequelize, DataTypes);
   var tipo_servicio = _tipo_servicio(sequelize, DataTypes);
   var usuario = _usuario(sequelize, DataTypes);
-  var usuario_permiso = _usuario_permiso(sequelize, DataTypes);
   var zona = _zona(sequelize, DataTypes);
   contrato.belongsTo(autorizado, { as: "autdetalle", foreignKey: "id_autorizado"});
   autorizado.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_autorizado"});
@@ -141,6 +139,8 @@ function initModels(sequelize) {
   departamento.hasMany(municipio, { as: "municipios", foreignKey: "id_departamento"});
   usuario.belongsTo(dependencia, { as: "dependenciadetalle", foreignKey: "dependencia"});
   dependencia.hasMany(usuario, { as: "usuariosdetalle", foreignKey: "dependencia"});
+  usuario.belongsTo(cargo, { as: "usuariocargo", foreignKey: "id_cargo"});
+  cargo.hasMany(usuario, { as: "cargousuario", foreignKey: "id_cargo"});
   autorizado.belongsTo(entidad_bancaria, { as: "entidadbancaria", foreignKey: "entidad_bancaria"});
   entidad_bancaria.hasMany(autorizado, { as: "autorizadosdetalle", foreignKey: "entidad_bancaria"});
   autorizado_administracion.belongsTo(entidad_bancaria, { as: "entidadbancaria", foreignKey: "entidad_bancaria"});
@@ -175,8 +175,6 @@ function initModels(sequelize) {
   permiso.hasMany(modulo_permiso, { as: "modulopermiso", foreignKey: "id_permiso"});
   permiso_detalle.belongsTo(permiso, { as: "permiso", foreignKey: "id_permiso"});
   permiso.hasMany(permiso_detalle, { as: "permisodetalle", foreignKey: "id_permiso"});
-  usuario_permiso.belongsTo(permiso, { as: "permiso", foreignKey: "id_permiso"});
-  permiso.hasMany(usuario_permiso, { as: "usuarioperm", foreignKey: "id_permiso"});
   solicitud.belongsTo(proceso, { as: "proceso1", foreignKey: "id_proceso"});
   proceso.hasMany(solicitud, { as: "solicitud1", foreignKey: "id_proceso"});
   subproceso.belongsTo(proceso, { as: "proceso", foreignKey: "id_proceso"});
@@ -217,8 +215,6 @@ function initModels(sequelize) {
   tipo_cuenta.hasMany(autorizado_administracion, { as: "autadmdetalle", foreignKey: "id_tipo_cuenta"});
   contrato.belongsTo(usuario, { as: "usuariocontrato", foreignKey: "id_usuario"});
   usuario.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_usuario"});
-  usuario_permiso.belongsTo(usuario, { as: "usuariodetalle", foreignKey: "id_usuario"});
-  usuario.hasMany(usuario_permiso, { as: "usuariopermisos", foreignKey: "id_usuario"});
   microzona.belongsTo(zona, { as: "zona", foreignKey: "id_zona"});
   zona.hasMany(microzona, { as: "microzonas", foreignKey: "id_zona"});
 
@@ -271,7 +267,6 @@ function initModels(sequelize) {
     tipo_persona,
     tipo_servicio,
     usuario,
-    usuario_permiso,
     zona,
   };
 }

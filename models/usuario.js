@@ -71,6 +71,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 0
+    },
+    id_cargo: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'cargo',
+        key: 'id_cargo'
+      }
     }
   }, {
     sequelize,

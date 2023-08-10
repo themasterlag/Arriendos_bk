@@ -26,7 +26,8 @@ class AutService{
         subproceso: data.subproceso,
         numero_documento: data.numero_documento,
         Sexo: data.sexo,
-        estado: 0
+        estado: 0,
+        id_cargo: data.id_cargo
       });
     return usuario;
   }
