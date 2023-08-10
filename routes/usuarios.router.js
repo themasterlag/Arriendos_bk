@@ -45,7 +45,7 @@ router.get('/documento/:id', async (req, res, next)=>{
     const usuario = await service.findByDocumento(id)
     res.status(200).json(usuario)
   } catch (error) {
-    next(error)
+    res.json(error).status(error.codigo);
   }
 })
 
