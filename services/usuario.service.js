@@ -41,6 +41,14 @@ class UsuarioService {
   async update(id, changes) {
 
     const usuario =  await this.findOne(id);
+    if(!usuario){
+      throw console.error({message:'no se encontro'});
+    }
+    else{
+      if (!changes.password) {
+        changes.password = usuario.password;
+      }
+    }
 
     const rta = await usuario.update(changes);
 
