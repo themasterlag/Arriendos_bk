@@ -38,6 +38,10 @@ class UsuarioService {
         numero_documento: documento
       }
     })
+    if(!rta){
+      throw {message:'no se encontro el usuario', codigo:404};
+    }
+
     return rta
   }
   async update(id, changes) {
