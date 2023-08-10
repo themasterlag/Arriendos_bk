@@ -25,7 +25,7 @@ class UsuarioService {
     //const client = await con();
     const rta = await con.models.usuario.findByPk(id);
     if(!rta){
-      throw {message:'no se encontro', codigo:404};
+      throw {message:'No se encontro', codigo:404};
     }
     return rta;
 
@@ -38,9 +38,9 @@ class UsuarioService {
         numero_documento: documento
       }
     });
-    
+
     if(!rta){
-      throw {message:'no se encontro el usuario', codigo:404};
+      throw {message:'No se encontro el usuario', codigo:404};
     }
 
     return rta
