@@ -25,9 +25,15 @@ class ModuloPermisoDetalleService{
             throw new Error(error)
         }
     }
-    async deletePermisoDetalle(id){
-        const permisoDetalle = await this.finOnePermisoDetalle(id)
-        permisoDetalle.destroy()
+    async deletePermisoDetalle(permiso){
+        const permisoDetalle = await con.models.permiso_detalle.findOne({
+            where:{
+                id_permiso: permiso.id_permiso, 
+                id_cargo: permiso.id_cargo
+            }
+        });
+        
+        permisoDetalle.destroy();
         return 'eliminado'
     }
 

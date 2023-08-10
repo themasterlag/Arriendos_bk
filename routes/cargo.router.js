@@ -38,10 +38,10 @@ router.patch('/update', async(req, res, next)=>{
 router.get('/:id', async (req, res, next)=>{
     try {
         const { id } = req.params
-        const cargo = await cargoService.findOneCargo(id)
-        res.status(cargo).status(200)
+        const cargo = await cargoService.findById(id)
+        res.send(cargo).status(200)
     } catch (error) {
-        next(error)
+        res.send(error).status(500)
     }
 })
 

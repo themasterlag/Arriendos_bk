@@ -13,6 +13,26 @@ class CargoService{
         const cargos = await con.models.cargo.findAll()
         return cargos
     }
+
+    async findById(id) {
+        const cargo = await con.models.cargo.findAll({
+            where: { id_cargo: id },
+            include: [
+                {
+                    model: con.models.permiso_detalle,
+                    as: 'permisodetalle',
+                    include: [
+                        {
+                            model: con.models.permiso,
+                            as: 'permiso'
+                        }
+                    ]
+                }
+            ],
+        })
+        return cargo
+    }
+
     async findOneCargo(id){
         const cargo = await con.models.cargo.findByPk(id)
         return cargo

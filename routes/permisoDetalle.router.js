@@ -6,7 +6,7 @@ const PermisoDetalleService = require('./../services/moduloPermisosDetalle.servi
 
 const permisoDetalleService = new PermisoDetalleService()
 
-router.get('/permiso-detalle', async (req, res, next)=>{
+router.get('/', async (req, res, next)=>{
     try {
         const permisoDetalles = await permisoDetalleService.findPermisoDetalle()
         res.json(permisoDetalles)
@@ -15,16 +15,23 @@ router.get('/permiso-detalle', async (req, res, next)=>{
     }
 })
 
-router.post('/permiso-detalle',async (req, res, next)=>{
+router.post('/',async (req, res, next)=>{
     try {
         const newPermisoDetalle = req.body
-        const createPermisoDetalle = await permisoDetalleService.createPermisoDetalle(newPermisoDetalle)
+        let permisoDetalle = null;
+        
+        if (newPermisoDetalle.check) {
+            permisoDetalle = await permisoDetalleService.createPermisoDetalle(newPermisoDetalle);
+        }
+        else{
+            permisoDetalle = await permisoDetalleService.deletePermisoDetalle(newPermisoDetalle);
+        }
      res.json(createPermisoDetalle).status(200)
     } catch (error) {
-        next(error)
+        res.json(error).status(500)
     }
 })
-router.patch('/permiso-detalle/update/', async (req, res, next)=>{
+router.patch('/update/', async (req, res, next)=>{
     try {
         const permisoUpdate = req.body
         const id = permisoUpdate.id_permiso_detalle
@@ -34,7 +41,7 @@ router.patch('/permiso-detalle/update/', async (req, res, next)=>{
         next(error)
     }
 })
-router.delete('/permiso-detalle/delete/:id', async (req, res, next)=>{
+router.delete('/delete/:id', async (req, res, next)=>{
     try {
         const { id } = req.params
         const permisoDelete = await permisoDetalleService.deletePermisoDetalle(id)
@@ -44,7 +51,7 @@ router.delete('/permiso-detalle/delete/:id', async (req, res, next)=>{
     }
 })
 
-router.get('/permiso-detalle/:id', async (req, res, next)=>{
+router.get('/:id', async (req, res, next)=>{
     try {
         const { id } = req.params
         const permisoDetalle = await permisoDetalleService.finOnePermisoDetalle(id)
