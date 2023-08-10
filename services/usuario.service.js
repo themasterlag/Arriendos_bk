@@ -2,6 +2,8 @@
 
 //const e = require('express')
 const con = require('../libs/sequelize')
+var bcrypt = require("bcryptjs");
+
 class UsuarioService {
 
   constructor(){
@@ -44,6 +46,9 @@ class UsuarioService {
     
     if (!changes.password) {
       changes.password = usuario.password;
+    }
+    else{
+      changes.password = bcrypt.hashSync(data.password, 8);
     }
 
     const rta = await usuario.update(changes);
