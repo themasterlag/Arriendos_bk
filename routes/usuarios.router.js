@@ -32,10 +32,10 @@ router.get('/', async (req, res, next) => {
 
 router.get('/todos', async (req, res, next)=>{
   try {
-    const usuarios = await service.find()
-    res.json(usuarios).status(200)
+    const usuarios = await service.find();
+    res.json(usuarios).status(200);
   } catch (error) {
-    next(error)
+    res.json(usuarios).status(error.codigo);
   }
 })
 
