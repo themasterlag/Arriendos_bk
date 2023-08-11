@@ -36,7 +36,23 @@ class AutService{
   async login(emaill,pass) {
 
     //const client = await con();
-    const rta = await User.findOne({where: {email:emaill}});
+    const rta = await User.findOne({
+      where: {email:emaill},
+      include: [
+        {
+          model: con.models.cargo,
+          as: 'usuariocargo',
+          attributes: ["cargo"],
+          include: [
+            {
+              model: con.models.permiso_detalle,
+              as: 'permisodetalle',
+              attributes: ["id_permiso"]
+            }
+          ]
+        }
+      ]
+    });
     if(!rta){
       throw { message: "User Not found." }
     }
@@ -55,7 +71,8 @@ class AutService{
       id_usuario: rta.id_usuario,
       rolid_rol: rta.rolid_rol,
       nombres: rta.nombres,
-      apellidos: rta.apellidos
+      apellidos: rta.apellidos,
+      permisos: rta.usuariocargo
       }, config.tokSecret, {
       expiresIn: 3600 // 1 hora
     });
