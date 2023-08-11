@@ -90,7 +90,7 @@ router.patch('/inhabilitar',
       const newCategory = await service.inhabilitarUsuario(id);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).json(error);
     }
   });
   router.patch('/habilitar',
@@ -100,7 +100,7 @@ router.patch('/inhabilitar',
       const newCategory = await service.habilitarUsuario(id);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).json(error);
     }
   });
 
