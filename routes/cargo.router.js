@@ -39,9 +39,9 @@ router.get('/:id', async (req, res, next)=>{
     try {
         const { id } = req.params
         const cargo = await cargoService.findById(id)
-        res.status(cargo).status(200)
+        res.status(200).send(cargo)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
