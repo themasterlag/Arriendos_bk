@@ -54,7 +54,7 @@ class AutService{
       ]
     });
     if(!rta){
-      throw { message: "User Not found." }
+      throw { message: "Usuario no encontrado o inhabilitado" }
     }
     var passwordIsValid = bcrypt.compareSync(
       pass,
