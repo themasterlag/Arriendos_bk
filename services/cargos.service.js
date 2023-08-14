@@ -39,6 +39,7 @@ class CargoService{
     }
     async update(id, data){
         const cargo = await this.findOneCargo(id)
+        console.log(cargo)
         const rta = await cargo.update(data)
         return rta
     }

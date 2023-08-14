@@ -27,8 +27,10 @@ router.post('/', async(req, res, next)=>{
 router.patch('/update', async(req, res, next)=>{
     try {
         const oldCargo = req.body
-        const idCargo = oldCargo.id_cargo
-        const updated = await cargoService.update(idCargo, oldCargo)
+        const idCargo = oldCargo.id
+        console.log(oldCargo.id)
+        const updated = await cargoService.update(idCargo, oldCargo.cargo)
+
         res.json(updated).status(200)
     } catch (error) {
         next(error)
@@ -44,6 +46,7 @@ router.get('/:id', async (req, res, next)=>{
         res.status(error.codigo).send(error)
     }
 })
+
 
 router.delete('/:id', async(req, res, next)=>{
     try {
