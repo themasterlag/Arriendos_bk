@@ -37,7 +37,7 @@ class AutService{
 
     //const client = await con();
     const rta = await User.findOne({
-      where: {email:emaill},
+      where: {email:emaill, estado:1},
       include: [
         {
           model: con.models.cargo,

@@ -67,12 +67,12 @@ class UsuarioService {
   }
   async habilitarUsuario(id){
     const usuario = await this.findOne(id)
-    usuario.update({ estado: 0 })
+    usuario.update({ estado: 1 })
     return 'habilitado'
   }
   async inhabilitarUsuario(id){
     const usuario = await this.findOne(id)
-    usuario.update({ estado: 1 })
+    usuario.update({ estado: 0 })
     return 'deshabilitado'
   }
 }
