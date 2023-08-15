@@ -70,7 +70,7 @@ module.exports = function(sequelize, DataTypes) {
     estado: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0
+      defaultValue: 1
     },
     id_cargo: {
       type: DataTypes.INTEGER,

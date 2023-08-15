@@ -10,7 +10,7 @@ const PermisoService = require('./../services/permiso.service')
         const permisos = await permisoService.find()
         res.json(permisos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
  })
 
@@ -24,7 +24,7 @@ const PermisoService = require('./../services/permiso.service')
             respuesta: 'Se agrego correctamente el permiso'
         })
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
  })
 
@@ -34,7 +34,7 @@ const PermisoService = require('./../services/permiso.service')
         const permiso = await permisoService.findOne(id)
         res.json(permiso).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
  })
 
@@ -48,7 +48,7 @@ router.patch('/', async (req, res, next)=>{
             respuesta: 'Se agrego correctamente el permiso'
         })
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -61,7 +61,7 @@ router.delete('/:id', async (req, res, next)=>{
             respuesta: message
         })
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 

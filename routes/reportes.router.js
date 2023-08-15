@@ -13,7 +13,7 @@ router.get('/valor-incremento/:id', async (req, res, next) => {
     const result = await service.darIncrementoCanon(id_contrato);
     res.status(200).json(result);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -27,7 +27,7 @@ router.get('/contratos-periodo/:mes/:anio/:filtro', async ( req, res, next)=>{
     res.status(200).json(reportes)
 
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -37,7 +37,7 @@ router.get('/:filtro', async (req, res, next) => {
     const result = await service.findCodigoSitioVentaByFilter(filter);
     res.status(200).json(result);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 

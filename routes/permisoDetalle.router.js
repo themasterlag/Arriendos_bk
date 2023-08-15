@@ -11,7 +11,7 @@ router.get('/', async (req, res, next)=>{
         const permisoDetalles = await permisoDetalleService.findPermisoDetalle()
         res.json(permisoDetalles)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -38,7 +38,7 @@ router.patch('/update/', async (req, res, next)=>{
         const updated = await permisoDetalleService.updatePermisoDetalle(id, permisoUpdate)
         res.status(201).json(updated);
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 router.delete('/delete/:id', async (req, res, next)=>{
@@ -47,7 +47,7 @@ router.delete('/delete/:id', async (req, res, next)=>{
         const permisoDelete = await permisoDetalleService.deletePermisoDetalle(id)
         res.status(201).json(permisoDelete);
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -57,7 +57,7 @@ router.get('/:id', async (req, res, next)=>{
         const permisoDetalle = await permisoDetalleService.finOnePermisoDetalle(id)
         res.json(permisoDetalle).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 

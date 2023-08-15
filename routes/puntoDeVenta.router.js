@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
 
     res.status(201).json(puntosdeventa);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 router.get('/sincontrato', async (req, res, next) => {
@@ -19,7 +19,7 @@ router.get('/sincontrato', async (req, res, next) => {
     const puntosdeventa = await service.findPuntoWithoutContrato();
     res.status(201).json(puntosdeventa);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -29,7 +29,7 @@ router.get('/codigo-sitventa/:codigo', async (req, res, next) => {
     const puntoDeventa = await service.findByCodigoSitioVenta(codigo);
     res.status(201).json(puntoDeventa);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -39,7 +39,7 @@ router.get('/:id', async (req, res, next) => {
     const puntoDeVenta = await service.findOne(id);
     res.status(200).json(puntoDeVenta);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -58,7 +58,7 @@ router.post('/', async (req, res, next) => {
       respuesta: 'se agrego correctamente el punto de venta',
     });
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -74,7 +74,7 @@ router.patch('/update', async (req, res, next) => {
       respuesta: 'Se actualizo correctamente el contrato',
     });
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -93,7 +93,7 @@ router.patch('/inhabilitar', async (req, res, next) => {
       respuesta: 'Se ha inhabilidato el punto de venta correctamente',
     });
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -103,7 +103,7 @@ router.post('/delete', async (req, res, next) => {
     const puntoDeVenta = await service.delete(id);
     res.status(201).json(puntoDeVenta);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 

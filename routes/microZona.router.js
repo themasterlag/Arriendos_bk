@@ -10,7 +10,7 @@ router.get('/', async(req,res,next)=>{
     const microZonas = await service.find();
     res.status(201).json(microZonas);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 })
 
@@ -20,7 +20,7 @@ router.get('/:id', async(req,res,next)=>{
     const microZona = await service.findOne(id);
     res.status(201).json(microZona);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 })
 
@@ -30,7 +30,7 @@ router.get('/z/:id', async(req, res, next)=>{
     const mZona = await service.findByZonaId(id);
     res.status(201).json(mZona);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 })
 

@@ -72,8 +72,8 @@ class ContratoService {
         },
       ],
     });
-    if (!rta) {
-      throw Error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }
@@ -100,9 +100,11 @@ class ContratoService {
         '$pvdetalle.codigo_sitio_venta$': id      
       }
     });
-    if (!rta) {
-      throw Error('no se encontro');
+
+    if (!rta || rta.length == 0){
+      throw {message: 'no se encontro', codigo:404};
     }
+
     return rta;
   }
 

@@ -29,8 +29,8 @@ class ClienteService {
 
   async findOne(id) {
     const rta = await con.models.cliente.findByPk(id);
-    if (!rta) {
-      throw console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }
@@ -38,8 +38,8 @@ class ClienteService {
     const rta = await con.models.cliente.findOne({
       where: { numero_documento: numero_documento },
     });
-    if (!rta) {
-      throw console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

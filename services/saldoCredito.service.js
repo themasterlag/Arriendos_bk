@@ -16,8 +16,8 @@ class SaldoCreditoService {
   }
   async findOne(id) {
     const rta = await con.models.saldo_credito.findByPk(id);
-    if (!rta) {
-      console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw ({ message: 'no se encontro credito', codigo: 404})
     }
     return rta;
   }
@@ -25,8 +25,8 @@ class SaldoCreditoService {
     const [rta] = await con.models.saldo_credito.findAll(
       { where: { contrato_concepto_id: id } }
     );
-    if (!rta) {
-      console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw ({ message: 'no se encontro credito', codigo: 404})
     }
     return rta;
   }
@@ -76,6 +76,12 @@ class SaldoCreditoService {
     }
 
     return newSaldoCredito;
+  }
+
+  async abonarSaldoCredito(id_saldo_credito, abono){
+    let credito = this.findOne(id_saldo_credito);
+    credito.update({credito_saldo: credito.saldo-abono});
+    return credito;
   }
 }
 module.exports = SaldoCreditoService;

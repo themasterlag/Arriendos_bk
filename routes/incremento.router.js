@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
     const incremento = await service.find();
     res.json(incremento);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -22,7 +22,7 @@ router.get('/:id', async (req, res, next) => {
     console.log(incrementos);
     res.json(incrementos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -40,7 +40,7 @@ router.put('/:id', async (req, res, next) => {
       })
     }
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 module.exports = router;

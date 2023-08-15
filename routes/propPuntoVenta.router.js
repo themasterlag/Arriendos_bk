@@ -12,7 +12,7 @@ router.get('/', async(req,res,next)=>{
     const proPDV = await service.find();
     res.json(proPDV);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -23,7 +23,7 @@ router.get('/:id', async(req,res,next)=>{
     console.log(proPDV);
     res.json(proPDV)
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -35,7 +35,7 @@ router.post('/', async(req,res,next)=>{
 
     res.status(201).json(newProPDV)
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -45,7 +45,7 @@ router.post('/delete', async(req,res,next)=>{
   const proPDV = await service.delete(id);
   res.status(201).json(proPDV);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 

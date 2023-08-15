@@ -19,8 +19,8 @@ class PuntoDeVentaService {
 
   async findOne(id) {
     const rta = await con.models.punto_de_venta.findByPk(id);
-    if (!rta) {
-      throw console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }
@@ -43,9 +43,8 @@ class PuntoDeVentaService {
         },
       ],
     });
-    if (!rta) {
-      throw console.error('no se encontro');
-    }
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};    }
     return rta;
   }
 
@@ -53,6 +52,14 @@ class PuntoDeVentaService {
     const puntoDeVenta = await this.findOne(id);
 
     const rta = await puntoDeVenta.update(changes);
+
+    let propdv = await con.models.propietario_punto_venta.findOne({
+      where: {
+        id_punto_venta: rta.id_punto_venta,
+      }
+    });
+
+    propdv.update({id_propietario: changes.propietario});
 
     return rta;
   }

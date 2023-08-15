@@ -14,7 +14,7 @@ class ProcesoService{
   async findOnde(id){
     const rta = await con.models.proceso.findByPk(id);
     if(!rta){
-      throw console.error('No se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

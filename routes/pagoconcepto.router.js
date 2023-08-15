@@ -19,7 +19,7 @@ router.patch('/update-conceptos', async (req, res, next) => {
     );
     res.status(201).json(result);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 

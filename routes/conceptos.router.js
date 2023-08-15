@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
     const conceptos = await service.find();
     res.status(200).json(conceptos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -20,7 +20,7 @@ router.get('/asociados', async ( req, res, next) => {
     const conceptos = await service.findWhitAsociado();
     res.status(200).json(conceptos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res, next) => {
     //console.log(departamento);
     res.status(200).json(conceptos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -41,7 +41,7 @@ router.get('/tipo/:id', async (req, res, next) => {
     const conceptos = await service.findTipo(id);
     res.status(200).json(conceptos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 

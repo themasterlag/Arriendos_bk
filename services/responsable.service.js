@@ -15,8 +15,8 @@ class Responsable {
 
   async findOne(id) {
     const rta = await con.models.responsable.findByPk(id);
-    if (!rta) {
-      throw console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

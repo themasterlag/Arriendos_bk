@@ -10,7 +10,7 @@ router.get('/', async (req, res, next)=>{
         const cargos = await cargoService.find()
         res.json(cargos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -20,7 +20,7 @@ router.post('/', async(req, res, next)=>{
         const newCargo = await cargoService.create(cargo)
         res.json(newCargo).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -33,7 +33,7 @@ router.patch('/update', async(req, res, next)=>{
 
         res.json(updated).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -54,7 +54,7 @@ router.delete('/:id', async(req, res, next)=>{
         const deleted = await cargoService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 

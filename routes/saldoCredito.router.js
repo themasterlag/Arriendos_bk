@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
     const saldoCredito = await service.findWithDetails();
     res.json(saldoCredito);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -22,7 +22,7 @@ router.get('/:id', async (req, res, next) => {
     console.log(saldoCredito);
     res.json(saldoCredito);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
 
     res.status(201).json(newSaldoCredito);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -44,7 +44,18 @@ router.put('/', async (req, res, next) => {
 
     res.status(201).json(newSaldoCredito);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
+  }
+});
+
+
+router.patch('/abono', async (req, res) => {
+  try {
+    const body = req.body;
+    const newCredito = await service.abonarSaldoCredito(body.id_saldo_credito, body.abono);
+    res.status(201).send(newCredito);
+  } catch (error) {
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -55,7 +66,7 @@ router.delete('/:id', async (req, res, next) => {
     const saldoCredito = await service.delete(id);
     res.status(201).json(saldoCredito);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 

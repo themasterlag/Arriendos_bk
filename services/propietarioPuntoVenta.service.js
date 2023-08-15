@@ -20,7 +20,7 @@ class PropietarioPuntoVentaService{
 
     const rta = await con.models.propietario_punto_venta.findByPk(id);
     if(!rta){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

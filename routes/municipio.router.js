@@ -10,7 +10,7 @@ router.get('/', async(req,res,next)=>{
       const municipios = await service.find();
       res.status(201).json(municipios);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -21,7 +21,7 @@ router.get('/:id', async (req,res,next)=>{
    // console.log(municipio);
     res.status(200).json(municipio);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -32,7 +32,7 @@ router.get('/d/:id', async (req,res,next)=>{
    // console.log(municipio);
     res.status(200).json(municipio);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 module.exports = router;

@@ -34,7 +34,7 @@ router.get('/', async (req, res, next) => {
     const contrato = await service.findAllContratos();
     res.json(contrato);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 router.get('/concepto-municipio', async (req, res, next) => {
@@ -43,7 +43,7 @@ router.get('/concepto-municipio', async (req, res, next) => {
       await conceptoMunicipioService.findAllConceptoMunicipio();
     res.json(conceptoMunicipio);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
     Error('Error details:', error.message, error.stack);
   }
 });
@@ -55,7 +55,7 @@ router.get('/pdv-pagado/', async (req, res, next) => {
     const contratosConceptos = await service.traerConceptosPagado(id, periodo);
     res.status(201).json(contratosConceptos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
     Error('Error details:', error.message, error.stack);
   }
 });
@@ -66,7 +66,7 @@ router.get('/pdv-nopagado/:id', async (req, res, next) => {
     const contratosConceptos = await service.traerContratosConConceptos(id);
     res.status(201).json(contratosConceptos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
     Error('Error details:', error.message, error.stack);
   }
 });
@@ -77,7 +77,7 @@ router.get('/:id', async (req, res, next) => {
     console.log(contratos);
     res.json(contratos);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -96,7 +96,7 @@ router.get('/pdv/:id', async (req, res, next) => {
 
     res.json(respuesta);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
     Error('Error details:', error.message, error.stack);
   }
 });
@@ -134,7 +134,7 @@ router.post('/', async (req, res, next) => {
       next('No se registraron los conceptos');
     }
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 router.post('/delete', async (req, res, next) => {
@@ -143,7 +143,7 @@ router.post('/delete', async (req, res, next) => {
     const contrato = await service.delete(id);
     res.status(201).json(contrato);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -206,7 +206,7 @@ router.patch('/', async (req, res, next) => {
       next('No se registraron los conceptos');
     }
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
     Error('Error details:', error.message, error.stack);
   }
 });
@@ -234,7 +234,7 @@ router.patch('/actualizar-contrato-incremento', async (req,res,next)=>{
     })
 
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -252,7 +252,7 @@ router.patch('/inhabilitar', async (req, res, next) => {
       respuesta: 'Se ha inhabilitado el contrato de forma correcta',
     });
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 // router.patch('/aplicar-incremento', async(req,res,next)=>{
@@ -262,7 +262,7 @@ router.patch('/inhabilitar', async (req, res, next) => {
 //     let contrato = {...defaultContrato, ...JSON.parse(body.contrato)}
 //     let oldContrato = await service.findOne(contrato['id_contrato'])
 //   } catch (error) {
-//     next(error)
+//     res.status(error.codigo).send(error)
 //   }
 // })
 module.exports = router;

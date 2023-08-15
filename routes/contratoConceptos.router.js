@@ -11,7 +11,7 @@ router.get('/', async(req,res,next)=>{
       const contrato = await service.find();
       res.json(contrato);
     } catch (error) {
-      next(error)
+      res.status(error.codigo).send(error)
     }
   })
 
@@ -20,7 +20,7 @@ router.get('/', async(req,res,next)=>{
         const conceptos = await service.find();
         res.json(conceptos);
       } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
       }
     })
 

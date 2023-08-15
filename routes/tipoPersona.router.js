@@ -23,7 +23,7 @@ router.get('/:id', async (req,res,next)=>{
     console.log(tipoPersona);
     res.json(tipoPersona);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 module.exports = router;

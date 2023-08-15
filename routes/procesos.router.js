@@ -12,7 +12,7 @@ router.get('/', async (req, res, next)=>{
         const procesos = await procesoService.find()
         res.json(procesos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -21,7 +21,7 @@ router.get('/subprocesos/', async (req, res, next)=>{
         const subprocesos = await subprocesoService.find()
         res.json(subprocesos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -31,7 +31,7 @@ router.get('/subprocesos/:id', async (req, res, next)=>{
         const subprocesos = await subprocesoService.findById(id)
         res.json(subprocesos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -41,7 +41,7 @@ router.get('/subprocesos-proceso/:procesoid', async (req, res, next)=>{
         const subprocesos = await subprocesoService.findByProceso(procesoid)
         res.json(subprocesos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 
@@ -51,7 +51,7 @@ router.get('/:id', async (req, res, next)=>{
         const procesos = await procesoService.findOnde(id)
         res.json(procesos).status(200)
     } catch (error) {
-        next(error)
+        res.status(error.codigo).send(error)
     }
 })
 

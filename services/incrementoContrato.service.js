@@ -16,8 +16,8 @@ class IncrementoContratoService {
   }
   async findOneIncremento(id) {
     const rta = await con.models.incremento_contrato.findByPk(id);
-    if (!rta) {
-      throw console.error('no se encontro');
+    if (!rta || rta.length == 0) {
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

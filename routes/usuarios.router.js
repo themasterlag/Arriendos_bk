@@ -56,7 +56,7 @@ router.get('/:id', async (req, res, next) => {
     console.log(users);
     res.json(users);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -67,7 +67,7 @@ router.post('/',
       const newCategory = await service.create(body);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).send(error);
     }
   });
 
