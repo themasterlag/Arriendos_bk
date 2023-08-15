@@ -27,10 +27,10 @@ router.post('/', async(req, res, next)=>{
 router.patch('/update', async(req, res, next)=>{
     try {
         const oldCargo = req.body
-        const idCargo = oldCargo.id
-        console.log(oldCargo.id)
-        const updated = await cargoService.update(idCargo, oldCargo.cargo)
-
+        const idCargo = oldCargo.id_cargo
+        console.log(idCargo)
+        const updated = await cargoService.update(idCargo, oldCargo)
+        console.log(idCargo, oldCargo.cargo)
         res.json(updated).status(200)
     } catch (error) {
         res.status(error.codigo).send(error)
@@ -51,6 +51,7 @@ router.get('/:id', async (req, res, next)=>{
 router.delete('/:id', async(req, res, next)=>{
     try {
         const { id } = req.params
+        console.log(id)
         const deleted = await cargoService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
