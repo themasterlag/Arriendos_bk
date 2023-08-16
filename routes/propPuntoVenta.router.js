@@ -36,6 +36,7 @@ router.post('/', async(req,res,next)=>{
       await service.deleteAllByPdv(body.id_punto_venta);
 
       propietarios.forEach(async propietario => {
+        propietario["id_propietario"] = propietario;
         propietario["id_punto_venta"] = body.id_punto_venta;
         newProPDV.push(await service.create(propietario));
       });
