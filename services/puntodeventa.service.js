@@ -49,21 +49,21 @@ class PuntoDeVentaService {
   }
 
   async update(id, changes) {
-    if (changes.propietario) {
+    // if (changes.propietario) {
       const puntoDeVenta = await this.findOne(id);
       const rta = await puntoDeVenta.update(changes);
 
-      let propdv = await con.models.propietario_punto_venta.findOne({
-        where: {
-          id_punto_venta: rta.id_punto_venta,
-        }
-      });
+      // let propdv = await con.models.propietario_punto_venta.findOne({
+      //   where: {
+      //     id_punto_venta: rta.id_punto_venta,
+      //   }
+      // });
     
-      propdv.update({id_propietario: changes.propietario});
-    }
-    else{
-      throw {message: "Debe agregar un propietario", codigo:400};
-    }
+      // propdv.update({id_propietario: changes.propietario});
+    // }
+    // else{
+    //   throw {message: "Debe agregar un propietario", codigo:400};
+    // }
 
     return rta;
   }
