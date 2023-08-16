@@ -58,8 +58,12 @@ class PuntoDeVentaService {
         id_punto_venta: rta.id_punto_venta,
       }
     });
-
-    propdv.update({id_propietario: changes.propietario});
+    if (changes.propietario) {
+      propdv.update({id_propietario: changes.propietario});
+    }
+    else{
+      throw {message: "Debe agregar un propietario", codigo:400};
+    }
 
     return rta;
   }
