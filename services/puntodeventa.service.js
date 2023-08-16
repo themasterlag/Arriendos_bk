@@ -74,6 +74,20 @@ class PuntoDeVentaService {
     return 'eliminado';
   }
 
+  async deleteAllByPdv(pdv) {
+    const puntoDeVenta = await con.models.punto_de_venta.findAll({
+      where: {
+        id_punto_venta: pdv,
+      },
+    });
+    
+    for (let i = 0; i < puntoDeVenta.length; i++) {
+      await puntoDeVenta[i].destroy();
+    }
+    return 'eliminado';
+  }
+
+
   async findPuntoWithoutContrato() {
     const [result] = await con.query(
       `SELECT * FROM arriendos.punto_de_venta

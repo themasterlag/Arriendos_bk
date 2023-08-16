@@ -29,9 +29,20 @@ router.get('/:id', async(req,res,next)=>{
 
 router.post('/', async(req,res,next)=>{
   try {
-    const body = req.body
-    console.log(body);
-    const newProPDV = await service.create(body)
+    let propietarios = JSON.parse(req.body.propietarios);
+    let newProPDV = [];
+
+    if (propietarios.length > 0) {
+      await service.deleteAllByPdv(body.id_punto_venta);
+
+      propietarios.forEach(async propietario => {
+        propietario["id_punto_venta"] = body.id_punto_venta;
+        newProPDV.push(await service.create(propietario));
+      });
+    }
+    else{
+      throw {message: 'No se agregaron propietarios', codigo:400};
+    }
 
     res.status(201).json(newProPDV)
   } catch (error) {
