@@ -29,9 +29,9 @@ router.get('/:id', async(req,res,next)=>{
 
 router.post('/', async(req,res,next)=>{
   try {
-    let propietarios = JSON.parse(req.body.propietarios);
+    let body = req.body;
+    let propietarios = JSON.parse(body.propietarios);
     let newProPDV = [];
-
     if (propietarios.length > 0) {
       await service.deleteAllByPdv(body.id_punto_venta);
 
