@@ -15,6 +15,28 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.post('/',
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newCategory = await service.create(body);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      res.status(error.codigo).send(error);
+    }
+  });
+  
+  router.get('/codigo-concepto/:codigo', async (req, res, next) => {
+    try {
+      const { codigo } = req.params;
+      console.log(req.params)
+      const puntoDeventa = await service.findByCodigoConcepto(codigo);
+      res.status(201).json(puntoDeventa);
+    } catch (error) {
+      res.status(error.codigo).send(error);
+    }
+  });
+
 router.get('/asociados', async ( req, res, next) => {
   try {
     const conceptos = await service.findWhitAsociado();

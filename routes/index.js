@@ -35,6 +35,7 @@ const procesosRouter = require('./procesos.router');
 const permisoRouter = require('./permiso.router');
 const permisoDetalleRouter = require('./permisoDetalle.router');
 const cargoRouter = require('./cargo.router');
+const tipoConceptoRouter = require('./tipoConcepto.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -75,5 +76,6 @@ function routerApi(app) {
   router.use('/permisos', permisoRouter);
   router.use('/permiso-detalle', permisoDetalleRouter);
   router.use('/aut', autRouter);
+  router.use('/tipo-concepto', tipoConceptoRouter);
 }
 module.exports = routerApi;

@@ -14,6 +14,11 @@ class ConceptosService{
         return data;
       }
 
+    async create(data) {
+    const concepto = await con.models.conceptos.create(data);
+    return concepto;
+    }
+
     async findTipo(id){
       const data = await con.models.conceptos.findAll({
         where: {
@@ -42,6 +47,29 @@ class ConceptosService{
       })
         return data;
     }  
+
+    async findByCodigoConcepto(idConcepto){
+      const rta = await con.models.conceptos.findOne({
+        where: {
+          codigo_concepto: idConcepto,
+        },
+        // include: [
+        //   {
+        //     model: con.models.propietario_punto_venta,
+        //     as: 'proppv',
+        //     include: [
+        //       {
+        //         model: con.models.cliente,
+        //         as: 'propcliente',
+        //       },
+        //     ],
+        //   },
+        // ],
+      });
+      if (!rta || rta.length == 0) {
+        throw {message: 'No se encontro', codigo:404};    }
+      return rta;
+    }
 }
 
 
