@@ -70,6 +70,17 @@ router.get('/pdv-nopagado/:id', async (req, res, next) => {
     Error('Error details:', error.message, error.stack);
   }
 });
+
+router.get('/proximosrenovar', async (req, res) => {
+  try{
+    const contratos = await service.traerContratosAñoRenovacionProxima();
+    res.status(201).send(contratos);
+  }
+  catch (error){
+    res.status(error.codigo).send(error);
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;

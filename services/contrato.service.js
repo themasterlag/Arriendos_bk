@@ -364,5 +364,21 @@ class ContratoService {
       console.error('Error al intentar actualizar el valor del canon: ', error);
     }
   }
+
+  async traerContratosAñoRenovacionProxima(){
+    const diferenciaMeses = 3;
+    const hoy = new Date();
+    const fin = new Date(hoy.getFullYear(), hoy.getMonth() + diferenciaMeses, hoy.getDate());
+    
+    const rta = await con.models.contrato.findAll({
+      where: { 
+        fecha_fin_contrato: {
+          [Op.between]: [hoy, fin],
+        }
+      }
+    });
+
+    return rta;
+  }
 }
 module.exports = ContratoService;

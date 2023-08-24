@@ -98,6 +98,10 @@ module.exports = function(sequelize, DataTypes) {
     razon_inactivo: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    anios_prorroga: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
