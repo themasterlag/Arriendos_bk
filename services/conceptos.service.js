@@ -15,6 +15,7 @@ class ConceptosService{
       }
 
     async create(data) {
+    console.log(data)
     const concepto = await con.models.conceptos.create(data);
     return concepto;
     }
@@ -68,6 +69,19 @@ class ConceptosService{
       });
       if (!rta || rta.length == 0) {
         throw {message: 'No se encontro', codigo:404};    }
+      return rta;
+    }
+
+    async update(id, changes) {
+      const concepto =  await this.findByCodigoConcepto(id);      
+      // if (!changes.password) {
+      //   changes.password = usuario.password;
+      // }
+      // else{
+      //   changes.password = bcrypt.hashSync( changes.password.toString(), 8);
+      // }  
+      const rta = await concepto.update(changes);
+  
       return rta;
     }
 }

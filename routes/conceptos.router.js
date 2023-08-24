@@ -37,6 +37,18 @@ router.post('/',
     }
   });
 
+  router.patch('/update',
+  async (req, res, next) => {
+    try {
+      const body = req.body
+      const id = body.codigo_concepto;
+      const newCategory = await service.update(id, body);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      res.status(error.codigo).json(error);
+    }
+  });
+
 router.get('/asociados', async ( req, res, next) => {
   try {
     const conceptos = await service.findWhitAsociado();
