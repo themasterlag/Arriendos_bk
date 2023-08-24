@@ -76,7 +76,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     codigo_oficina: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     fecha_creacion_punto: {
