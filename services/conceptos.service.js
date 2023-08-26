@@ -54,18 +54,6 @@ class ConceptosService{
         where: {
           codigo_concepto: idConcepto,
         },
-        // include: [
-        //   {
-        //     model: con.models.propietario_punto_venta,
-        //     as: 'proppv',
-        //     include: [
-        //       {
-        //         model: con.models.cliente,
-        //         as: 'propcliente',
-        //       },
-        //     ],
-        //   },
-        // ],
       });
       if (!rta || rta.length == 0) {
         throw {message: 'No se encontro', codigo:404};    }
@@ -74,12 +62,7 @@ class ConceptosService{
 
     async update(id, changes) {
       const concepto =  await this.findByCodigoConcepto(id);      
-      // if (!changes.password) {
-      //   changes.password = usuario.password;
-      // }
-      // else{
-      //   changes.password = bcrypt.hashSync( changes.password.toString(), 8);
-      // }  
+
       const rta = await concepto.update(changes);
   
       return rta;
