@@ -55,4 +55,38 @@ router.get('/:id', async (req, res, next)=>{
     }
 })
 
+router.post('/p', async(req, res, next)=>{
+    try {
+        const proceso = req.body
+        const newProceso = await procesoService.create(proceso)
+        res.json(newProceso).status(200)
+    } catch (error) {
+        res.status(error.codigo).send(error)
+    }
+})
+
+router.patch('/update', async(req, res, next)=>{
+    try {
+        const oldProceso = req.body
+        const idProceso = oldProceso.id_proceso
+        console.log(idProceso)
+        const updated = await procesoService.update(idProceso, oldProceso)
+        console.log(idProceso, oldProceso.proceso)
+        res.json(updated).status(200)
+    } catch (error) {
+        res.status(error.codigo).send(error)
+    }
+})
+
+router.delete('/:id', async(req, res, next)=>{
+    try {
+        const { id } = req.params
+        console.log(id)
+        const deleted = await procesoService.delete(id)
+        res.json(deleted).status(200)
+    } catch (error) {
+        res.status(error.codigo).send(error)
+    }
+})
+
 module.exports = router;
