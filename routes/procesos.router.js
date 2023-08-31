@@ -45,6 +45,40 @@ router.get('/subprocesos-proceso/:procesoid', async (req, res, next)=>{
     }
 })
 
+router.post('/subP', async(req, res, next)=>{
+    try {
+        const subprocesos = req.body
+        const newSubProceso = await subprocesoService.create(subprocesos)
+        res.json(newSubProceso).status(200)
+    } catch (error) {
+        res.status(error.codigo).send(error)
+    }
+})
+
+router.patch('/updateSub', async(req, res, next)=>{
+    try {
+        const oldSubProceso = req.body
+        const idSubProceso = oldSubProceso.id_subproceso
+        console.log(idSubProceso)
+        const updated = await subprocesoService.update(idSubProceso, oldSubProceso)
+        console.log(idSubProceso, oldSubProceso.subproceso)
+        res.json(updated).status(200)
+    } catch (error) {
+        res.status(error.codigo).send(error)
+    }
+})
+
+router.delete('/subproceso:id', async(req, res, next)=>{
+    try {
+        const { id } = req.params
+        console.log(id)
+        const deleted = await subprocesoService.delete(id)
+        res.json(deleted).status(200)
+    } catch (error) {
+        res.status(error.codigo).send(error)
+    }
+})
+
 router.get('/:id', async (req, res, next)=>{
     try {
         const { id } = req.params
@@ -78,7 +112,7 @@ router.patch('/update', async(req, res, next)=>{
     }
 })
 
-router.delete('/:id', async(req, res, next)=>{
+router.delete('/proceso:id', async(req, res, next)=>{
     try {
         const { id } = req.params
         console.log(id)
