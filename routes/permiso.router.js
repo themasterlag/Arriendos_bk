@@ -18,11 +18,15 @@ const PermisoService = require('./../services/permiso.service')
     try {
         const data = req.body
         const newPermiso = await permisoService.create(data)
+        // res.json({
+        //     estado : '1',
+        //      id: newPermiso.id_permiso,
+        //     respuesta: 'Se agrego correctamente el permiso'
+        // }).status(200)
         res.json({
-            estado : '1',
-             id: newPermiso.id_permiso,
-            respuesta: 'Se agrego correctamente el permiso'
-        })
+            permiso: newPermiso,
+            respuesta: "Se agrego correctamente"
+        }).status(200)
     } catch (error) {
         res.status(error.codigo).send(error)
     }
@@ -38,15 +42,19 @@ const PermisoService = require('./../services/permiso.service')
     }
  })
 
-router.patch('/', async (req, res, next)=>{
+router.patch('/update', async (req, res, next)=>{
     try {
         const newPermiso = req.body
         const updatePermiso = await permisoService.update(newPermiso.id_permiso, newPermiso)
+        // res.json({
+        //     estado : '1',
+        //      id: updatePermiso.id_permiso,
+        //     respuesta: 'Se agrego correctamente el permiso'
+        // })
         res.json({
-            estado : '1',
-             id: updatePermiso.id_permiso,
-            respuesta: 'Se agrego correctamente el permiso'
-        })
+            permiso: updatePermiso,
+            respuesta: "Se agrego correctamente"
+        }).status(200)
     } catch (error) {
         res.status(error.codigo).send(error)
     }
