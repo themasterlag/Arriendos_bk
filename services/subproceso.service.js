@@ -6,7 +6,11 @@ class SubprocesoService{
     constructor(){
     }
     async find (){
-        const data = await con.models.subproceso.findAll()
+        const data = await con.models.subproceso.findAll({
+            order: [
+              ['id_subproceso', 'ASC']
+            ]
+          });
         return data
     }
     async findByProceso(proceso){
@@ -32,13 +36,12 @@ class SubprocesoService{
             const subproceso = await con.models.subproceso.create(data);
             return subproceso;
         } else {
-            throw {message: 'Subproceso ya existe', codigo:404};
+            throw {message: 'Subproceso existente', codigo:404};
         }
     }
 
        async update(id, data){
         const subproceso = await this.findById(id)
-        console.log(subproceso)
         const rta = await subproceso.update(data)
         return rta
       }

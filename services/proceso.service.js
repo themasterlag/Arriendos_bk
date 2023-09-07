@@ -17,6 +17,7 @@ class ProcesoService{
   }
 
   async findOnde(id){
+
     const rta = await con.models.proceso.findByPk(id);
     if(!rta){
       throw {message: 'no se encontro', codigo:404};
@@ -25,8 +26,18 @@ class ProcesoService{
   }
 
    async create(data){
+
+    const rta = await con.models.proceso.findAll({
+      where: {nombre_proceso: data.nombre_proceso},
+  });
+
+  if(rta.length == 0){
     const proceso = await con.models.proceso.create(data);
     return proceso;
+  } else {
+      throw {message: 'proceso existente', codigo:404};
+  }
+
    }
 
    async update(id, data){

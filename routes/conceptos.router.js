@@ -62,7 +62,6 @@ router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const conceptos = await service.findOne(id);
-    //console.log(departamento);
     res.status(200).json(conceptos);
   } catch (error) {
     res.status(error.codigo).send(error);
