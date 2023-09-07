@@ -15,9 +15,20 @@ class ConceptosService{
       }
 
     async create(data) {
-    console.log(data)
-    const concepto = await con.models.conceptos.create(data);
-    return concepto;
+      let concepto = null;
+      const buscar_concepto = await con.models.conceptos.findAll({
+        where: {
+          codigo_concepto: data.codigo_concepto
+        }
+      })
+
+      if (buscar_concepto.length == 0) {
+        concepto = await con.models.conceptos.create(data);
+
+      }else {
+        throw {message: 'Ya existe un concepto con el codigo ingresado', codigo: 404}
+      }
+      return concepto;
     }
 
     async findTipo(id){
