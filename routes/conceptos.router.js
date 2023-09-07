@@ -78,5 +78,11 @@ router.get('/tipo/:id', async (req, res, next) => {
   }
 });
 
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params
+    const conceptos = await service.delete(id)
+    res.status(200).json(conceptos)
+})
+
 
 module.exports = router;

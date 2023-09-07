@@ -44,7 +44,7 @@ class ConceptosService{
     
         const rta = await con.models.conceptos.findByPk(id);
         if(!rta){
-          throw {message: 'no se encontro', codigo:404};
+          throw {message: 'No se encontro', codigo:404};
         }
         return rta;
       }
@@ -77,6 +77,13 @@ class ConceptosService{
       const rta = await concepto.update(changes);
   
       return rta;
+    }
+
+    async delete(id){
+      const buscar = await this.findOne(id);
+      console.log(buscar)
+      await buscar.destroy();
+      return 'Concepto Eliminado'      
     }
 }
 
