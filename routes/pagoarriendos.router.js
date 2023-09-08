@@ -14,6 +14,9 @@ const PagoConcepto = require('./../services/pagoconcepto.service');
 const PagoConceptoService = new PagoConcepto();
 const SaldoCredito = require('./../services/saldoCredito.service');
 const SaldoCreditoService = new SaldoCredito();
+const SaldoCreditoPago = require('./../services/saldoCreditoPago.service');
+const pago = require('../models/pago');
+const SaldoCreditoPagoService = new SaldoCreditoPago();
 // Devuelve todo el listado de pagos de arriendos
 router.get('/', async (req, res, next) => {
   try {
@@ -113,7 +116,12 @@ router.post('/todos', async (req, res, next) => {
       let conceptos = await contratoConceptoService.findByContrato(pago.id_contrato);
       if (conceptos){
         conceptos.forEach(async concepto => {
-          let saldo = await SaldoCreditoService.descontarSaldoByIdConcepto(concepto.id_contrato_concepto, concepto.valor);
+          let saldo = await SaldoCreditoService.findOneByIdContratoConcepto(concepto.id_contrato_concepto);
+          console.log(saldo);
+          if (saldo){
+            let creditoPago = await SaldoCreditoPagoService.create({valor_pago: concepto.valor, id_usuario: pago.id_usuario, id_saldo_credito: saldo.id_saldo_credito});
+            saldo = await SaldoCreditoService.abonarSaldoCredito(creditoPago.id_saldo_credito, creditoPago.valor_pago);
+          }
         });
       }
     });
@@ -124,13 +132,8 @@ router.post('/todos', async (req, res, next) => {
         let pago_arriendo = await service.registrarPagos(pago);
         pago.conceptos[0].forEach( async concepto =>{
           let pago_concepto = await PagoConceptoService.findByPagoArriendoAndConcepto(pago_arriendo.id_pago_arriendo, concepto.id_concepto)
-          try {
-            pago_concepto.pago_concepto_valor = Math.floor(concepto.valor)
+          pago_concepto.pago_concepto_valor = Math.floor(concepto.valor)
           await  pago_concepto.save({fields:['pago_concepto_valor']})
-          } catch (error) {
-            res.status(error.codigo).send(error)
-          }
-          
         })
         return pago_arriendo
       })
@@ -149,7 +152,6 @@ router.post('/todos', async (req, res, next) => {
     }
   } catch (error) {
     res.status(error.codigo).send(error);
-    console.log('Error details:', error.message, error.stack);
   }
 });
 router.get('/sitioventa/:id', async (req, res, next) => {

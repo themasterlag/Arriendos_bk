@@ -39,6 +39,7 @@ var _responsabilidad = require("./responsabilidad");
 var _responsable = require("./responsable");
 var _rol = require("./rol");
 var _saldo_credito = require("./saldo_credito");
+var _saldo_credito_pago = require("./saldo_credito_pago");
 var _solicitud = require("./solicitud");
 var _subproceso = require("./subproceso");
 var _tipo_concepto = require("./tipo_concepto");
@@ -90,6 +91,7 @@ function initModels(sequelize) {
   var responsable = _responsable(sequelize, DataTypes);
   var rol = _rol(sequelize, DataTypes);
   var saldo_credito = _saldo_credito(sequelize, DataTypes);
+  var saldo_credito_pago = _saldo_credito_pago(sequelize, DataTypes);
   var solicitud = _solicitud(sequelize, DataTypes);
   var subproceso = _subproceso(sequelize, DataTypes);
   var tipo_concepto = _tipo_concepto(sequelize, DataTypes);
@@ -217,6 +219,8 @@ function initModels(sequelize) {
   usuario.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_usuario"});
   microzona.belongsTo(zona, { as: "zona", foreignKey: "id_zona"});
   zona.hasMany(microzona, { as: "microzonas", foreignKey: "id_zona"});
+  saldo_credito.hasMany(saldo_credito_pago, { as: "creditopagos", foreignKey: "id_saldo_credito"});
+  saldo_credito_pago.belongsTo(saldo_credito, { as: "saldocredito", foreignKey: "id_saldo_credito"});
 
   return {
     autorizado,
@@ -259,6 +263,7 @@ function initModels(sequelize) {
     responsable,
     rol,
     saldo_credito,
+    saldo_credito_pago,
     solicitud,
     subproceso,
     tipo_concepto,
