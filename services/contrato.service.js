@@ -371,9 +371,32 @@ class ContratoService {
     const fin = new Date(hoy.getFullYear(), hoy.getMonth() + diferenciaMeses, hoy.getDate());
     
     const rta = await con.models.contrato.findAll({
+      attributes: {
+        exclude: ["id_autorizado", "id_autorizado_adm", "id_punto_venta", "id_responsable", "id_usuario"],
+      },
+      include: [
+        {
+          association: 'responsabledetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'autdetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'pvdetalle',
+        },
+      ],
       where: { 
         fecha_fin_contrato: {
           [Op.between]: [hoy, fin],
+        },
+        fecha_inactivo: {
+          [Op.is]: null
         }
       }
     });

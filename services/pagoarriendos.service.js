@@ -344,46 +344,46 @@ class PagoArriendosService {
         {
           model : con.models.contrato,
           as: 'contratodetalle',
-          attributes: ['id_contrato'],
+          // attributes: ['id_contrato'],
           required: true,
           include:[
             {
               model: con.models.autorizado,
               as: 'autdetalle',
-              attributes:['numero_cuenta'],  
+              // attributes:['numero_cuenta'],  
               where: whereConditionAutorizado,
               required: true,
               include:[
                 {
                   model: con.models.entidad_bancaria,
                   as: 'entidadbancaria',
-                  attributes: ['entidad_bancaria'],
+                  // attributes: ['entidad_bancaria'],
                   where: whereConditionEntidadBancaria,
                  required: false,
                 },
                 {
                   model: con.models.cliente,
                   as: 'clientedetalle',
-                  attributes: [
-                    'numero_documento',
-                    'nombres',
-                    'apellidos',
-                    'tipo_documento',
-                    'razon_social',
-                    'digito_verificacion'
-                  ],
+                  // attributes: [
+                  //   'numero_documento',
+                  //   'nombres',
+                  //   'apellidos',
+                  //   'tipo_documento',
+                  //   'razon_social',
+                  //   'digito_verificacion'
+                  // ],
                 }
               ]
             },
             {
               model:con.models.punto_de_venta,
               as: 'pvdetalle',
-              attributes: ['codigo_sitio_venta', 'nombre_comercial',],
+              // attributes: ['codigo_sitio_venta', 'nombre_comercial',],
               include:[
                 {
                   model: con.models.municipio,
                   as: 'municipiodetalle',
-                  attributes: ['municipio'],
+                  // attributes: ['municipio'],
                 },
               ],
             },

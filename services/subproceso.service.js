@@ -1,12 +1,16 @@
 const con = require('../libs/sequelize');
+const subproceso = require('../models/subproceso');
 
 class SubprocesoService{
 
     constructor(){
-
     }
     async find (){
-        const data = await con.models.subproceso.findAll()
+        const data = await con.models.subproceso.findAll({
+            order: [
+              ['id_subproceso', 'ASC']
+            ]
+          });
         return data
     }
     async findByProceso(proceso){
@@ -23,13 +27,21 @@ class SubprocesoService{
     }
 
     async create(data){
-        const subproceso = await con.models.subproceso.create(data);
-        return subproceso;
-       }
+
+        const rta = await con.models.subproceso.findAll({
+            where: {subproceso: data.subproceso},
+        });
+
+        if(rta.length == 0){
+            const subproceso = await con.models.subproceso.create(data);
+            return subproceso;
+        } else {
+            throw {message: 'Subproceso existente', codigo:404};
+        }
+    }
 
        async update(id, data){
         const subproceso = await this.findById(id)
-        console.log(subproceso)
         const rta = await subproceso.update(data)
         return rta
       }

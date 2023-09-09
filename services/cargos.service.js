@@ -6,11 +6,27 @@ class CargoService{
     }
 
     async create(data) {
+        const rta = await con.models.cargo.findAll({
+            where: {cargo: data.cargo},
+    });
+
+    if(rta.length == 0){
         const cargo = await con.models.cargo.create(data);
         return cargo;
+    }else{
+        throw{message: 'Cargo existente', codigo:404};
     }
+    }
+
+    
+
+
     async find(){
-        const cargos = await con.models.cargo.findAll()
+        const cargos = await con.models.cargo.findAll({
+            order: [
+                ['id_cargo', 'ASC']
+              ]
+        })
         return cargos
     }
 

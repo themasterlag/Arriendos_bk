@@ -28,7 +28,6 @@ class ContratoConceptoService {
     return rta;
   }
   async findByContrato(id) {
-    console.log(id);
     const data = await con.models.contrato_conceptos.findAll({
       where: {
         id_contrato: id,

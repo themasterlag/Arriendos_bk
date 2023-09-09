@@ -25,9 +25,7 @@ class SaldoCreditoService {
     const [rta] = await con.models.saldo_credito.findAll(
       { where: { contrato_concepto_id: id } }
     );
-    if (!rta || rta.length == 0) {
-      throw ({ message: 'no se encontro credito', codigo: 404})
-    }
+
     return rta;
   }
   async update(id, changes) {
@@ -44,11 +42,16 @@ class SaldoCreditoService {
     // return true;
   }
   async delete(id) {
-    const saldoCredito = await this.findOne(id);
-    const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: saldoCredito.id_contrato_concepto } });
-    await conceptoAnterior.destroy();
-    await saldoCredito.destroy();
-    return 'eliminado';
+    try{
+      const saldoCredito = await this.findOne(id);
+      const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: saldoCredito.id_contrato_concepto } });
+      await conceptoAnterior.destroy();
+      await saldoCredito.destroy();
+      return 'eliminado';
+    }
+    catch(error){
+      throw { codigo:500, error: error}
+    }
   }
   async findWithDetails(){
     const [data] = await con.query(
@@ -79,9 +82,14 @@ class SaldoCreditoService {
   }
 
   async abonarSaldoCredito(id_saldo_credito, abono){
-    let credito = this.findOne(id_saldo_credito);
-    credito.update({credito_saldo: credito.saldo-abono});
-    return credito;
+    try{
+      let credito = await this.findOne(id_saldo_credito);
+      credito.update({credito_saldo: credito.credito_saldo-abono});
+      return credito;
+    }
+    catch(error){
+      throw {codigo:500, message:error}
+    }
   }
 }
 module.exports = SaldoCreditoService;

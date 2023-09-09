@@ -4,12 +4,27 @@ class PermisoService{
     constructor(){
 
     }
+
     async create(data){
-        const newPermiso = await con.models.permiso.create(data)
-        return newPermiso
+        const rta = await con.models.permiso.findAll({
+            where: {permiso: data.permiso},
+    });
+
+    if(rta.length == 0){
+        const permiso = await con.models.permiso.create(data)
+        return permiso;
+    }else{
+        throw{message: 'Permiso existente', codigo:404};
     }
+    }
+
+
     async find(){
-        const permiso = await con.models.permiso.findAll()
+        const permiso = await con.models.permiso.findAll({
+            order: [
+                ['id_permiso', 'ASC']
+              ]
+        })
         return permiso
     }
     async findOne(id){
@@ -25,7 +40,6 @@ class PermisoService{
         //     throw Error(error)
         // }
         const permiso = await this.findOne(id)
-        console.log(permiso)
         const rta = await permiso.update(data)
         return rta
     }

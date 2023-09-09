@@ -62,7 +62,6 @@ router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const conceptos = await service.findOne(id);
-    //console.log(departamento);
     res.status(200).json(conceptos);
   } catch (error) {
     res.status(error.codigo).send(error);
@@ -78,6 +77,12 @@ router.get('/tipo/:id', async (req, res, next) => {
     res.status(error.codigo).send(error);
   }
 });
+
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params
+    const conceptos = await service.delete(id)
+    res.status(200).json(conceptos)
+})
 
 
 module.exports = router;
