@@ -35,15 +35,15 @@ router.get('/subprocesos/:id', async (req, res, next)=>{
     }
 })
 
-router.get('/subprocesos-proceso/:procesoid', async (req, res, next)=>{
-    try {
-        const { procesoid } = req.params
-        const subprocesos = await subprocesoService.findByProceso(procesoid)
-        res.json(subprocesos).status(200)
-    } catch (error) {
-        res.status(error.codigo).send(error)
-    }
-})
+// router.get('/subprocesos-proceso/:procesoid', async (req, res, next)=>{
+//     try {
+//         const { procesoid } = req.params
+//         const subprocesos = await subprocesoService.findByProceso(procesoid)
+//         res.json(subprocesos).status(200)
+//     } catch (error) {
+//         res.status(error.codigo).send(error)
+//     }
+// })
 
 router.post('/subP', async(req, res, next)=>{
     try {
@@ -59,9 +59,9 @@ router.patch('/updateSub', async(req, res, next)=>{
     try {
         const oldSubProceso = req.body
         const idSubProceso = oldSubProceso.id_subproceso
-        console.log(idSubProceso)
+        // console.log(idSubProceso)
         const updated = await subprocesoService.update(idSubProceso, oldSubProceso)
-        console.log(idSubProceso, oldSubProceso.subproceso)
+        //  console.log(idSubProceso, oldSubProceso.subproceso)
         res.json(updated).status(200)
     } catch (error) {
         res.status(error.codigo).send(error)

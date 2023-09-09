@@ -7,22 +7,34 @@ class SubprocesoService{
     }
     async find (){
         const data = await con.models.subproceso.findAll({
-            order: [
-              ['id_subproceso', 'ASC']
-            ]
-          });
+            include: [
+                {
+                    // model: con.models.proceso,
+                    // as:"proceso",
+                    association:"proceso",
+                    attributes: ['nombre_proceso']
+                }
+            ],
+              order: [
+                ['id_subproceso', 'ASC']
+              ],
+            });
         return data
     }
-    async findByProceso(proceso){
-        const rta = await con.models.subproceso.findAll({
-            where:{
-                id_proceso: proceso
-            }
-        })
-        return rta
-    }
+    // async findByProceso(proceso){
+    //     const rta = await con.models.subproceso.findAll({
+    //         where:{
+    //             id_proceso: proceso
+    //         },
+    //     })
+    //     return rta
+    // }
     async findById(id){
-        const rta = await con.models.subproceso.findByPk(id)
+        const rta = await con.models.subproceso.findOne({
+        where:{
+            id_proceso: proceso
+        }
+        })
         return rta
     }
 
@@ -41,7 +53,7 @@ class SubprocesoService{
     }
 
        async update(id, data){
-        const subproceso = await this.findById(id)
+        const subproceso = await this.findByPk(id)
         const rta = await subproceso.update(data)
         return rta
       }
