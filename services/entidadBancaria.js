@@ -10,58 +10,93 @@ class EntidadBancariaService{
     const entidad_bancaria = await con.models.entidad_bancaria.create(data);
     return entidad_bancaria;
   }
+
+  
    
   async find(){
-    const data = await con.models.entidad_bancaria.findAll({
-      order: [
-        ['entidad_bancaria', 'ASC']
-      ]
-    });
-
+    const data = await con.models.entidad_bancaria.findAll()
     return data;
-  }
+    }
 
-  async findOne(id){
+    async findById(id) {
+      const banco = await con.models.entidad_bancaria.findOne({
+        where: { id_entidad_bancaria: id },
+        include: [
+          {
+            model: con.models.permiso_detalle,
+            as: 'permisodetalle',
+            include: [
+              {
+                model: con.models.permiso,
+                as: 'permiso'
+              }
+            ]
+          }
+        ],
+      });
+      return banco;
+    }
+  
+
+
+async findOneBanco(id){
+  try {
+    // Realiza la consulta para buscar la entidad bancaria por su ID
     const rta = await con.models.entidad_bancaria.findByPk(id);
-    if(!rta){ 
-      throw new Error('Entidad bancaria no encontrada');
-    }
     return rta;
+  } catch (error) {
+    console.error("Error en la consulta:", error);
+    throw error;
   }
+}
 
-  async findByNombre(nombre) {
-    const rta = await con.models.banco.findOne({
-      where: {
-        nombre_banco: nombre
+
+
+    
+  
+    async update(id, data){
+      const entidad_bancaria = await this.findOneBanco(id)
+      const rta = await entidad_bancaria.update(data)
+      return rta
+  }
+  
+  async delete(id){
+    const entidad_bancaria = await this.findOneBanco(id)
+    await entidad_bancaria.destroy()
+    return 'eliminado'
+  }
+  
+  
+  async modify(id, nuevoNombre) {
+    try {
+      // Primero, verifica si la entidad bancaria existe
+      const entidadBancaria = await this.findOneBanco(id);
+  
+      if (entidadBancaria) {
+        console.log(`Entidad bancaria encontrada. ID: ${id}`);
+        console.log(`Nuevo nombre: ${nuevoNombre}`);
+  
+        // Actualiza el nombre de la entidad bancaria con el nuevo nombre proporcionado
+        const updatedEntity = await entidadBancaria.update({ entidad_bancaria: nuevoNombre });
+  
+        console.log(`Entidad bancaria actualizada. ID: ${id}`);
+        console.log(`Nuevo nombre actualizado: ${updatedEntity.entidad_bancaria}`);
+  
+        // Borra el contenido del campo de texto después de la modificación exitosa
+        return updatedEntity;
+      } else {
+        console.error('Entidad bancaria no encontrada');
+        throw new Error('Entidad bancaria no encontrada');
       }
-    });
-  
-    if (!rta) {
-      throw { message: 'No se encontró el banco', codigo: 404 };
+    } catch (error) {
+      console.error("Error en la modificación:", error);
+      throw error;
     }
-  
-    return rta;
   }
   
+  
 
-  async update(id, data){
-    const entidad_bancaria = await this.findOne(id)
-    const rta = await entidad_bancaria.update(data)
-    return rta
-}
+  
 
-async delete(id){
-  const entidad_bancaria = await this.findOne(id)
-  await entidad_bancaria.destroy()
-  return 'eliminado'
-}
-
-
-
-async modify(id, nuevoNombre) {
-  const entidad_bancaria = await this.findOne(id);
-  const rta = await entidad_bancaria.update({ entidad_bancaria: nuevoNombre }); // Actualizar el nombre
-  return rta;
-}
-}
+  }
 module.exports = EntidadBancariaService;

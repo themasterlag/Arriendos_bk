@@ -14,10 +14,10 @@ router.get('/', async(req,res,next)=>{
   }
 });
 
-router.get('/:id', async (req,res,next)=>{
+router.get('/:id', async (req, res, next) => {
   try {
-    const {id} = req.params;
-    const entidad = await service.findOne(id);
+    const { id } = req.params;
+    const entidad = await service.findById(id);
     console.log(entidad);
     res.status(200).json(entidad);
   } catch (error) {
@@ -25,10 +25,11 @@ router.get('/:id', async (req,res,next)=>{
   }
 });
 
+
 router.get('/:nombre', async (req, res, next) => {
   try {
     const { nombre } = req.params;
-    const banco = await service.findByNombre(nombre); 
+    const banco = await service.findOneBanco(nombre); 
     if (banco) {
       res.status(200).json(banco);
     } else {
@@ -38,6 +39,9 @@ router.get('/:nombre', async (req, res, next) => {
     res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 });
+
+
+
 
 router.post('/registrar', async (req, res, next) => {
   try {
@@ -67,6 +71,20 @@ router.patch('/update', async (req, res, next) => {
     next(error);
   }
 });
+
+router.patch('/update/:id', async (req, res, next) => {
+  try {
+    const updatedData = req.body;
+    const idEntidadBancaria = updatedData.id_entidad_bancaria; // Columna de ID correcta
+    const updatedEntity = await service.modify(idEntidadBancaria, updatedData.nuevoNombre);
+    res.json(updatedEntity).status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 
 router.delete('/:id', async (req, res, next) => {
   try {
