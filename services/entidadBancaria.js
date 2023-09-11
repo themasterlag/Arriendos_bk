@@ -7,12 +7,23 @@ class EntidadBancariaService{
   }
 
   async create(data) {
-    const entidad_bancaria = await con.models.entidad_bancaria.create(data);
-    return entidad_bancaria;
+    const { entidad_bancaria } = data;
+
+    // Verificar si ya existe una entidad bancaria con el mismo nombre
+    const existingEntity = await con.models.entidad_bancaria.findOne({
+      where: { entidad_bancaria },
+    });
+
+    if (existingEntity) {
+      // throw new Error('Banco existente');
+      throw{message: 'Exte banco ya esta registrado', codigo:404};
+    }
+
+    // Si no existe, crear la entidad bancaria
+    const nuevaEntidadBancaria = await con.models.entidad_bancaria.create(data);
+    return nuevaEntidadBancaria;
   }
 
-  
-   
   async find(){
     const data = await con.models.entidad_bancaria.findAll()
     return data;
@@ -66,7 +77,9 @@ async findOneBanco(id){
     return 'eliminado'
   }
   
-  
+ 
+
+
   async modify(id, nuevoNombre) {
     try {
       // Primero, verifica si la entidad bancaria existe

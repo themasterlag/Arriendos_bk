@@ -1,9 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
-const Service = require('./../services/entidadBancaria');
+const EntidadBancariaService = require('./../services/entidadBancaria');
 
-const service = new Service();
+const service = new EntidadBancariaService();
 
 router.get('/', async(req,res,next)=>{
   try {
@@ -14,10 +14,10 @@ router.get('/', async(req,res,next)=>{
   }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req,res,next)=>{
   try {
-    const { id } = req.params;
-    const entidad = await service.findById(id);
+    const {id} = req.params;
+    const entidad = await service.findOne(id);
     console.log(entidad);
     res.status(200).json(entidad);
   } catch (error) {
