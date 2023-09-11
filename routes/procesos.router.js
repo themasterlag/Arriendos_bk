@@ -59,7 +59,7 @@ router.patch('/updateSub', async(req, res, next)=>{
     try {
         const oldSubProceso = req.body
         const idSubProceso = oldSubProceso.id_subproceso
-        // console.log(idSubProceso)
+        console.log(req.body)
         const updated = await subprocesoService.update(idSubProceso, oldSubProceso)
         //  console.log(idSubProceso, oldSubProceso.subproceso)
         res.json(updated).status(200)
@@ -68,7 +68,7 @@ router.patch('/updateSub', async(req, res, next)=>{
     }
 })
 
-router.delete('/subproceso:id', async(req, res, next)=>{
+router.delete('/subproceso/:id', async(req, res, next)=>{
     try {
         const { id } = req.params
         console.log(id)

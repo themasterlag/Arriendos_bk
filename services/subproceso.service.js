@@ -30,13 +30,12 @@ class SubprocesoService{
     //     return rta
     // }
     async findById(id){
-        const rta = await con.models.subproceso.findOne({
-        where:{
-            id_proceso: proceso
+        const rta = await con.models.subproceso.findByPk(id);
+        if(!rta){
+          throw {message: 'no se encontro', codigo:404};
         }
-        })
-        return rta
-    }
+        return rta;
+      }
 
     async create(data){
 
@@ -52,14 +51,16 @@ class SubprocesoService{
         }
     }
 
-       async update(id, data){
-        const subproceso = await this.findByPk(id)
+    async update(id, data){
+        const subproceso = await this.findById(id)
+        console.log(subproceso)
         const rta = await subproceso.update(data)
         return rta
       }
     
       async delete(id){
         const subproceso = await this.findById(id)
+        console.log(id)
         await subproceso.destroy()
         return 'eliminado'
       }
