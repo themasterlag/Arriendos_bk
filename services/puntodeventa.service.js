@@ -4,6 +4,16 @@ class PuntoDeVentaService {
   constructor() {}
 
   async create(data) {
+    const find_PDV = await con.models.punto_de_venta.findAll({
+      where: {
+        codigo_sitio_venta: data.codigo_sitio_venta,
+      }
+    })
+    console.log(find_PDV)
+
+    if(find_PDV.length > 0){
+      throw {message: 'Punto con codigo de venta ya existe', codigo:400};
+    }    
     const punto_venta = await con.models.punto_de_venta.create(data);
     return punto_venta.id_punto_venta;
   }
