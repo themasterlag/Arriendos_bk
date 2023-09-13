@@ -15,11 +15,20 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/pagos/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const saldoCredito = await service.findOneWithPagos(id);
+    res.json(saldoCredito);
+  } catch (error) {
+    res.status(error.codigo).send(error);
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const saldoCredito = await service.findOne(id);
-    console.log(saldoCredito);
     res.json(saldoCredito);
   } catch (error) {
     res.status(error.codigo).send(error);
@@ -43,17 +52,6 @@ router.put('/', async (req, res, next) => {
     const newSaldoCredito = await service.update(body.id_saldo_credito, body);
 
     res.status(201).json(newSaldoCredito);
-  } catch (error) {
-    res.status(error.codigo).send(error);
-  }
-});
-
-
-router.patch('/abono', async (req, res) => {
-  try {
-    const body = req.body;
-    const newCredito = await service.abonarSaldoCredito(body.id_saldo_credito, body.abono);
-    res.status(201).send(newCredito);
   } catch (error) {
     res.status(error.codigo).send(error);
   }

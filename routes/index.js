@@ -37,6 +37,8 @@ const permisoRouter = require('./permiso.router');
 const permisoDetalleRouter = require('./permisoDetalle.router');
 const cargoRouter = require('./cargo.router');
 const tipoConceptoRouter = require('./tipoConcepto.router');
+const emailRouter = require('./email.router');
+
 function routerApi(app) {
   const router = express.Router();
   
@@ -78,5 +80,8 @@ function routerApi(app) {
   router.use('/permiso-detalle', permisoDetalleRouter);
   router.use('/aut', autRouter);
   router.use('/tipo-concepto', tipoConceptoRouter);
+
+
+  router.use('/email', emailRouter);
 }
 module.exports = routerApi;

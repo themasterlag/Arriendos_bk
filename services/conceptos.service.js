@@ -26,7 +26,7 @@ class ConceptosService{
         concepto = await con.models.conceptos.create(data);
 
       }else {
-        throw {message: 'Ya existe un concepto con el codigo ingresado', codigo: 404}
+        throw {message: 'Ya existe un concepto con el codigo ingresado', codigo: 200}
       }
       return concepto;
     }

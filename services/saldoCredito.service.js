@@ -21,6 +21,27 @@ class SaldoCreditoService {
     }
     return rta;
   }
+  async findOneWithPagos(id){
+    const rta = await con.models.saldo_credito.findOne({
+      include:[
+        {
+          association: 'creditopagos',
+          include: [
+            {
+              association: 'creditopagousuario'
+            }
+          ]
+        },
+      ],
+      where: {
+        id_saldo_credito: id
+      }
+    });
+    if (!rta || rta.length == 0) {
+      throw ({ message: 'no se encontro credito', codigo: 404})
+    }
+    return rta;
+  }
   async findOneByIdContratoConcepto(id) {
     const [rta] = await con.models.saldo_credito.findAll(
       { where: { contrato_concepto_id: id } }
@@ -44,7 +65,7 @@ class SaldoCreditoService {
   async delete(id) {
     try{
       const saldoCredito = await this.findOne(id);
-      const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: saldoCredito.id_contrato_concepto } });
+      const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: saldoCredito.contrato_concepto_id } });
       await conceptoAnterior.destroy();
       await saldoCredito.destroy();
       return 'eliminado';
@@ -85,6 +106,22 @@ class SaldoCreditoService {
     try{
       let credito = await this.findOne(id_saldo_credito);
       credito.update({credito_saldo: credito.credito_saldo-abono});
+
+      let conceptoContrato = await con.models.contrato_conceptos.findOne({ 
+        where: { 
+          id_contrato_concepto: credito.contrato_concepto_id 
+        } 
+      });
+
+      let hoy = new Date();
+      let fecha_fin = new Date(credito.fecha_fin);
+      let mesesFaltantes = (fecha_fin.getFullYear() - hoy.getFullYear()) * 12 + (fecha_fin.getMonth() - hoy.getMonth()) + 1;
+
+
+      if (mesesFaltantes >= 0) {
+        conceptoContrato.update({valor: Math.ceil(credito.credito_saldo / mesesFaltantes)});
+      }
+
       return credito;
     }
     catch(error){

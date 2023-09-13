@@ -365,7 +365,7 @@ class ContratoService {
     }
   }
 
-  async traerContratosAñoRenovacionProxima(){
+  async traerContratosRenovacionProxima(){
     const diferenciaMeses = 3;
     const hoy = new Date();
     const fin = new Date(hoy.getFullYear(), hoy.getMonth() + diferenciaMeses, hoy.getDate());

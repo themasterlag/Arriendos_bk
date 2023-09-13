@@ -5,6 +5,16 @@ class SaldoCreditoService {
 
   async create(data) {
     try{
+        const credito = await con.models.saldo_credito.findOne({
+          where: {
+            id_saldo_credito: data.id_saldo_credito
+          }
+        });
+
+        if ((credito.saldo_credito-data.valor_pago) < 0) {
+          throw ({message: "El saldo no puede ser negativo", codigo:400});
+        }
+
         const saldo_credito_pago = await con.models.saldo_credito_pago.create(data);
         return saldo_credito_pago;
     }

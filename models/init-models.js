@@ -221,6 +221,7 @@ function initModels(sequelize) {
   zona.hasMany(microzona, { as: "microzonas", foreignKey: "id_zona"});
   saldo_credito.hasMany(saldo_credito_pago, { as: "creditopagos", foreignKey: "id_saldo_credito"});
   saldo_credito_pago.belongsTo(saldo_credito, { as: "saldocredito", foreignKey: "id_saldo_credito"});
+  saldo_credito_pago.belongsTo(usuario, { as: "creditopagousuario", foreignKey: "id_usuario"});
 
   return {
     autorizado,
