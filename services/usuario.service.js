@@ -15,8 +15,14 @@ class UsuarioService {
   }
 
   async find() {
-    const query = 'SELECT * FROM arriendos.usuario';
-    const [data] = await con.query(query);
+    // const query = 'SELECT * FROM arriendos.usuario';
+    // const [data] = await con.query(query);
+    // return data;
+    const data = await con.models.usuario.findAll({
+      order: [
+        ['id_usuario', 'ASC']
+      ]
+    })
     return data;
   }
 
