@@ -15,16 +15,20 @@ class EmailService {
     constructor() {
     }
 
-    async enviarEmail(mailData){        
-        this.transportador.sendMail(mailData, function (err, info) {
-            if(err){
-                console.log(err);
-                return err;
-            }else{
-                console.log(info);
-                return info;
-            }
-        });
+    async enviarEmail(mailData){    
+        try {
+            this.transportador.sendMail(mailData, function (err, info) {
+                if(err){
+                    console.log(err);
+                    return err;
+                }else{
+                    console.log(info);
+                    return info;
+                }
+            });
+        } catch (error) {
+            throw {codigo: 500, message: error};
+        }
     }
 }
 

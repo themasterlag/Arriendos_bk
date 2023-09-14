@@ -368,7 +368,7 @@ class ContratoService {
   async traerContratosRenovacionProxima(meses){
     const diferenciaMeses = meses;
     const hoy = new Date();
-    const fin = new Date(hoy.getFullYear(), hoy.getMonth() + diferenciaMeses, hoy.getDate());
+    const fin = new Date(hoy.getFullYear(), hoy.getMonth() + diferenciaMeses + 1, 1);
     
     const rta = await con.models.contrato.findAll({
       attributes: {
