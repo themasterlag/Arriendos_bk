@@ -30,7 +30,6 @@ class TareasProgramadas{
             cron.schedule("0 0 8 11 * *", async function () {
                 let servicioContrato = new contratoService();
                 let contratos = await servicioContrato.traerContratosRenovacionProxima(1);
-                console.log("contratos", contratos.length);
                 if (contratos.length > 0) {
                     var estiloBootstrap = `
                     <style>
@@ -106,21 +105,36 @@ class TareasProgramadas{
     
                     const mailData = {
                         from: process.env.EMAIL_ADDRESS,
-                        to: ['robertbetancourt011@gmail.com','camilo.campos@ganagana.com.co'],
+                        to: process.env.EMAIL_NOTIFICATION.split(','),
                         subject: 'Contratos por vencer ' + new Date().toISOString(),
                         text: '',
                         html: htmlTabla,
                     };
+                    servicioEmail.enviarEmail(mailData);
+                }else{
+                    let servicioEmail = new EmailService();
     
+                    let htmlTabla = `
+                    <h1>Lista contratos proximos a vencer</h1>
+                    <h4>Para mas detalles ingrese al software de gestion de arriendos</h4>
+                    <hr/>
+                    <br/>
+                    <h4>No hay contratos a vencer para el siguiente mes</h4>`;
+
+                    const mailData = {
+                        from: process.env.EMAIL_ADDRESS,
+                        to: process.env.EMAIL_NOTIFICATION.split(','),
+                        subject: 'Contratos por vencer ' + new Date().toISOString(),
+                        text: 'No hay contratos por vencer',
+                        html: htmlTabla,
+                    };
                     servicioEmail.enviarEmail(mailData);
                 }
-    
-                console.log("Ejecutando una tarea cada "+meses+" segundos", new Date());  
             });
         } catch (error) {
             const mailData = {
                 from: process.env.EMAIL_ADDRESS,
-                to: ['camilo.campos@ganagana.com.co'],
+                to: process.env.EMAIL_NOTIFICATION.split(','),
                 subject: 'Error en tarea programada: contratos por vencer',
                 text: '',
                 html: '<h1>Error en tarea programada: contratos por vencer</h1> <br/><br/><hr/> <strong><h3>Error detectado: </h3><strong/> <br/>' + error,
