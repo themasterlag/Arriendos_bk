@@ -7,6 +7,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    nombre_incremento: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     incremento: {
       type: DataTypes.DOUBLE,
       allowNull: true

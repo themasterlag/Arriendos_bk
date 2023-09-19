@@ -1,4 +1,5 @@
 const con = require('../libs/sequelize');
+const incremento = require('../models/incremento');
 
 class IncrementoService {
   constructor() {}
@@ -7,6 +8,13 @@ class IncrementoService {
     const data = await con.models.incremento.findAll();
     return data;
   }
+
+  async delete(id){
+    const incremento = await this.findOne(id)
+    await incremento.destroy()
+    return 'eliminado'
+  }
+
   async findOne(id) {
     const rta = await con.models.incremento.findByPk(id);
     if (!rta || rta.length == 0) {
@@ -14,12 +22,29 @@ class IncrementoService {
     }
     return rta;
   }
-  async update(id, changes) {
-    const contrato = await this.findOne(id);
 
-    const rta = await contrato.update(changes);
+  async create(data){
 
-    return rta;
+    const rta = await con.models.incremento.findAll({
+      where: {nombre_incremento: data.nombre_incremento},
+  });
+
+  if(rta.length == 0){
+    const incremento = await con.models.incremento.create(data);
+    return incremento;
+  } else {
+      throw {message: 'incremento existente', codigo:404};
+  }
+
+   }
+
+   async update(id, data){
+    const incremento = await this.findOne(id)
+    console.log(incremento)
+    const rta = await incremento.update(data)
+    return rta
   }
 }
+
+
 module.exports = IncrementoService;
