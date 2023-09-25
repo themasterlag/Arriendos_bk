@@ -2,6 +2,7 @@ const { createCanvas, loadImage } = require('canvas');
 const QRCode = require('qrcode');
 const { PDFDocument, rgb } = require('pdf-lib');
 const fs = require('fs');
+const personalService = require('./personalVinculado.service');
 
 datosPrueba = [
     {
@@ -45,8 +46,8 @@ datosPrueba = [
 class CarnetService {
     person = null;
 
-    constructor(person){
-        this.person = datosPrueba[0];
+    constructor(data){
+        this.person = data;
     }
 
     async generateImage(){
@@ -183,7 +184,7 @@ class CarnetService {
 
             // -----------------------------Terminos en carnet-----------------------------------
             // Generar el código QR para la URL y guardarlo en un archivo
-            const url = 'https://www.prueba.com'; // Reemplaza con tu URL
+            const url = process.env.WEB_URL+'/carnet/'+this.person.identificacion; // Reemplaza con tu URL
             const qrCodePath = 'temp/qrCode.png'; // Ruta para guardar el código QR
             await QRCode.toFile(qrCodePath, url, { 
                 errorCorrectionLevel: 'H', 

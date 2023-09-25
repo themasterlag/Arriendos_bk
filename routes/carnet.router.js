@@ -1,18 +1,27 @@
 var express = require('express');
 var router = express.Router();
+const personalService = require('../services/personalVinculado.service');
 const carnetService = require('../services/carnet.service');
 
-router.get('/:id', async function(req, res) {
+router.get('/:documento', async function(req, res) {
   try {
-    carnet = new carnetService("prueba");
-    pdf = await carnet.generarPdf();
+    const documento = req.params.documento;
+
+    let person = await personalService.traerPersonalByIdentificacion(documento);
+    let carnet = new carnetService(person);
+    let pdf = await carnet.generarPdf();
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'filename=CarnetVirtual.pdf');
     res.send(pdf);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Error carnet' });
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).json({ error: 'Error al generar carnet' });
+    }
   }
 });
 
