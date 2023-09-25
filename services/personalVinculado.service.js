@@ -12,8 +12,8 @@ class personalVinculadoService{
             const data = xlsx.utils.sheet_to_json(worksheet);
 
             data.forEach(element => {
-                let personal = this.traerPersonalByIdentificacion(element.identificacion);
-                if (!personal){
+                let personal = this.traerPersonalByIdentificacion(element.identificacion, true);
+                if (personal.lenght == 0){
                     this.crearPersonal(element);
                 } else {
                     this.actualizarPersonal(element)
@@ -30,13 +30,13 @@ class personalVinculadoService{
         try {
             let personal
             if(this.traerPersonalByIdentificacion(data.identificacion)){
-                throw {message: "Personal ya existe", error: 404};
+                throw {message: "Personal ya existe", codigo: 404};
             }else{
                 personal = await con.models.personalvinculado.create(data);
             }
             return personal;
         } catch (error) {
-            throw {message: 'Error al crear', error: 500};
+            throw {message: 'Error al crear', codigo: 500};
         }
     }
 
@@ -45,15 +45,12 @@ class personalVinculadoService{
             let personal
             let personal_find = this.traerPersonalByIdentificacion(data.identificacion)
             console.log(personal_find);
-            if(!personal_find){
-                throw {message: "Personal no existe", error: 404};
-            }else{
-                personal = await personal_find.update(data);
-            }
+
+            personal = await personal_find.update(data);
             return personal;
         } catch (error) {
             console.log(error)
-            throw {message: 'Error al traer el personal', error: 500};
+            throw {message: 'Error al traer el personal', codigo: 500};
         }
     }
 
@@ -70,24 +67,24 @@ class personalVinculadoService{
             // return data;
         } catch (error) {
             console.log(error)
-            throw {message: 'Error al traer el personal', error: 500};
+            throw {message: 'Error al traer el personal', codigo: 500};
         }
     }
 
-    static async traerPersonalByIdentificacion(data){
+    static async traerPersonalByIdentificacion(data, returnData = false) {
         try {         
             const personal = await con.models.personalvinculado.findOne({
                 where:{
                   identificacion: data
                 }
             });
-            if (!personal) {
-                throw {message: "No se encontro personal", error: 404};
+            if (!personal && !returnData) {
+                throw {message: "No existe personal", codigo: 404};
             }
             return personal;
         } catch (error) {
             console.log(error)
-            throw {message: 'Error al traer el personal', error: 500};
+            throw {message: 'Error al traer el personal', codigo: 500};
         }
     }
 
