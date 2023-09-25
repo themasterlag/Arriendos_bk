@@ -23,6 +23,23 @@ class TareasProgramadas{
 
     programarTareas(){
         this.enviarContratosRenovar();
+        this.alertaIncrementos();
+    }
+
+    alertaIncrementos(){
+        cron.schedule("0 0 18 15 12 *", async function () {
+            console.log("Blue label");
+            let servicioEmail = new EmailService();
+    
+            const mailData = {
+                from: process.env.EMAIL_ADDRESS,
+                to: process.env.EMAIL_NOTIFICATION.split(','),
+                subject: 'Actualización de parametros anuales',
+                text: '',
+                html: '<h4>Recordatorio para la actualización de incrementos anuales</h4>',
+            };
+            servicioEmail.enviarEmail(mailData);
+        })
     }
 
     enviarContratosRenovar(){
@@ -30,6 +47,7 @@ class TareasProgramadas{
             cron.schedule("0 0 8 11 * *", async function () {
                 let servicioContrato = new contratoService();
                 let contratos = await servicioContrato.traerContratosRenovacionProxima(1);
+
                 if (contratos.length > 0) {
                     var estiloBootstrap = `
                     <style>
@@ -51,6 +69,9 @@ class TareasProgramadas{
                         .table tbody + tbody {
                             border-top: 2px solid #dee2e6;
                         }
+                        .table tbody td {
+                            text-align: center;
+                        }
                     </style>
                     `;
     
@@ -69,13 +90,12 @@ class TareasProgramadas{
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>ID Contrato</th>
+                                <th>PDV</th>
+                                <th>PDV Nombre</th>
                                 <th>Valor Canon</th>
                                 <th>Fecha Inicio Contrato</th>
                                 <th>Fecha Fin Contrato</th>
                                 <th>Años Prorroga</th>
-                                <th>PDV</th>
-                                <th>PDV Nombre</th>
                             </tr>
                         </thead>
                         <tbody>`;
@@ -84,13 +104,12 @@ class TareasProgramadas{
                             var contrato = contratos[i];
                             htmlTabla += `
                             <tr>
-                                <td>${contrato.id_contrato}</td>
+                                <td>${contrato.pvdetalle.codigo_sitio_venta}</td>
+                                <td>${contrato.pvdetalle.nombre_comercial}</td>
                                 <td>${contrato.valor_canon}</td>
                                 <td>${contrato.fecha_inicio_contrato}</td>
                                 <td>${contrato.fecha_fin_contrato}</td>
                                 <td>${contrato.anios_prorroga}</td>
-                                <td>${contrato.pvdetalle.codigo_oficina}</td>
-                                <td>${contrato.pvdetalle.nombre_comercial}</td>
                             </tr>`;
                         }
     
