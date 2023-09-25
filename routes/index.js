@@ -39,6 +39,7 @@ const cargoRouter = require('./cargo.router');
 const tipoConceptoRouter = require('./tipoConcepto.router');
 const emailRouter = require('./email.router');
 const carnetRouter = require("./carnet.router");
+const personalVinculadoRouter = require("./personalVinculado.router");
 
 function routerApi(app) {
   const router = express.Router();
@@ -88,6 +89,7 @@ function routerApi(app) {
 
   app.use('/api/carnetVirtual', router);
   router.use('/carnet', carnetRouter);
+  router.use('/personaVinculado', personalVinculadoRouter)
 
 }
 module.exports = routerApi;

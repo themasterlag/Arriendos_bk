@@ -2,11 +2,11 @@ const con = require('../libs/sequelize');
 var xlsx = require('xlsx');
 const fs = require('fs');
 
-class personalController{
+class personalVinculadoService{
 
     static async leerExcel(archivo) {
         try {
-            console.log(archivo.file.data);
+            // console.log(archivo.file.data);
             const workbook = xlsx.read(archivo.file.data);
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = xlsx.utils.sheet_to_json(worksheet);
@@ -18,4 +18,4 @@ class personalController{
     }
 }
 
-module.exports = personalController
+module.exports = personalVinculadoService
