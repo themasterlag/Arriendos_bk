@@ -87,7 +87,7 @@ function routerApi(app) {
   router.use('/email', emailRouter);
 
   app.use('/api/carnetVirtual', router);
-  router.use('/carnetRouter', tipoConceptoRouter);
+  router.use('/carnet', carnetRouter);
 
 }
 module.exports = routerApi;
