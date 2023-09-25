@@ -71,21 +71,16 @@ class personalVinculadoService{
         }
     }
 
-    static async traerPersonalByIdentificacion(data, returnData = false) {
-        try {         
-            const personal = await con.models.personalvinculado.findOne({
-                where:{
-                  identificacion: data
-                }
-            });
-            if (!personal && !returnData) {
-                throw {message: "No existe personal", codigo: 404};
+    static async traerPersonalByIdentificacion(data, returnData = false) {      
+        const personal = await con.models.personalvinculado.findOne({
+            where:{
+                identificacion: data
             }
-            return personal;
-        } catch (error) {
-            console.log(error)
-            throw {message: 'Error al traer el personal', codigo: 500};
+        });
+        if (!personal && !returnData) {
+            throw {message: "No existe personal", codigo: 404};
         }
+        return personal;
     }
 
 }
