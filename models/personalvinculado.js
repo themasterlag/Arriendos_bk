@@ -1,36 +1,35 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('persoanlvinculado', {
+  return sequelize.define('personalvinculado', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    nombres: {
+      nombre: {
         type: DataTypes.STRING(255),
         allowNull: false
       },
-      apellidos: {
+      apellido: {
         type: DataTypes.STRING(255),
-        allowNull: true
+        allowNull: false
       },
       identificacion: {
-        type: DataTypes.INTEGER,
-        allowNull: true
+        type: DataTypes.STRING(20),
+        allowNull: false
       },
       cargo: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING(100),
+        allowNull: false
       },
       rh: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING(10),
+        allowNull: false
       },
       estado: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        defaultValue: 1
+        type: DataTypes.BOOLEAN,
+        allowNull: false
       }
   }, {
     sequelize,

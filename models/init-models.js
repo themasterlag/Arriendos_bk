@@ -49,6 +49,7 @@ var _tipo_persona = require("./tipo_persona");
 var _tipo_servicio = require("./tipo_servicio");
 var _usuario = require("./usuario");
 var _zona = require("./zona");
+var _personalVinculado = require("./personalvinculado");
 
 function initModels(sequelize) {
   var autorizado = _autorizado(sequelize, DataTypes);
@@ -101,6 +102,7 @@ function initModels(sequelize) {
   var tipo_servicio = _tipo_servicio(sequelize, DataTypes);
   var usuario = _usuario(sequelize, DataTypes);
   var zona = _zona(sequelize, DataTypes);
+  var personalVinculado = _personalVinculado(sequelize, DataTypes);
   contrato.belongsTo(autorizado, { as: "autdetalle", foreignKey: "id_autorizado"});
   autorizado.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_autorizado"});
   pago_detalle.belongsTo(autorizado, { as: "autdetalle", foreignKey: "id_autorizado"});
@@ -274,6 +276,7 @@ function initModels(sequelize) {
     tipo_servicio,
     usuario,
     zona,
+    personalVinculado,
   };
 }
 module.exports = initModels;
