@@ -38,10 +38,12 @@ const permisoDetalleRouter = require('./permisoDetalle.router');
 const cargoRouter = require('./cargo.router');
 const tipoConceptoRouter = require('./tipoConcepto.router');
 const emailRouter = require('./email.router');
+const carnetRouter = require("./carnet.router");
 
 function routerApi(app) {
   const router = express.Router();
   
+  // Gestion de arriendos
   app.use('/api/arriendos', router);
   router.use('/cargos', cargoRouter);
   router.use('/usuarios', usuarioRouter);
@@ -83,5 +85,9 @@ function routerApi(app) {
 
 
   router.use('/email', emailRouter);
+
+  app.use('/api/carnetVirtual', router);
+  router.use('/carnetRouter', tipoConceptoRouter);
+
 }
 module.exports = routerApi;
