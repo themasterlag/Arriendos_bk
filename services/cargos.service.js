@@ -59,10 +59,23 @@ class CargoService{
         const rta = await cargo.update(data)
         return rta
     }
-    async delete(id){
-        const cargo = await this.findOneCargo(id)
-        await cargo.destroy()
-        return 'eliminado'
-    }
+    async delete(id) {
+        try {
+          const cargo = await this.findOneCargo(id);
+          await cargo.destroy();
+          return 'Eliminado';
+
+        } catch (error) {
+          if (error) {
+            throw { 
+                message: 
+                'No se puede eliminar el cargo debido a su uso por un usuario o a los permisos asociados. Se recomienda quitar los permisos y el cargo al usuario que lo está utilizando.'
+                , codigo: 404 };
+          } else {
+            throw error;
+          }
+        }
+      }
+      
 }
 module.exports = CargoService
