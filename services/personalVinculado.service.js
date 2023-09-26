@@ -11,47 +11,48 @@ class personalVinculadoService{
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = xlsx.utils.sheet_to_json(worksheet);
 
-            data.forEach(element => {
-                let personal = this.traerPersonalByIdentificacion(element.identificacion, true);
-                if (personal.lenght == 0){
-                    this.crearPersonal(element);
-                } else {
-                    this.actualizarPersonal(element)
-                }                
-            });
-            
-            return data;
+            let personal 
+            let rta = [];
+            for (let i = 0; i < data.length; i++) {
+                const element = data[i];
+                element.identificacion = element.identificacion.toString();
+                personal = await this.traerPersonalByIdentificacion(element.identificacion, true);
+                if(personal == null){
+                    let crear = await this.crearPersonal(element);
+                    crear.dataValues['operacion'] = 'creado'
+                    rta.push(crear);
+                }else{
+                    let actualizar = await personal.update(element);
+                    actualizar.dataValues['operacion'] = 'actualizado'
+                    rta.push(actualizar);
+                }
+            }            
+            return rta;
         } catch (error) {
             throw error;
         }
     }
 
     static async crearPersonal(data){
-        try {
-            let personal
-            if(this.traerPersonalByIdentificacion(data.identificacion)){
-                throw {message: "Personal ya existe", codigo: 404};
-            }else{
-                personal = await con.models.personalvinculado.create(data);
-            }
-            return personal;
-        } catch (error) {
-            throw {message: 'Error al crear', codigo: 500};
+        let personal;
+        const find_personal = await this.traerPersonalByIdentificacion(data.identificacion, true);
+        if(find_personal == null){
+            personal = await con.models.personalvinculado.create(data);
+        }else{
+            throw {message: 'Personal ya existe con número de identificación', codigo: 500};
         }
+        return personal;
     }
 
     static async actualizarPersonal(data) {
-        try {
-            let personal
-            let personal_find = this.traerPersonalByIdentificacion(data.identificacion)
-            console.log(personal_find);
-
-            personal = await personal_find.update(data);
-            return personal;
-        } catch (error) {
-            console.log(error)
-            throw {message: 'Error al traer el personal', codigo: 500};
+        let rta
+        const find_personal = await con.models.personalvinculado.findByPk(data.id);
+        if(find_personal == null){
+            throw {message: 'No existe personal con id', codigo: 500};
+        }else{
+            rta = await find_personal.update(data)
         }
+        return rta;
     }
 
     static async traerPersonal(){
@@ -71,7 +72,7 @@ class personalVinculadoService{
         }
     }
 
-    static async traerPersonalByIdentificacion(data, returnData = false) {      
+    static async traerPersonalByIdentificacion(data, returnData = false) {    
         const personal = await con.models.personalvinculado.findOne({
             where:{
                 identificacion: data

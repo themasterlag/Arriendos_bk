@@ -15,6 +15,28 @@ router.post('/', async function(req, res) {
     }
 });
 
+router.post('/personal', async function(req, res) {
+  try {
+    const datos = req.body;
+    const personal = await personalService.crearPersonal(datos);
+    res.json(personal);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Ocurrió un error al obtener el personal'});
+  }
+});
+
+router.patch('/personal', async function(req, res) {
+  try {
+    const datos = req.body;
+    const personal = await personalService.actualizarPersonal(datos);
+    res.json(personal);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Ocurrió un error al obtener el personal'});
+  }
+});
+
 router.get('/', async function(req, res) {
     try {
         const personal = await personalService.traerPersonal();
