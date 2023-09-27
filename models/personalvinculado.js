@@ -30,6 +30,11 @@ module.exports = function(sequelize, DataTypes) {
       estado: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+      },
+      fecha_actualizacion: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        defaultValue: Sequelize.Sequelize.fn('now')
       }
   }, {
     sequelize,

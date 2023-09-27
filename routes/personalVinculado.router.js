@@ -38,13 +38,27 @@ router.patch('/personal', async function(req, res) {
 });
 
 router.get('/', async function(req, res) {
-    try {
-        const personal = await personalService.traerPersonal();
-        res.json(personal);
-      } catch (error) {
-        res.status(500).json({ error: 'Ocurrió un error al obtener el personal'});
-      }
+  try {
+      const personal = await personalService.traerPersonal();
+      res.json(personal);
+    } catch (error) {
+      res.status(500).json({ error: 'Ocurrió un error al obtener el personal'});
+    }
 });
+
+router.get('/crearExcel', async function(req, res) {
+  try {
+    const personal = await personalService.crearExcel();
+
+    res.setHeader('Content-Disposition', 'filename=archivo.xlsx');
+    res.type('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.send(personal);
+    // res.json(personal);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Ocurrió un error al obtener el personal'});
+  }
+})
 
 router.get('/personalIdentificacion/:id', async function(req, res) {
     try {

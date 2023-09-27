@@ -6,27 +6,50 @@ class personalVinculadoService{
 
     static async leerExcel(archivo) {
         try {
-            // console.log(archivo.file.data);
             const workbook = xlsx.read(archivo.file.data);
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = xlsx.utils.sheet_to_json(worksheet);
 
             let personal 
             let rta = [];
+            let numIdentificacion = [];
             for (let i = 0; i < data.length; i++) {
                 const element = data[i];
                 element.identificacion = element.identificacion.toString();
                 personal = await this.traerPersonalByIdentificacion(element.identificacion, true);
                 if(personal == null){
                     let crear = await this.crearPersonal(element);
-                    crear.dataValues['operacion'] = 'creado'
+                    crear.dataValues['estado'] = true;
+                    crear.dataValues['operacion'] = 'creado';
                     rta.push(crear);
                 }else{
+                    element.fecha_actualizacion = new Date();
                     let actualizar = await personal.update(element);
+                    actualizar.dataValues['estado'] = true;
                     actualizar.dataValues['operacion'] = 'actualizado'
                     rta.push(actualizar);
                 }
-            }            
+                numIdentificacion.push(element.identificacion);
+            }     
+            
+            // const query = 'SELECT * FROM arriendos.personalvinculado WHERE identificacion NOT IN (?)';
+            // const [datosNoExcel] = await con.query(query, [numIdentificacion]);
+            const query = await con.models.personalvinculado.findAll({
+                where: {
+                    identificacion: {
+                        [con.Sequelize.Op.notIn]: numIdentificacion,
+                    }
+                },
+                order: [
+                    ['id', 'ASC']
+                ]
+              })
+            
+            for (const personalBD of query){
+                personalBD.estado = false;
+                await personalBD.save();
+            }
+
             return rta;
         } catch (error) {
             throw error;
@@ -53,6 +76,26 @@ class personalVinculadoService{
             rta = await find_personal.update(data)
         }
         return rta;
+    }
+
+    static async crearExcel(){
+        let carguePersonal = [];
+        let personal = await this.traerPersonal();
+
+        for (let i = 0; i < personal.length; i++) {
+            const element = personal[i];
+
+            delete element.dataValues.id
+            carguePersonal.push(element.dataValues);
+        }
+        const ws = xlsx.utils.json_to_sheet(carguePersonal);
+        
+        const wb = xlsx.utils.book_new();
+        xlsx.utils.book_append_sheet(wb, ws, 'Hoja1');
+        
+        let archivo = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx'});
+
+        return archivo;
     }
 
     static async traerPersonal(){
