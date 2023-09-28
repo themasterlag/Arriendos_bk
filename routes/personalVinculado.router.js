@@ -7,6 +7,7 @@ const personalService = require('../services/personalVinculado.service');
 router.post('/', async function(req, res) {
     try {
       const excel_prueba = req.files;
+      console.log(req);
       const personal = await personalService.leerExcel(excel_prueba);
       res.json(personal);
     } catch (error) {
@@ -18,6 +19,7 @@ router.post('/', async function(req, res) {
 router.post('/personal', async function(req, res) {
   try {
     const datos = req.body;
+    console.log(datos)
     const personal = await personalService.crearPersonal(datos);
     res.json(personal);
   } catch (error) {
