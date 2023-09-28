@@ -8,6 +8,10 @@ router.get('/:documento', async function(req, res) {
     const documento = req.params.documento;
 
     let person = await personalService.traerPersonalByIdentificacion(documento);
+    if (!person.estado){
+      throw { message: "Usuario inactivo", codigo: 401 }
+    }
+
     let carnet = new carnetService(person);
     let pdf = await carnet.generarPdf();
 

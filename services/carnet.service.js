@@ -2,46 +2,8 @@ const { createCanvas, loadImage } = require('canvas');
 const QRCode = require('qrcode');
 const { PDFDocument, rgb } = require('pdf-lib');
 const fs = require('fs');
-const personalService = require('./personalVinculado.service');
+const crypto = require('crypto');
 
-datosPrueba = [
-    {
-        "id": 1,
-        "nombre": "LEIDY CATHERINE",
-        "apellido": "SOTO CARDOZO",
-        "identificacion": "1110498749",
-        "cargo": "DIRECTORA DE TH",
-        "rh": "B-",
-        "estado": true
-    },
-    {
-        "id": 2,
-        "nombre": "Onix Liceth",
-        "apellido": "López Castillo",
-        "identificacion": "1106714013",
-        "cargo": "Auxiliar de apoyo",
-        "rh": "O+",
-        "estado": true
-    },
-    {
-        "id": 3,
-        "nombre": "Jenny Carolina",
-        "apellido": "Gómez sogamoso",
-        "identificacion": "1105685934",
-        "cargo": "Asesora de betplay",
-        "rh": "O+",
-        "estado": true
-    },
-    {
-        "id": 4,
-        "nombre": "Karen isabella",
-        "apellido": "Suarez galindo",
-        "identificacion": "1110446455",
-        "cargo": "Asesora de ventas servicios y recaudos",
-        "rh": "O+",
-        "estado": true
-    }
-]
 
 class CarnetService {
     person = null;
@@ -61,6 +23,36 @@ class CarnetService {
 
             // Dibuja la imagen en el lienzo
             ctx.drawImage(image, 0, 0);
+
+
+            // -----------------------------QR en carnet-----------------------------------
+            // Generar el código QR para la URL y guardarlo en un archivo
+            const url = process.env.WEB_URL+'/carnet/'+this.person.identificacion; // Reemplaza con tu URL
+            const qrCodePath = 'temp/qrCode.png'; // Ruta para guardar el código QR
+            await QRCode.toFile(qrCodePath, url, { 
+                errorCorrectionLevel: 'H', 
+                color: {
+                    dark: '#000000',   // Color oscuro (código QR)
+                    light: '#fff0',    // Color claro transparente (fondo del código QR)
+                }
+            });
+
+            // Cargar el código QR como una imagen en el lienzo
+            const qrCodeImage = await loadImage(qrCodePath);
+
+            // Elimina el PDF guardado
+            fs.unlink(qrCodePath, err => {
+                if (err) {
+                    throw error;
+                }
+            });
+
+            // Calcular la posición del código QR en la imagen
+            const qrCodeX = (canvas.width - qrCodeImage.width) / 2;
+            const qrCodeY = (canvas.height - qrCodeImage.height) / 4.8;
+
+            // Dibujar el código QR en el lienzo
+            ctx.drawImage(qrCodeImage, qrCodeX, qrCodeY);
 
 
             // -----------------------------Nombres en carnet-----------------------------------
@@ -136,7 +128,7 @@ class CarnetService {
             // Calcula la posición del texto para que esté en el centro de la imagen
             textWidth = ctx.measureText(text).width;
             textX = (canvas.width - textWidth) / 2; // Centro en el eje X
-            textY = (canvas.height + fontSize) / 1.8; // Cabecera del eje Y
+            textY = (canvas.height + fontSize) / 1.85; // Cabecera del eje Y
 
             // Agrega texto en la posición deseada
             ctx.fillText(text, textX, textY);
@@ -169,7 +161,7 @@ class CarnetService {
             const totalHeight = lineas.length * fontSize;
             
             // Calcula la posición vertical inicial para centrar el párrafo
-            textY = (canvas.height - totalHeight) / 1.20;
+            textY = (canvas.height - totalHeight) / 1.25;
 
             // Itera las líneas y agrega cada una centrada
             lineas.forEach((linea, index) => {
@@ -182,34 +174,21 @@ class CarnetService {
             });
 
 
-            // -----------------------------Terminos en carnet-----------------------------------
-            // Generar el código QR para la URL y guardarlo en un archivo
-            const url = process.env.WEB_URL+'/carnet/'+this.person.identificacion; // Reemplaza con tu URL
-            const qrCodePath = 'temp/qrCode.png'; // Ruta para guardar el código QR
-            await QRCode.toFile(qrCodePath, url, { 
-                errorCorrectionLevel: 'H', 
-                color: {
-                    dark: '#000000',   // Color oscuro (código QR)
-                    light: '#fff0',    // Color claro transparente (fondo del código QR)
-                }
-            });
+            // -----------------------------Fecha actualizacion en carnet-----------------------------------
+            // Configura el estilo de texto
+            text = "Ultima actualizacion: "+this.person.fecha_actualizacion;
+            fontSize = 20;
+            ctx.font = `${fontSize}px Arial`;
+            ctx.fillStyle = 'black';
+            
+            // Calcula la posición del texto para que esté en el centro de la imagen
+            textWidth = ctx.measureText(text).width;
+            textX = (canvas.width - textWidth) / 2; // Centro en el eje X
+            textY = (canvas.height + fontSize) / 1.17; // Cabecera del eje Y
 
-            // Cargar el código QR como una imagen en el lienzo
-            const qrCodeImage = await loadImage(qrCodePath);
+            // Agrega texto en la posición deseada
+            ctx.fillText(text, textX, textY);
 
-            // Elimina el PDF guardado
-            fs.unlink(qrCodePath, err => {
-                if (err) {
-                    throw error;
-                }
-            });
-
-            // Calcular la posición del código QR en la imagen
-            const qrCodeX = (canvas.width - qrCodeImage.width) / 2;
-            const qrCodeY = (canvas.height - qrCodeImage.height) / 4.8;
-
-            // Dibujar el código QR en el lienzo
-            ctx.drawImage(qrCodeImage, qrCodeX, qrCodeY);
 
 
             // Genera la respuesta con la imagen modificada
@@ -251,20 +230,45 @@ class CarnetService {
             fs.writeFileSync(filePath, pdfBytes);
             const pdfData = fs.readFileSync(filePath);
 
-            // Elimina el PDF guardado
-            fs.unlink(filePath, err => {
-                if (err) {
-                    throw error;
-                }
-            });
+            // this.generarLlaves()
+
+            // // Elimina el PDF guardado
+            // fs.unlink(filePath, err => {
+            //     if (err) {
+            //         throw error;
+            //     }
+            // });
 
             return pdfData;
         } catch (error) {
-            throw error;
+            throw error; 
         }
         
     }
 
+
+    generarLlaves(){
+        // Generar una clave privada
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+            modulusLength: 4096,
+            publicKeyEncoding: {
+            type: 'spki', // Especifica el formato de la clave pública como SPKI (SubjectPublicKeyInfo)
+            format: 'pem' // Formato PEM
+            },
+            privateKeyEncoding: {
+            type: 'pkcs8', // Formato de la clave privada
+            format: 'pem', // Formato PEM
+            // cipher: 'aes-256-cbc', // Opcional: cifrar la clave privada
+            // passphrase: '123456' // Opcional: contraseña para cifrar la clave privada
+            },
+        });
+        
+        // Guardar la clave privada en un archivo
+        fs.writeFileSync('keys/private-key.pem', privateKey);
+        
+        // Guardar la clave pública en un archivo
+        fs.writeFileSync('keys/public-key.pem', publicKey);
+    }
 }
 
 module.exports = CarnetService;
