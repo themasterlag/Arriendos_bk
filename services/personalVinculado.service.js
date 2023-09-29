@@ -138,13 +138,13 @@ class personalVinculadoService{
     static async habilitarPersonal(id){
         const personal = await con.models.personalvinculado.findByPk(id);
         console.log(personal);
-        personal.update({ estado: 1 });
+        personal.update({ estado: 1 , fecha_actualizacion: new Date()});
         return personal;
     }
 
     static async inhabilitarPersonal(id){
         const personal = await con.models.personalvinculado.findByPk(id)
-        personal.update({ estado: 0 });
+        personal.update({ estado: 0 , fecha_actualizacion: new Date() });
         return personal;
     }
 
