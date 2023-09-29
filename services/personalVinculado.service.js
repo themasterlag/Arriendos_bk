@@ -13,45 +13,49 @@ class personalVinculadoService{
             let personal 
             let rta = [];
             let numIdentificacion = [];
-            for (let i = 0; i < data.length; i++) {
-                const element = data[i];
-                element.identificacion = element.identificacion.toString();
-                personal = await this.traerPersonalByIdentificacion(element.identificacion, true);
-                if(personal == null){
-                    element['estado'] = true;
-                    let crear = await this.crearPersonal(element);
-                    crear.dataValues['operacion'] = 'creado';
-                    rta.push(crear);
-                }else{
-                    element.fecha_actualizacion = new Date();
-                    element['estado'] = true;
-                    let actualizar = await personal.update(element);
-                    actualizar.dataValues['operacion'] = 'actualizado'
-                    rta.push(actualizar);
-                }
-                console.log(rta);
-                numIdentificacion.push(element.identificacion);
-            }     
-            
-            // const query = 'SELECT * FROM arriendos.personalvinculado WHERE identificacion NOT IN (?)';
-            // const [datosNoExcel] = await con.query(query, [numIdentificacion]);
-            const query = await con.models.personalvinculado.findAll({
-                where: {
-                    identificacion: {
-                        [con.Sequelize.Op.notIn]: numIdentificacion,
+            if(data[0].nombre == null && data[0].cargo == null && data[0].identificacion == null){
+                throw {message: 'El archivo no cuenta con la estructura', codigo: 400}
+            }else{
+                for (let i = 0; i < data.length; i++) {
+                    const element = data[i];
+                    element.identificacion = element.identificacion.toString();
+                    personal = await this.traerPersonalByIdentificacion(element.identificacion, true);
+                    if(personal == null){
+                        element['estado'] = true;
+                        let crear = await this.crearPersonal(element);
+                        crear.dataValues['operacion'] = 'creado';
+                        rta.push(crear);
+                    }else{
+                        element.fecha_actualizacion = new Date();
+                        element['estado'] = true;
+                        let actualizar = await personal.update(element);
+                        actualizar.dataValues['operacion'] = 'actualizado'
+                        rta.push(actualizar);
                     }
-                },
-                order: [
-                    ['id', 'ASC']
-                ]
-              })
-            
-            for (const personalBD of query){
-                // personalBD.estado = false;
-                await personalBD.save();
-            }
+                    console.log(rta);
+                    numIdentificacion.push(element.identificacion);
+                }     
+                
+                // const query = 'SELECT * FROM arriendos.personalvinculado WHERE identificacion NOT IN (?)';
+                // const [datosNoExcel] = await con.query(query, [numIdentificacion]);
+                const query = await con.models.personalvinculado.findAll({
+                    where: {
+                        identificacion: {
+                            [con.Sequelize.Op.notIn]: numIdentificacion,
+                        }
+                    },
+                    order: [
+                        ['id', 'ASC']
+                    ]
+                })
+                
+                for (const personalBD of query){
+                    // personalBD.estado = false;
+                    await personalBD.save();
+                }
 
-            return rta;
+                return rta;
+            }
         } catch (error) {
             throw error;
         }
