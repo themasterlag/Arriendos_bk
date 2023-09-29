@@ -64,7 +64,7 @@ class personalVinculadoService{
             data['estado'] = true;
             personal = await con.models.personalvinculado.create(data);
         }else{
-            throw {message: 'Personal ya existe con número de identificación', codigo: 500};
+            throw {message: 'Personal ya existe con número de identificación', codigo: 400};
         }
         return personal;
     }
@@ -73,7 +73,7 @@ class personalVinculadoService{
         let rta
         const find_personal = await con.models.personalvinculado.findByPk(data.id);
         if(find_personal == null){
-            throw {message: 'No existe personal con id', codigo: 500};
+            throw {message: 'No existe personal con id', codigo: 404};
         }else{
             rta = await find_personal.update(data)
         }
@@ -88,12 +88,17 @@ class personalVinculadoService{
             const element = personal[i];
 
             delete element.dataValues.id
+            if(element.dataValues.estado == false){
+                element.dataValues.estado = 'Inactivo';
+            }else{
+                element.dataValues.estado = 'Activo';
+            }
             carguePersonal.push(element.dataValues);
         }
         const ws = xlsx.utils.json_to_sheet(carguePersonal);
         
         const wb = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(wb, ws, 'Hoja1');
+        xlsx.utils.book_append_sheet(wb, ws, 'Personal vinculado');
         
         let archivo = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx'});
 
@@ -113,7 +118,7 @@ class personalVinculadoService{
             // return data;
         } catch (error) {
             console.log(error)
-            throw {message: 'Error al traer el personal', codigo: 500};
+            throw {message: 'Error al traer el personal', codigo: 404};
         }
     }
 
