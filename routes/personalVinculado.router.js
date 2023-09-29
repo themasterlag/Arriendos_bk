@@ -73,4 +73,26 @@ router.get('/personalIdentificacion/:id', async function(req, res) {
       }
 });
 
+router.patch('/inhabilitar',
+  async (req, res, next) => {
+    try {
+      const id = req.body.id;
+      const newCategory = await personalService.inhabilitarPersonal(id);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      res.status(error.codigo).json(error);
+    }
+  });
+  router.patch('/habilitar',
+  async (req, res, next) => {
+    try {
+      const id = req.body.id;
+      const newCategory = await personalService.habilitarPersonal(id);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      console.log(error)
+      res.status(error.codigo).json(error);
+    }
+  });
+
 module.exports = router

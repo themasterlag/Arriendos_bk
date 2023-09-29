@@ -61,6 +61,7 @@ class personalVinculadoService{
         let personal;
         const find_personal = await this.traerPersonalByIdentificacion(data.identificacion, true);
         if(find_personal == null){
+            data['estado'] = true;
             personal = await con.models.personalvinculado.create(data);
         }else{
             throw {message: 'Personal ya existe con número de identificación', codigo: 500};
@@ -125,6 +126,20 @@ class personalVinculadoService{
         if (!personal && !returnData) {
             throw {message: "No existe personal", codigo: 404};
         }
+        return personal;
+    }
+
+
+    static async habilitarPersonal(id){
+        const personal = await con.models.personalvinculado.findByPk(id);
+        console.log(personal);
+        personal.update({ estado: 1 });
+        return personal;
+    }
+
+    static async inhabilitarPersonal(id){
+        const personal = await con.models.personalvinculado.findByPk(id)
+        personal.update({ estado: 0 });
         return personal;
     }
 
