@@ -6,6 +6,7 @@ class personalVinculadoService{
 
     static async leerExcel(archivo) {
         try {
+            console.log(archivo.file.data, 'Blue label')
             const workbook = xlsx.read(archivo.file.data);
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = xlsx.utils.sheet_to_json(worksheet);
