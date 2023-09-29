@@ -6,7 +6,6 @@ class personalVinculadoService{
 
     static async leerExcel(archivo) {
         try {
-            console.log(archivo.file.data, 'Blue label')
             const workbook = xlsx.read(archivo.file.data);
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = xlsx.utils.sheet_to_json(worksheet);
@@ -19,17 +18,18 @@ class personalVinculadoService{
                 element.identificacion = element.identificacion.toString();
                 personal = await this.traerPersonalByIdentificacion(element.identificacion, true);
                 if(personal == null){
+                    element['estado'] = true;
                     let crear = await this.crearPersonal(element);
-                    crear.dataValues['estado'] = true;
                     crear.dataValues['operacion'] = 'creado';
                     rta.push(crear);
                 }else{
                     element.fecha_actualizacion = new Date();
+                    element['estado'] = true;
                     let actualizar = await personal.update(element);
-                    actualizar.dataValues['estado'] = true;
                     actualizar.dataValues['operacion'] = 'actualizado'
                     rta.push(actualizar);
                 }
+                console.log(rta);
                 numIdentificacion.push(element.identificacion);
             }     
             
@@ -47,7 +47,7 @@ class personalVinculadoService{
               })
             
             for (const personalBD of query){
-                personalBD.estado = false;
+                // personalBD.estado = false;
                 await personalBD.save();
             }
 
