@@ -50,7 +50,7 @@ class personalVinculadoService{
                 })
                 
                 for (const personalBD of query){
-                    // personalBD.estado = false;
+                    personalBD.estado = false;
                     await personalBD.save();
                 }
 
