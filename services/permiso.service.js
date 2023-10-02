@@ -43,10 +43,24 @@ class PermisoService{
         const rta = await permiso.update(data)
         return rta
     }
+
     async delete(id){
-        const permiso = await this.findOne(id)
-        permiso.destroy()
-        return 'eliminado'
+        try{
+        const permiso = await this.findOne(id);
+        await permiso.destroy();
+        return 'eliminado';
+
+        }catch (error) {
+        if (error) {
+          throw { 
+              message: 
+              'No se puede eliminar el permiso porque esta siendo utilizado.'
+              , codigo: 404 };
+        } else {
+          throw error;
+        }
+      }
     }
 }
+    
 module.exports = PermisoService

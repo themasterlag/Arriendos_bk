@@ -48,9 +48,21 @@ class ProcesoService{
   }
 
   async delete(id){
-    const proceso = await this.findOnde(id)
-    await proceso.destroy()
-    return 'eliminado'
+    try{
+      const proceso = await this.findOnde(id);
+    await proceso.destroy();
+    return 'eliminado';
+
+    }catch (error) {
+      if (error) {
+        throw { 
+            message: 
+            'No se puede eliminar el proceso porque esta siendo utilizado.'
+            , codigo: 404 };
+      } else {
+        throw error;
+      }
+    }
   }
-  }
+}
 module.exports = ProcesoService;

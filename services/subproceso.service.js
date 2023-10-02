@@ -59,11 +59,23 @@ class SubprocesoService{
       }
     
       async delete(id){
-        const subproceso = await this.findById(id)
-        console.log(id)
-        await subproceso.destroy()
-        return 'eliminado'
+        try{
+        const subproceso = await this.findById(id);
+        await subproceso.destroy();
+        return 'eliminado';
+
+        }catch (error) {
+        if (error) {
+          throw { 
+              message: 
+              'No se puede eliminar el proceso por que esta siendo utilizado.'
+              , codigo: 404 };
+        } else {
+          throw error;
+        }
       }
+    }
+      
 
 }
 module.exports = SubprocesoService

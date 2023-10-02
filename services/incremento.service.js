@@ -10,10 +10,23 @@ class IncrementoService {
   }
 
   async delete(id){
-    const incremento = await this.findOne(id)
-    await incremento.destroy()
-    return 'eliminado'
+    try{
+    const incremento = await this.findOne(id);
+    await incremento.destroy();
+    return 'eliminado';
+
+    }catch (error) {
+    if (error) {
+      throw { 
+          message: 
+          'No se puede eliminar el incremento por que esta siendo utilizado.'
+          , codigo: 404 };
+    } else {
+      throw error;
+    }
   }
+}
+  
 
   async findOne(id) {
     const rta = await con.models.incremento.findByPk(id);
