@@ -72,10 +72,22 @@ async findOneBanco(id){
   }
   
   async delete(id){
-    const entidad_bancaria = await this.findOneBanco(id)
-    await entidad_bancaria.destroy()
-    return 'eliminado'
+    try{
+    const entidad_bancaria = await this.findOneBanco(id);
+    await entidad_bancaria.destroy();
+    return 'eliminado';
+
+   }catch (error) {
+    if (error) {
+      throw { 
+          message: 
+          'No se puede eliminar el banco porque esta siendo utilizado.'
+          , codigo: 404 };
+    } else {
+      throw error;
+    }
   }
+}
   
  
 
