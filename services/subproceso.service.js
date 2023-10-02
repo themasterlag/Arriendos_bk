@@ -68,7 +68,7 @@ class SubprocesoService{
         if (error) {
           throw { 
               message: 
-              'No se puede eliminar el proceso por que esta siendo utilizado.'
+              'No se puede eliminar el subproceso por que esta siendo utilizado.'
               , codigo: 404 };
         } else {
           throw error;
