@@ -24,7 +24,7 @@ class CargoService{
     async find(){
         const cargos = await con.models.cargo.findAll({
             order: [
-                ['cargo', 'ASC']
+                ['id_cargo', 'ASC']
               ]
         })
         return cargos
