@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const PuntoDeVentaService = require('./../services/puntodeventa.service');
+const puntoVentaService = new PuntoDeVentaService();//crear una instancia del servicio
 
 const service = new PuntoDeVentaService();
 
@@ -66,7 +67,7 @@ router.patch('/update', async (req, res, next) => {
   try {
     const body = req.body;
     const id = body.id_punto_venta;
-    console.log(body);
+    console.log(body); 
     const newPuntoDeVenta = await service.update(id, body);
     res.status(201).json({
       estado: '1',
@@ -78,22 +79,86 @@ router.patch('/update', async (req, res, next) => {
   }
 });
 
-router.patch('/inhabilitar', async (req, res, next) => {
+router.patch('/actualizar', async (req, res, next) => {
   try {
-    console.log(res.body);
-    let { id, fecha_inactivo, razon_inactivo } = req.body;
-    const resultado = await service.inhabilitarPuntoDeVenta(
-      id,
-      fecha_inactivo,
-      razon_inactivo
-    );
-    res.status(200).json({
+    const body = req.body;
+    const id = body.codigo_sitio_venta;
+    console.log(body); 
+    const newPuntoDeVenta = await service.update(id, body);
+    res.status(201).json({
       estado: '1',
-      id: resultado,
-      respuesta: 'Se ha inhabilidato el punto de venta correctamente',
+      id: newPuntoDeVenta.codigo_sitio_venta,
+      respuesta: 'Se actualizo correctamente el desplegable',
     });
   } catch (error) {
     res.status(error.codigo).send(error);
+  }
+});
+
+
+// router.patch('/inhabilitar', async (req, res, next) => {
+//   console.log('Ruta de inhabilitación de punto de venta alcanzada'); // Agrega este registro
+//   console.log('Datos recibidos en la solicitud:', req.body);
+//   try {
+//     console.log(res.body);
+//     let { id, fecha_inactivo, razon_inactivo } = req.body;
+//     const resultado = await service.inhabilitarPuntoDeVenta(
+//       id,
+//       fecha_inactivo,
+//       razon_inactivo
+//     );
+//     res.status(200).json({
+//       estado: '1',
+//       id: resultado,
+//       respuesta: 'Se ha inhabilidato el punto de venta correctamente',
+//     });
+//   } catch (error) {
+//     res.status(error.codigo).send(error);
+//   }
+// });
+
+// router.patch('/inhabilitar', async (req, res, next) => {
+//   try {
+//     const { id, fecha_inactivo, razon_inactivo } = req.body;
+    
+//     // Llama a la función del servicio para inhabilitar el punto de venta
+//     const resultado = await puntoVentaService.inhabilitarPuntoDeVenta(id, fecha_inactivo, razon_inactivo);
+
+//     // Envía una respuesta exitosa
+//     res.status(200).json({ message: 'Punto de venta inhabilitado con éxito', id: resultado });
+//   } catch (error) {
+//     console.error('Error al inhabilitar el punto de venta:', error);
+//     res.status(500).json({ message: 'Error al inhabilitar el punto de venta' });
+//   }
+// });
+
+// router.patch('/inhabilitar', async (req, res, next) => {
+//   try {
+//     const { codigo_sitio_venta, fecha_inactivo, razon_inactivo } = req.body;
+    
+//     // Llama a la función del servicio para inhabilitar el punto de venta
+//     const resultado = await puntoVentaService.inhabilitarPuntoDeVenta(codigo_sitio_venta, fecha_inactivo, razon_inactivo);
+
+//     // Envía una respuesta exitosa
+//     res.status(200).json({ message: 'Punto de venta inhabilitado con éxito', codigo_sitio_venta: resultado });
+//   } catch (error) {
+//     console.error('Error al inhabilitar el punto de venta:', error);
+//     res.status(500).json({ message: 'Error al inhabilitar el punto de venta' });
+//   }
+// });
+
+router.patch('/inhabilitar', async (req, res, next) => {
+  try {
+    const { codigo_sitio_venta, fecha_inactivo, razon_inactivo } = req.body;
+
+    // Llama a la función del servicio para inhabilitar el punto de venta
+    const resultado = await puntoVentaService.inhabilitarPuntoDeVenta(codigo_sitio_venta, fecha_inactivo, razon_inactivo);
+
+    // Envía una respuesta exitosa
+    res.status(200).json({ message: 'Punto de venta inhabilitado con éxito', codigo_sitio_venta: resultado });
+  } catch (error) {
+    console.error('Error al inhabilitar el punto de venta:', error);
+    res.status(500).json({ message: 'Error al inhabilitar el punto de venta' });
   }
 });
 

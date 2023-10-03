@@ -35,6 +35,24 @@ class PuntoDeVentaService {
     return rta;
   }
 
+  async findOneCodigoSitioVenta(codigo_sitio_venta) {
+    console.log('Valor de codigo_sitio_venta:', codigo_sitio_venta); 
+  
+    const puntoVenta = await con.models.punto_de_venta.findOne({
+      where: {
+        codigo_sitio_venta: codigo_sitio_venta,
+      },
+    });
+  
+    if (!puntoVenta) {
+      throw { message: 'Punto de venta no encontrado', codigo: 404 };
+    }
+  
+    return puntoVenta;
+  }
+  
+  
+
   async findByCodigoSitioVenta(codigo_sitio_venta) {
     const rta = await con.models.punto_de_venta.findOne({
       where: {
@@ -93,14 +111,48 @@ class PuntoDeVentaService {
     );
     return result;
   }
-  async inhabilitarPuntoDeVenta(id, fecha_inactivo, razon_inactivo) {
-    console.log('id', id, 'FECHA ', fecha_inactivo, 'Razon: ', razon_inactivo);
-    const puntoDeVenta = await this.findOne(id);
-    await puntoDeVenta.update({
-      fecha_inactivo: fecha_inactivo,
-      razon_inactivo: razon_inactivo,
-    });
-    return puntoDeVenta.id_punto_venta;
+  // async inhabilitarPuntoDeVenta(id, fecha_inactivo, razon_inactivo) {
+  //   console.log('id', id, 'FECHA ', fecha_inactivo, 'Razon: ', razon_inactivo);
+  //   const puntoDeVenta = await this.findOne(id);
+  //   await puntoDeVenta.update({
+  //     fecha_inactivo: fecha_inactivo,
+  //     razon_inactivo: razon_inactivo,
+  //   });
+  //   return puntoDeVenta.id_punto_venta;
+  // }
+
+  // async inhabilitarPuntoDeVenta(codigo_sitio_venta, fecha_inactivo, razon_inactivo) {
+  //   console.log('Código de Sitio de Venta', codigo_sitio_venta, 'FECHA', fecha_inactivo, 'Razón:', razon_inactivo);
+  
+  //   // Busca el punto de venta por código de sitio de venta
+  //   const puntoDeVenta = await this.findOneCodigoSitioVenta(codigo_sitio_venta);
+  
+  //   // Actualiza los datos de inhabilitación
+  //   await puntoDeVenta.update({
+  //     fecha_inactivo: fecha_inactivo,
+  //     razon_inactivo: razon_inactivo,
+  //   });
+  
+  //   return puntoDeVenta.codigo_sitio_venta; 
+  // }
+  
+
+  async inhabilitarPuntoDeVenta(codigo_sitio_venta, fecha_inactivo, razon_inactivo) {
+    try {
+      // Busca el punto de venta por código de sitio de venta
+      const puntoDeVenta = await this.findOneCodigoSitioVenta(codigo_sitio_venta);
+  
+      // Actualiza los datos de inhabilitación
+      await puntoDeVenta.update({
+        fecha_inactivo: fecha_inactivo,
+        razon_inactivo: razon_inactivo,
+      });
+  
+      return puntoDeVenta.codigo_sitio_venta; 
+    } catch (error) {
+      throw error; // Deja que el controlador maneje el error
+    }
   }
+  
 }
 module.exports = PuntoDeVentaService;

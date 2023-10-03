@@ -6,7 +6,7 @@ const ArrendadorPDV = require('./../services/arrendadorpdventa.service');
 
 const service = new ArrendadorPDV();
 
-router.get('/', async(req, res next)=>{
+router.get('/', async(req, res, next)=>{
   try {
     const data  = await service.find();
     res.json(data);
