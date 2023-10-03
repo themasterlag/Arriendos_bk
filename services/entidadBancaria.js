@@ -25,9 +25,13 @@ class EntidadBancariaService{
   }
 
   async find(){
-    const data = await con.models.entidad_bancaria.findAll()
+    const data = con.models.entidad_bancaria.findAll({
+      order: [
+        ['entidad_bancaria', 'ASC']
+      ]
+    });
     return data;
-    }
+  }
 
     async findById(id) {
       const banco = await con.models.entidad_bancaria.findOne({
