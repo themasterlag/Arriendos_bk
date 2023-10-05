@@ -64,10 +64,20 @@ class SaldoCreditoService {
   }
   async delete(id) {
     try{
+      const saldo = await con.models.saldo_credito_pago.findOne({ where: { id_saldo_credito: id } });
+      if (saldo) {
+        throw { 
+            message: 
+            'No se puede eliminar, ya tiene abono.'
+            , codigo: 400 };
+      }
       const saldoCredito = await this.findOne(id);
       const conceptoAnterior = await con.models.contrato_conceptos.findOne({ where: { id_contrato_concepto: saldoCredito.contrato_concepto_id } });
       await conceptoAnterior.destroy();
       await saldoCredito.destroy();
+
+      await saldo.destroy() ;
+      
       return 'eliminado';
     }
     catch(error){
@@ -104,8 +114,18 @@ class SaldoCreditoService {
 
   async abonarSaldoCredito(id_saldo_credito, abono){
     try{
+
+
+      
       let credito = await this.findOne(id_saldo_credito);
+
+      if (credito.credito_saldo-abono < 0) {
+        throw { codigo: 400, message: "El saldo no puede ser inferior a 0." };
+      }
+
       credito.update({credito_saldo: credito.credito_saldo-abono});
+
+
 
       let conceptoContrato = await con.models.contrato_conceptos.findOne({ 
         where: { 
