@@ -48,6 +48,10 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: true,
         defaultValue: null,
       },
+      categoria: {
+        type: DataTypes.STRING(255),
+        allowNull: false
+      },
     },
     {
       sequelize,
@@ -72,7 +76,7 @@ module.exports = function(sequelize, DataTypes) {
       if (instance.getDataValue('estado') === false) {
         instance.setDataValue('fecha_inactivacion', new Date());
       } else if (instance.getDataValue('estado') === true) {
-        instance.setDataValue('fecha_inactivacion', null); // Establece la fecha_inactivacion en null
+        instance.setDataValue('fecha_inactivacion', null); 
       }
     }
   });
