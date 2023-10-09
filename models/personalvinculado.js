@@ -1,12 +1,15 @@
 const Sequelize = require('sequelize');
+
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('personalvinculado', {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
+  const PersonalVinculado = sequelize.define(
+    'personalvinculado',
+    {
+      id: {
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+      },
       nombre: {
         type: DataTypes.STRING(255),
         allowNull: false
@@ -35,20 +38,44 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.DATEONLY,
         allowNull: false,
         defaultValue: Sequelize.Sequelize.fn('now')
-      }
-  }, {
-    sequelize,
-    tableName: 'personalvinculado',
-    schema: 'arriendos',
-    timestamps: false,
-    indexes: [
-      {
-        name: "personalvinculado_pkey",
-        unique: true,
-        fields: [
-          { name: "id" },
-        ]
       },
-    ]
+      fecha_creacion: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
+      fecha_inactivacion: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+        defaultValue: null,
+      },
+    },
+    {
+      sequelize,
+      tableName: 'personalvinculado',
+      schema: 'arriendos',
+      timestamps: false,
+      indexes: [
+        {
+          name: "personalvinculado_pkey",
+          unique: true,
+          fields: [
+            { name: "id" },
+          ]
+        },
+      ],
+    }
+  );
+
+  // Definir un hook para ejecutar antes de cada actualización
+  PersonalVinculado.beforeUpdate((instance, options) => {
+    if (instance.changed('estado')) {
+      if (instance.getDataValue('estado') === false) {
+        instance.setDataValue('fecha_inactivacion', new Date());
+      } else if (instance.getDataValue('estado') === true) {
+        instance.setDataValue('fecha_inactivacion', null); // Establece la fecha_inactivacion en null
+      }
+    }
   });
+
+  return PersonalVinculado;
 };
