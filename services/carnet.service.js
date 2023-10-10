@@ -136,19 +136,30 @@ class CarnetService {
 
              // -----------------------------Terminos en carnet-----------------------------------
             // Configura el estilo de texto
-            text = 'Este documento es personal e intransferible.'
-            +'\nIdentifica al portador como empleado de Seapto S.A.'
-            +'\nDebe llevarse en un lugar visible'
-            +'\ndentro de las instalaciones de la empresa.'
-            +'\nEste documento no es válido para realizar'
-            +'\ntransacciones comerciales a nombre de la empresa.'
-            +'\nDebe ser devuelto a la dirección de Talento Humano al'
-            +'\nmomento de su desvinculación laboral con la empresa.'
-            +'\n\nSi usted encuentra este documento,'
-            +'\nagradecemos informar al PBX:'
-            +'\n(578)2610014 Seapto S.A. Calle 10 No.3-56'
-            +'\nIbagué - Tolima Colombia'
-            +'\nSeapto S.A.';
+            text = 'Este carnet es personal e intransferible.'
+            +'\nNo es valido para realizar transacciones comerciales'
+            +'\n a nombre de la empresa.'
+            +'\n '
+            +'\nPara validación de la información comunicarse'
+            +'\n PBX 610014 SEAPTO S.A'
+            +'\nCalle 10 N° 3-56 barrio centro'
+            +'\n Ibagué, Tolima.';
+
+
+            // 'Este documento es personal e intransferible.'
+            // +'\nIdentifica al portador como empleado de Seapto S.A.'
+            // +'\nDebe llevarse en un lugar visible'
+            // +'\ndentro de las instalaciones de la empresa.'
+            // +'\nEste documento no es válido para realizar'
+            // +'\ntransacciones comerciales a nombre de la empresa.'
+            // +'\nDebe ser devuelto a la dirección de Talento Humano al'
+            // +'\nmomento de su desvinculación laboral con la empresa.'
+            // +'\n\nSi usted encuentra este documento,'
+            // +'\nagradecemos informar al PBX:'
+            // +'\n(578)2610014 Seapto S.A. Calle 10 No.3-56'
+            // +'\nIbagué - Tolima Colombia'
+            // +'\nSeapto S.A.';
+
             fontSize = 18;
             ctx.font = ` ${fontSize}px Arial`;
             ctx.fillStyle = 'black';
