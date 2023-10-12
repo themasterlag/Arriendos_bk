@@ -153,6 +153,51 @@ class PuntoDeVentaService {
       throw error; // Deja que el controlador maneje el error
     }
   }
+
+  // async habilitarPuntoDeVenta(){
+  //   try {
+  //     // Busca el punto de venta por código de sitio de venta
+  //     const puntoDeVenta = await this.findOneCodigoSitioVenta(codigo_sitio_venta);
+  
+  //     // Verifica si el punto de venta ya está habilitado
+  //     if (!puntoDeVenta.inhabilitado) {
+  //       throw new Error('El punto de venta ya está habilitado.'); 
+  //     }
+  
+  //     // Actualiza el estado de inhabilitación a false
+  //     await puntoDeVenta.update({
+  //       fecha_inactivo: null, 
+  //       razon_inactivo: null, 
+  //     });
+  
+  //     return puntoDeVenta.codigo_sitio_venta;
+  //   } catch (error) {
+  //     throw error; // Deja que el controlador maneje el error
+  //   }
+  // }
+  
+
+  async habilitarPuntoDeVenta(codigo_sitio_venta) {
+    try {
+      // Busca el punto de venta por código de sitio de venta
+      const puntoDeVenta = await this.findOneCodigoSitioVenta(codigo_sitio_venta);
+  
+      // Verifica si el punto de venta ya está habilitado
+      // if (!puntoDeVenta.inhabilitado) {
+      //   throw new Error('El punto de venta ya está habilitado.'); 
+      // }
+  
+      // Actualiza el estado de inhabilitación a false
+      await puntoDeVenta.update({
+        fecha_inactivo: null, 
+        razon_inactivo: null, 
+      });
+  
+      return puntoDeVenta.codigo_sitio_venta;
+    } catch (error) {
+      throw error; // Deja que el controlador maneje el error
+    }
+  }
   
 }
 module.exports = PuntoDeVentaService;

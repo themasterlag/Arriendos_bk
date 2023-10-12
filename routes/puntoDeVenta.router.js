@@ -162,6 +162,22 @@ router.patch('/inhabilitar', async (req, res, next) => {
   }
 });
 
+router.patch('/habilitar', async (req, res, next) => {
+  try {
+    const { codigo_sitio_venta } = req.body;
+
+    // Llama a la función del servicio para habilitar el punto de venta
+    const resultado = await puntoVentaService.habilitarPuntoDeVenta(codigo_sitio_venta);
+
+    // Envía una respuesta exitosa
+    res.status(200).json({ message: 'Punto de venta habilitado con éxito', codigo_sitio_venta: resultado });
+  } catch (error) {
+    console.error('Error al habilitar el punto de venta:', error);
+    res.status(500).json({ message: 'Error al habilitar el punto de venta' });
+  }
+});
+
+
 router.post('/delete', async (req, res, next) => {
   try {
     const { id } = req.body;
