@@ -84,7 +84,7 @@ class TareasProgramadas{
                     </head>
                     <body>
                     <h1>Lista contratos proximos a vencer</h1>
-                    <h4>Para mas detalles ingrese al software de gestion de arriendos</h4>
+                    <h4>Para mas detalles ingrese al software Nexus</h4>
                     <hr/>
                     <br/>
                     <table class="table table-striped">
@@ -135,7 +135,7 @@ class TareasProgramadas{
     
                     let htmlTabla = `
                     <h1>Lista contratos proximos a vencer</h1>
-                    <h4>Para mas detalles ingrese al software de gestion de arriendos</h4>
+                    <h4>Para mas detalles ingrese al software Nexus</h4>
                     <hr/>
                     <br/>
                     <h4>No hay contratos a vencer para el siguiente mes</h4>`;
