@@ -365,12 +365,13 @@ class ContratoService {
     }
   }
 
-  async traerContratosRenovacionProxima(meses){
-    const diferenciaMeses = meses;
+  async traerContratosRenovacionProxima(anio, mes){
     const hoy = new Date();
-    const fin = new Date(hoy.getFullYear(), hoy.getMonth() + diferenciaMeses + 1, 1);
+    const fin = new Date(anio, mes);
+    console.log(fin,'helooooooooo');
     
     const rta = await con.models.contrato.findAll({
+
       attributes: {
         exclude: ["id_autorizado", "id_autorizado_adm", "id_punto_venta", "id_responsable", "id_usuario"],
       },
@@ -400,6 +401,7 @@ class ContratoService {
         }
       }
     });
+    console.log(hoy, fin, '+++++++++')
 
     return rta;
   }
