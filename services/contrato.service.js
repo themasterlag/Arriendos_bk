@@ -122,7 +122,7 @@ class ContratoService {
     return 'eliminado';
   }
   async inhabilitarContrato(id, fecha_inactivo, razon_inactivo) {
-    console.log('Service ID: ', id);
+    // console.log('Service ID: ', id);
     const contrato = await this.findOne(id);
     await contrato.update({
       fecha_inactivo: fecha_inactivo,
@@ -368,7 +368,7 @@ class ContratoService {
   async traerContratosRenovacionProxima(anio, mes){
     const hoy = new Date();
     const fin = new Date(anio, mes);
-    console.log(fin,'helooooooooo');
+    // console.log(fin,'helooooooooo');
     
     const rta = await con.models.contrato.findAll({
 
@@ -401,7 +401,7 @@ class ContratoService {
         }
       }
     });
-    console.log(hoy, fin, '+++++++++')
+    // console.log(hoy, fin, '+++++++++')
 
     return rta;
   }
