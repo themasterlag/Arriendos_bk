@@ -1,22 +1,34 @@
 const con = require('../libs/sequelize');
+const { Op } = require('sequelize');
 
 class PuntoDeVentaService {
   constructor() {}
 
+
   async create(data) {
+    // Convertir los valores a minúsculas después de asegurarse de que sean cadenas
+    const codigo_sitio_venta = data.codigo_sitio_venta.toString().trim().toLowerCase();
+    const nombre_comercial = data.nombre_comercial.toString().trim().toLowerCase();
+  
     const find_PDV = await con.models.punto_de_venta.findAll({
       where: {
-        codigo_sitio_venta: data.codigo_sitio_venta,
+        [Op.or]: [
+          { codigo_sitio_venta: codigo_sitio_venta },
+          { nombre_comercial: nombre_comercial }
+        ]
       }
-    })
-    console.log(find_PDV)
-
-    if(find_PDV.length > 0){
-      throw {message: 'Punto con codigo de venta ya existe', codigo:400};
-    }    
+    });
+    console.log(find_PDV);
+  
+    if (find_PDV.length > 0) {
+      throw { message: 'Punto con código de venta o nombre comercial ya existe', codigo: 400 };
+    }
+  
     const punto_venta = await con.models.punto_de_venta.create(data);
     return punto_venta.id_punto_venta;
   }
+  
+  
 
   async find() {
     const data = await con.models.punto_de_venta.findAll({

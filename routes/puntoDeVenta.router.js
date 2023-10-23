@@ -59,7 +59,14 @@ router.post('/', async (req, res, next) => {
       respuesta: 'se agrego correctamente el punto de venta',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      console.log(error)
+      res.status(500).send(error);
+      
+    }
   }
 });
 
