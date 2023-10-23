@@ -120,7 +120,7 @@ class SaldoCreditoService {
       let credito = await this.findOne(id_saldo_credito);
 
       if (credito.credito_saldo-abono < 0) {
-        throw { codigo: 400, message: "El saldo no puede ser inferior a 0." };
+        throw { codigo: 400, message: "El valor que ingresó dejaría el saldo en : " + (credito.credito_saldo-abono)};
       }
 
       credito.update({credito_saldo: credito.credito_saldo-abono});
