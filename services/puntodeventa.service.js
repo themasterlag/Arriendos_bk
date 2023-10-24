@@ -111,30 +111,7 @@ class PuntoDeVentaService {
     );
     return result;
   }
-  // async inhabilitarPuntoDeVenta(id, fecha_inactivo, razon_inactivo) {
-  //   console.log('id', id, 'FECHA ', fecha_inactivo, 'Razon: ', razon_inactivo);
-  //   const puntoDeVenta = await this.findOne(id);
-  //   await puntoDeVenta.update({
-  //     fecha_inactivo: fecha_inactivo,
-  //     razon_inactivo: razon_inactivo,
-  //   });
-  //   return puntoDeVenta.id_punto_venta;
-  // }
-
-  // async inhabilitarPuntoDeVenta(codigo_sitio_venta, fecha_inactivo, razon_inactivo) {
-  //   console.log('Código de Sitio de Venta', codigo_sitio_venta, 'FECHA', fecha_inactivo, 'Razón:', razon_inactivo);
-  
-  //   // Busca el punto de venta por código de sitio de venta
-  //   const puntoDeVenta = await this.findOneCodigoSitioVenta(codigo_sitio_venta);
-  
-  //   // Actualiza los datos de inhabilitación
-  //   await puntoDeVenta.update({
-  //     fecha_inactivo: fecha_inactivo,
-  //     razon_inactivo: razon_inactivo,
-  //   });
-  
-  //   return puntoDeVenta.codigo_sitio_venta; 
-  // }
+ 
   
 
   async inhabilitarPuntoDeVenta(codigo_sitio_venta, fecha_inactivo, razon_inactivo) {
@@ -154,27 +131,7 @@ class PuntoDeVentaService {
     }
   }
 
-  // async habilitarPuntoDeVenta(){
-  //   try {
-  //     // Busca el punto de venta por código de sitio de venta
-  //     const puntoDeVenta = await this.findOneCodigoSitioVenta(codigo_sitio_venta);
   
-  //     // Verifica si el punto de venta ya está habilitado
-  //     if (!puntoDeVenta.inhabilitado) {
-  //       throw new Error('El punto de venta ya está habilitado.'); 
-  //     }
-  
-  //     // Actualiza el estado de inhabilitación a false
-  //     await puntoDeVenta.update({
-  //       fecha_inactivo: null, 
-  //       razon_inactivo: null, 
-  //     });
-  
-  //     return puntoDeVenta.codigo_sitio_venta;
-  //   } catch (error) {
-  //     throw error; // Deja que el controlador maneje el error
-  //   }
-  // }
   
 
   async habilitarPuntoDeVenta(codigo_sitio_venta) {
