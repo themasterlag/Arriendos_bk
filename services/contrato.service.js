@@ -108,6 +108,50 @@ class ContratoService {
     return rta;
   }
 
+  async findByCliente(tipo,documento) {
+    let cliente = null;
+    if(!tipo){
+      throw {message: 'Falta tipo de cliente', codigo:400};
+    } else{
+      if (tipo == "responsable") {
+        cliente = '$responsabledetalle.clientedetalle.numero_documento$';
+      } else if (tipo == "autorizado"){
+        cliente = '$autdetalle.clientedetalle.numero_documento$';
+      }else{
+        throw {message: 'Falta tipo de cliente', codigo:400};
+      }
+    }
+
+    const rta = await con.models.contrato.findAll({
+      include: [
+        {
+          association: 'responsabledetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'autdetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'pvdetalle',
+        },
+      ],
+      where: {
+        [cliente]: documento      
+      }
+    });
+
+    if (!rta || rta.length == 0){
+      throw {message: 'no se encontro', codigo:404};
+    }
+
+    return rta;
+  }
+
   async update(id, changes) {
     const contrato = await this.findOne(id);
 

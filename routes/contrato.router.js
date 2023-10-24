@@ -95,6 +95,30 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+router.get('/cliente/:tipo/:documento', async (req, res, next) => {
+  try {
+    const { tipo, documento  } = req.params;
+    let contrato = await service.findByCliente(tipo, documento);
+
+    respuesta = [];
+
+    for (const contr of contrato) {
+      const { id_contrato } = contr;
+      const contratoConcepto = await contratoConceptoService.findByContrato(id_contrato);
+      respuesta.push({ contrato:contr, contratoConcepto});
+    };
+
+    res.json(respuesta);
+  } catch (error) {
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }else{
+      res.status(500).send(error);
+    }
+    Error('Error details:', error.message, error.stack);
+  }
+});
+
 router.get('/pdv/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
