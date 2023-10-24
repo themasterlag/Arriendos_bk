@@ -8,10 +8,11 @@ router.post('/', async function(req, res) {
     try {
       // console.log(req)
       const excel_prueba = req.files;
-      // console.log(req);
+      console.log(excel_prueba);
       const personal = await personalService.leerExcel(excel_prueba);
       res.json(personal);
     } catch (error) {
+      console.log(error);
       if(error.codigo){
         res.status(error.codigo).json({ error: 'Ocurrió un error al crear el personal'});
       }else{

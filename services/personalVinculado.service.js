@@ -10,10 +10,12 @@ class personalVinculadoService{
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const data = xlsx.utils.sheet_to_json(worksheet);
 
+            const tipo = data[0].tipo_personal;
+
             let personal 
             let rta = [];
             let numIdentificacion = [];
-            if(data[0].nombre == null && data[0].cargo == null && data[0].identificacion == null){
+            if(data[0].nombre == null && data[0].cargo == null && data[0].identificacion == null && tipo == null){
                 throw {message: 'El archivo no cuenta con la estructura', codigo: 400}
             }else{
                 for (let i = 0; i < data.length; i++) {
@@ -25,14 +27,15 @@ class personalVinculadoService{
                         let crear = await this.crearPersonal(element);
                         crear.dataValues['operacion'] = 'creado';
                         rta.push(crear);
+
                     }else{
                         element.fecha_actualizacion = new Date();
                         element['estado'] = true;
+                        element['tipo_personal'] = tipo;
                         let actualizar = await personal.update(element);
                         actualizar.dataValues['operacion'] = 'actualizado'
                         rta.push(actualizar);
                     }
-                    console.log(rta);
                     numIdentificacion.push(element.identificacion);
                 }     
                 
@@ -41,8 +44,9 @@ class personalVinculadoService{
                 const query = await con.models.personalvinculado.findAll({
                     where: {
                         identificacion: {
-                            [con.Sequelize.Op.notIn]: numIdentificacion,
-                        }
+                            [con.Sequelize.Op.notIn]: numIdentificacion
+                        },
+                        tipo_personal: tipo
                     },
                     order: [
                         ['id', 'ASC']
@@ -141,7 +145,6 @@ class personalVinculadoService{
 
     static async habilitarPersonal(id){
         const personal = await con.models.personalvinculado.findByPk(id);
-        console.log(personal);
         personal.update({ estado: 1 , fecha_actualizacion: new Date()});
         return personal;
     }
