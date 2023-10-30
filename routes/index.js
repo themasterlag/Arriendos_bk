@@ -96,6 +96,9 @@ function routerApi(app) {
   router.use('/tipo-concepto', tipoConceptoRouter);
 
 
+  app.use('/api/novedades', router);
+  
+
   router.use('/email', emailRouter);
 
 }
