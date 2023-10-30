@@ -66,7 +66,7 @@ class AutService{
         message: "Invalid Password!"
       };
     }
-
+    console.log(config.tokSecret)
     var token = jwt.sign({
       id_usuario: rta.id_usuario,
       rolid_rol: rta.rolid_rol,
@@ -83,6 +83,18 @@ class AutService{
     //return { id };
   }
 
+  async renovarToken(token){
+    try {
+      const decode = jwt.verify(token, config.tokSecret);
+      delete decode.iat;
+      delete decode.exp;
+      const newToken = jwt.sign(decode, config.tokSecret, {expiresIn: 3600});
+
+      return {token: newToken};
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 

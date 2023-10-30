@@ -1,4 +1,5 @@
 const express = require('express');
+const verifyToken  = require('./../middlewares/veriLogJwt');
 
 const usuarioRouter = require('./usuarios.router');
 const departamentoRouter = require('./departamentos.router');
@@ -43,15 +44,26 @@ const personalVinculadoRouter = require("./personalVinculado.router");
 
 function routerApi(app) {
   const router = express.Router();
-  
-  // Gestion de arriendos
+
+  // RUTAS PUBLICAS
   app.use('/api/arriendos', router);
+  router.use('/aut', autRouter);
+
+  app.use('/api/carnetVirtual', router);
+  router.use('/carnet', carnetRouter);
+
+  // RUTAS PROTEGIDAS
+  router.use(verifyToken);
+  router.use('/personaVinculado', personalVinculadoRouter);
+  
+  app.use('/api/arriendos', router);
+  router.use(verifyToken);
   router.use('/cargos', cargoRouter);
   router.use('/usuarios', usuarioRouter);
   router.use('/departamentos', departamentoRouter);
   router.use('/municipios', municipioRouter);
   router.use('/solicitudes', solicitudRouter);
- // router.use('/procesos', procesoRouter);
+ // router.use('/procesos', procesoRouter); 
   router.use('/arrendadores', arrendadorRouter);
   router.use('/tipopersonas', tipoPersonaRouter);
   router.use('/zona', zonaRouter);
@@ -81,15 +93,10 @@ function routerApi(app) {
   router.use('/procesos', procesosRouter);
   router.use('/permisos', permisoRouter);
   router.use('/permiso-detalle', permisoDetalleRouter);
-  router.use('/aut', autRouter);
   router.use('/tipo-concepto', tipoConceptoRouter);
 
 
   router.use('/email', emailRouter);
-
-  app.use('/api/carnetVirtual', router);
-  router.use('/carnet', carnetRouter);
-  router.use('/personaVinculado', personalVinculadoRouter)
 
 }
 module.exports = routerApi;
