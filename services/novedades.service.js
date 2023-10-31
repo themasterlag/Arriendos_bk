@@ -21,8 +21,39 @@ class novedadesService{
     return rta;
   }
 
-  async create(datos){
+  async create(datos, fileData) {
+    
+  console.log("-*-*--*-*-*-*-*-*-*-*--*-",fileData);
+  datos.firma_vinculado = fileData;
     const rta = await con.models.novedades.create(datos);
+    return rta; 
+}
+
+
+  async update(id, data){
+    const novedad = await this.findOne(id)
+    console.log(novedad)
+    const rta = await novedad.update(data)
+    return rta
+}
+
+  async delete(id) {
+    try {
+      const novedad = await this.findOne(id);
+      await novedad.destroy();
+      return 'Eliminado';
+
+    } catch (error) {
+      if (error) {
+        throw { 
+            message: 
+            'No se puede eliminar el cargo debido a su uso por un usuario o a los permisos asociados. Se recomienda quitar los permisos y el cargo al usuario que lo está utilizando.'
+            , codigo: 404 };
+      } else {
+        throw error;
+      }
+    }
   }
+
 }
 module.exports = novedadesService;
