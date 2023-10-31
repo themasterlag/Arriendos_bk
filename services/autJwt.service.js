@@ -66,7 +66,6 @@ class AutService{
         message: "Invalid Password!"
       };
     }
-    console.log(config.tokSecret)
     var token = jwt.sign({
       id_usuario: rta.id_usuario,
       rolid_rol: rta.rolid_rol,
