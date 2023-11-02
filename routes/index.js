@@ -41,7 +41,6 @@ const tipoConceptoRouter = require('./tipoConcepto.router');
 const emailRouter = require('./email.router');
 const carnetRouter = require("./carnet.router");
 const personalVinculadoRouter = require("./personalVinculado.router");
-const motivoNovedad = require('./motivoNovedad.router');
 
 function routerApi(app) {
   const router = express.Router();
@@ -98,10 +97,7 @@ function routerApi(app) {
 
 
   app.use('/api/novedades', router);
-  // const motivoNovedad = require('./motivoNovedad.router');
-  router.use('/motivoNovedad', motivoNovedad);
-
-
+  
 
   router.use('/email', emailRouter);
 
