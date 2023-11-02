@@ -42,6 +42,7 @@ const emailRouter = require('./email.router');
 const carnetRouter = require("./carnet.router");
 const personalVinculadoRouter = require("./personalVinculado.router");
 const novedadesRouter = require("./novedades.router")
+const motivoNovedad = require('./motivoNoverdad.router');
 
 function routerApi(app) {
   const router = express.Router();
