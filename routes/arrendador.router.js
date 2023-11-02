@@ -10,7 +10,7 @@ router.get('/', async(req,res,next)=>{
     const arrendador = await service.find();
     res.json(arrendador);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -21,7 +21,7 @@ router.get('/:id', async(req,res,next)=>{
     console.log(arrendador);
     res.json(arrendador)
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -33,7 +33,7 @@ router.post('/', async(req,res,next)=>{
 
     res.status(201).json(newArrendador)
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 router.post('/delete', async(req,res,next)=>{
@@ -42,7 +42,7 @@ router.post('/delete', async(req,res,next)=>{
   const arrendador = await service.delete(id);
   res.status(201).json(arrendador);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 

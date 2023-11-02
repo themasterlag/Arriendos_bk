@@ -7,10 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    fecha_pago: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    },
     id_contrato: {
       type: DataTypes.INTEGER,
       allowNull: true,
@@ -19,42 +15,51 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id_contrato'
       }
     },
+    valor: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    fecha_pago: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    fecha_periodo: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    codigo_verificacion: {
+      type: DataTypes.BIGINT,
+      allowNull: true
+    },
     canon: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    iva: {
+    administracion: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    rete_iva: {
+    defiicion: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    rete_fuente: {
-      type: DataTypes.INTEGER,
+    poliza: {
+      type: DataTypes.BOOLEAN,
       allowNull: true
     },
-    reteica: {
-      type: DataTypes.INTEGER,
+    ipc: {
+      type: DataTypes.REAL,
       allowNull: true
     },
-    bomberil: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    valor_total: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    id_liquidacion: {
-      type: DataTypes.INTEGER,
+    inc_adicional: {
+      type: DataTypes.REAL,
       allowNull: true
     }
   }, {
     sequelize,
     tableName: 'pago_arriendo',
     schema: 'arriendos',
+    hasTrigger: true,
     timestamps: false,
     indexes: [
       {

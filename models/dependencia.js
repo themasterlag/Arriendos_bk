@@ -1,23 +1,32 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('pago_servicios', {
-    id_pago_servicios: {
+  return sequelize.define('dependencia', {
+    id_dependencia: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
+    },
+    dependencia: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    estado: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1
     }
   }, {
     sequelize,
-    tableName: 'pago_servicios',
+    tableName: 'dependencia',
     schema: 'arriendos',
     timestamps: false,
     indexes: [
       {
-        name: "pago_servicios_pkey",
+        name: "dependencia_pkey",
         unique: true,
         fields: [
-          { name: "id_pago_servicios" },
+          { name: "id_dependencia" },
         ]
       },
     ]

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "updateModels": "sequelize-auto -o \"./models\" -d postgres -h localhost -u postgres -p 5432 -x admin -e postgres"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
   "dependencies": {
     "@hapi/boom": "^10.0.0",
     "bcryptjs": "^2.4.3",
+    "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
@@ -28,9 +30,14 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
+    "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.5",
+    "pdf-lib": "^1.17.1",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
+    "qrcode": "^1.5.3",
     "sequelize": "^6.23.2",
-    "sequelize-auto": "^0.8.8"
+    "sequelize-auto": "^0.8.8",
+    "xlsx": "^0.18.5"
   }
 }

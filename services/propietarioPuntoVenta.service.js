@@ -20,7 +20,7 @@ class PropietarioPuntoVentaService{
 
     const rta = await con.models.propietario_punto_venta.findByPk(id);
     if(!rta){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }
@@ -38,6 +38,19 @@ class PropietarioPuntoVentaService{
     const proPuntoDeVenta =  await this.findOne(id);
     await proPuntoDeVenta.destroy()
     return 'eliminado'
+  }
+
+  async deleteAllByPdv(pdv) {
+    const puntoDeVenta = await con.models.propietario_punto_venta.findAll({
+      where: {
+        id_punto_venta: pdv,
+      },
+    });
+    
+    for (let i = 0; i < puntoDeVenta.length; i++) {
+      await puntoDeVenta[i].destroy();
+    }
+    return 'eliminado';
   }
 }
 module.exports= PropietarioPuntoVentaService;

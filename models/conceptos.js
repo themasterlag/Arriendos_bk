@@ -22,6 +22,26 @@ module.exports = function(sequelize, DataTypes) {
     operacion: {
       type: DataTypes.STRING(10),
       allowNull: true
+    },
+    tipo_concepto: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'tipo_concepto',
+        key: 'id_tipo_concepto'
+      }
+    },
+    porcentaje_operacion: {
+      type: DataTypes.DOUBLE,
+      allowNull: true
+    },
+    incremento: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    concepto_asociado: {
+      type: DataTypes.STRING(10),
+      allowNull: true
     }
   }, {
     sequelize,

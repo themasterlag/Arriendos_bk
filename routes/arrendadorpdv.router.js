@@ -6,12 +6,12 @@ const ArrendadorPDV = require('./../services/arrendadorpdventa.service');
 
 const service = new ArrendadorPDV();
 
-router.get('/', async(req, res next)=>{
+router.get('/', async(req, res, next)=>{
   try {
     const data  = await service.find();
     res.json(data);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 })
 
@@ -22,7 +22,7 @@ router.get('/:id', async(req,res,next)=>{
     console.log(pdvData);
     res.json(pdvData)
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -34,7 +34,7 @@ router.post('/', async(req,res,next)=>{
 
     res.status(201).json(newArrendadorPDV)
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -44,7 +44,7 @@ router.post('/delete', async(req,res,next)=>{
   const arrendadorPDV = await service.delete(id);
   res.status(201).json(arrendadorPDV);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 

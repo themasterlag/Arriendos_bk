@@ -13,7 +13,7 @@ class TipoPersonaService{
   async findOne(id){
     const rta = await con.models.tipo_persona.findByPk(id);
     if(!rta){
-      throw console.error('No se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

@@ -71,18 +71,34 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    codigo_citio_venta: {
+    codigo_sitio_venta: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
     codigo_oficina: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     fecha_creacion_punto: {
       type: DataTypes.DATEONLY,
       allowNull: true,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_DATE')
+    },
+    tipo_punto: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'tipo_contrato',
+        key: 'id_tipo_contrato'
+      }
+    },
+    fecha_inactivo: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    razon_inactivo: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     }
   }, {
     sequelize,

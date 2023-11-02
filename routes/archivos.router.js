@@ -34,7 +34,7 @@ router.post('/upload', async(req,res, next)=>{
 
 
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 

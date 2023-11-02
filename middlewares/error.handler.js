@@ -14,7 +14,7 @@ function errorHandler(err, req, res, next) {
     //indicar que el error es estatus 500 Internal Server Error
     codigo: 0,
     message: err.message,
-    //stack: err.stack,
+    stack: err.stack,
   });
 }
 

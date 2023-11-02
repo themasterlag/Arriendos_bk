@@ -14,7 +14,7 @@ class TipoCuentaService{
   async findOne(id){
     const zona = await con.models.tipo_cuenta.findByPk(id);
     if(!zona){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return zona;
   }

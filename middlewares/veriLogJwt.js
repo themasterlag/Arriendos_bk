@@ -5,27 +5,32 @@ const User = con.models.usuario;
 
 
 
-var verifyToken = (req, res) => {
+function verifyToken(req, res, next) {
   let token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
+    return res.status(401).send({
+      message: "No se recibio token de sesion"
     });
   }
-  jwt.verify(token, config.tokSecret,  (err) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!",
-        status: 0
-      });
-    }
-  });
+  try {
+    // console.log(token)
+    const decoded = jwt.verify(token, config.tokSecret);
+    req.user = decoded;
+  } catch (error) {
+    console.log(error)
+    return res.status(401).send({
+      message: "Unauthorized!",
+      status: 401
+    });
+  }
+  
 
-  return res.statusCode;
+  return next();
 };
 
-var verifyRol = (req, res, key)=>
-{
+
+
+function verifyRol(req, res, key){
   let token = req.headers["x-access-token"];
   jwt.verify(token, key,  (err) => {
     if (err) {
@@ -37,7 +42,7 @@ var verifyRol = (req, res, key)=>
   return res.statusCode;
 }
 
-var isAdmin =   async (req, res) => {
+  async function isAdmin  (req, res) {
   let token = req.headers["x-access-token"];
   let usuario=   await User.findOne({where: {rolid_rol: 1, id_usuario: jwt.decode(token).id_usuario}});
   if (usuario) {
@@ -47,11 +52,14 @@ var isAdmin =   async (req, res) => {
       message: "Require Admin Role!"
     });
 };
-const authJwt = {
-  verifyToken: verifyToken,
-  isAdmin: isAdmin,
-  verifyRol: verifyRol
-  /*isModerator: isModerator,
-  isModeratorOrAdmin: isModeratorOrAdmin*/
-};
-module.exports = authJwt;
+
+// const authJwt = {
+//   verifyToken: verifyToken,
+//   isAdmin: isAdmin,
+//   verifyRol: verifyRol
+//   /*isModerator: isModerator,
+//   isModeratorOrAdmin: isModeratorOrAdmin*/
+// };
+
+// module.exports = authJwt;
+module.exports = verifyToken,verifyRol,isAdmin;

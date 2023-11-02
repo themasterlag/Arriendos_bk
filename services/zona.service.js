@@ -14,7 +14,7 @@ class ZonaService{
   async findOne(id){
     const zona = await con.models.zona.findByPk(id);
     if(!zona){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return zona;
   }

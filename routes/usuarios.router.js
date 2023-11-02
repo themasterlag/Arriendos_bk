@@ -30,6 +30,25 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/todos', async (req, res, next)=>{
+  try {
+    const usuarios = await service.find();
+    res.json(usuarios).status(200);
+  } catch (error) {
+    res.status(error.codigo).json(error);
+  }
+})
+
+router.get('/documento/:id', async (req, res, next)=>{
+  try {
+    const { id } = req.params
+    const usuario = await service.findByDocumento(id)
+    res.status(200).json(usuario)
+  } catch (error) {
+    res.status(error.codigo).json(error);
+  }
+})
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -37,7 +56,7 @@ router.get('/:id', async (req, res, next) => {
     console.log(users);
     res.json(users);
   } catch (error) {
-    next(error);
+    res.status(error.codigo).send(error);
   }
 });
 
@@ -48,31 +67,40 @@ router.post('/',
       const newCategory = await service.create(body);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).send(error);
     }
   });
 
-router.post('/update',
+router.patch('/update',
   async (req, res, next) => {
     try {
       const body = req.body
       const id = body.id_usuario;
-      console.log(body);
       const newCategory = await service.update(id, body);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).json(error);
     }
   });
 
-router.post('/delete',
+router.patch('/inhabilitar',
   async (req, res, next) => {
     try {
       const id = req.body.id;
-      const newCategory = await service.delete(id);
+      const newCategory = await service.inhabilitarUsuario(id);
       res.status(201).json(newCategory);
     } catch (error) {
-      next(error);
+      res.status(error.codigo).json(error);
+    }
+  });
+  router.patch('/habilitar',
+  async (req, res, next) => {
+    try {
+      const id = req.body.id;
+      const newCategory = await service.habilitarUsuario(id);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      res.status(error.codigo).json(error);
     }
   });
 

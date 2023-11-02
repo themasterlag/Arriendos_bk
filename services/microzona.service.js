@@ -14,7 +14,7 @@ class MircroZonaService{
   async findOne(id) {
     const rta = await con.models.microzona.findByPk(id);
     if(!rta){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }
@@ -26,7 +26,7 @@ class MircroZonaService{
       }
     })
     if(!micro){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return micro;
   }

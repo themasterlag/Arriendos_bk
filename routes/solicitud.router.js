@@ -22,7 +22,7 @@ router.get('/:id', async (req,res,next)=>{
     console.log(solicitud);
     res.json(solicitud);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -32,7 +32,7 @@ router.post('/', async(req,res,next)=>{
     const newSolicitud = await service.create(body);
     res.status(201).json(newSolicitud);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 
@@ -42,7 +42,7 @@ router.post('/delete', async(req,res,next)=>{
   const solicitud = await service.delete(id);
   res.status(201).json(solicitud);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error)
   }
 })
 

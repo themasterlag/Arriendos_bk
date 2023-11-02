@@ -20,7 +20,7 @@ class ArrendadorService{
   async findOne(id) {
     const rta = await con.models.arrendador.findByPk(id);
     if(!rta){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return rta;
   }

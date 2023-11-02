@@ -12,7 +12,7 @@ class TipoServicioService{
   async findOne(id){
     const servicio = await con.models.tipo_servicio.findByPk(id);
     if(!servicio){
-      throw console.error('no se encontro');
+      throw {message: 'no se encontro', codigo:404};
     }
     return servicio;
   }

@@ -1,43 +1,48 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('contrato_tipo_servicio', {
-    id_contrato_servicio: {
+  return sequelize.define('saldo_credito_pago', {
+    id_saldo_credito_pago: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    id_contrato: {
+    id_saldo_credito: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'contrato',
-        key: 'id_contrato'
+        model: 'saldo_credito',
+        key: 'id_saldo_credito'
       }
     },
-    id_tipo_servicio: {
+    id_usuario: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'tipo_servicio',
-        key: 'id_tipo_servicio'
+        model: 'usuario',
+        key: 'id_usuario'
       }
     },
-    porcentaje: {
-      type: DataTypes.DOUBLE,
+    fecha_pago: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.fn('now')
+    },
+    valor_pago: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'contrato_tipo_servicio',
+    tableName: 'saldo_credito_pago',
     schema: 'arriendos',
     timestamps: false,
     indexes: [
       {
-        name: "contrato_tipo_servicio_pkey",
+        name: "saldo_credito_pago_pkey",
         unique: true,
         fields: [
-          { name: "id_contrato_servicio" },
+          { name: "id_saldo_credito_pago" },
         ]
       },
     ]

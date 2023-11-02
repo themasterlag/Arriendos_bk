@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rolid_rol: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'rol',
         key: 'id_rol'
@@ -21,19 +21,64 @@ module.exports = function(sequelize, DataTypes) {
     },
     apellidos: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true
     },
     email: {
       type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    fecha_creacion_usuario: {
-      type: DataTypes.DATEONLY,
       allowNull: false
     },
     password: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    dependencia: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'dependencia',
+        key: 'id_dependencia'
+      }
+    },
+    tipo_documento: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    proceso: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'proceso',
+        key: 'id_proceso'
+      }
+    },
+    subproceso: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'subproceso',
+        key: 'id_subproceso'
+      }
+    },
+    numero_documento: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    sexo: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    estado: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 1
+    },
+    id_cargo: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'cargo',
+        key: 'id_cargo'
+      }
     }
   }, {
     sequelize,

@@ -29,7 +29,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     incremento_anual: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'incremento',
+        key: 'id_incremento'
+      }
     },
     incremento_adicional: {
       type: DataTypes.INTEGER,
@@ -61,7 +65,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     poliza: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: true
     },
     id_responsable: {
       type: DataTypes.INTEGER,
@@ -86,11 +90,24 @@ module.exports = function(sequelize, DataTypes) {
         model: 'autorizado_administracion',
         key: 'id_autorizado_adm'
       }
+    },
+    fecha_inactivo: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    razon_inactivo: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    anios_prorroga: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
     tableName: 'contrato',
     schema: 'arriendos',
+    hasTrigger: true,
     timestamps: false,
     indexes: [
       {

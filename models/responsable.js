@@ -21,16 +21,28 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: "1"
     },
     iva: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'responsabilidad',
+        key: 'id_responsabilidad'
+      }
     },
     rete_iva: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'responsabilidad',
+        key: 'id_responsabilidad'
+      }
     },
     rete_fuente: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'responsabilidad',
+        key: 'id_responsabilidad'
+      }
     }
   }, {
     sequelize,

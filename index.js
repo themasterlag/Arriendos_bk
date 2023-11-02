@@ -1,11 +1,14 @@
 const express = require('express');
 const fileUpload = require('express-fileupload')
 const routerApi = require('./routes');
+const tareasProgramadasService = require("./services/tareasProgramadas.service");
 const {logErrors, errorHandler, boomErrorHandler} = require('./middlewares/error.handler');
 const cors = require('cors');
 
 const app = express();
 const port = process.env.port || 3000;
+const tareasProgramadas = new tareasProgramadasService();
+tareasProgramadas.programarTareas();
 
 app.use(express.json());
 app.use(cors());

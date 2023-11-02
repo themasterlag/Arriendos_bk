@@ -17,28 +17,55 @@ router.use(function (req, res, next) {
   next();
 });
 
-router.post(
-  "/signup", async (req, res, next) => {
-  try {
-    let verify = await veriReg.checkDuplicateUsernameOrEmail(req, res, next)
-    if ( verify.statusCode==200) {
-      await service.registro(req.body);
-    }
-  } catch (error) {
-    errorHandler.errorHandler(error, req, res, next)
-  }
-});
+// router.post(
+//   "/singup", async (req, res, next) => {
+//   try {
+//     let verify = await veriReg.checkDuplicateUsernameOrEmail(req, res, next)
+//     if ( verify.statusCode==200) {
+//       verify = await service.registro(req.body);
+//       if (verify) {
+//         verify = {statusCode: 200, message :"Usuario registrado con exito"};
+//       }
+//     }
+//     res.json(verify);
+
+//   } catch (error) {
+//     errorHandler.errorHandler(error, req, res, next)
+//   }
+// });
 
 
 router.post('/login', async (req, res, next) => {
+  respuesta = null;
+  codigo = 200;
   try {
     const email = req.body.email;
     const pass = req.body.password;
     const users = await service.login(email, pass);
-    res.json(users);
-
+    respuesta = users;
   } catch (error) {
-    errorHandler.errorHandler(error, req, res, next)
+    codigo = 401;
+    respuesta = error;
+    // errorHandler.errorHandler(error, req, res, next)
+  }
+  res.status(codigo).send(respuesta);
+});
+
+router.get('/renovar/:token', async function(req, res) {
+  try {
+    const token = req.params.token;
+
+    nuevo = await service.renovarToken(token);
+    
+    res.status(200).send(nuevo);
+  } catch (error) {
+    console.log(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

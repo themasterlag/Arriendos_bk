@@ -6,49 +6,77 @@ const ClienteService = require('./../services/cliente.service');
 
 const service = new ClienteService();
 
-router.get('/', async(req,res,next)=>{
+router.get('/', async (req, res, next) => {
   try {
     const cliente = await service.find();
     res.json(cliente);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error);
   }
-})
+});
 
-router.get('/:id', async(req,res,next)=>{
+router.get('/:id', async (req, res, next) => {
   try {
-    const {id} = req.params
+    const { id } = req.params;
     const clientes = await service.findOne(id);
     console.log(clientes);
-    res.json(clientes)
+    res.json(clientes);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error);
   }
-})
+});
 
-router.post('/', async(req,res,next)=>{
+router.get('/numero_documento/:numero_documento', async (req, res, next) => {
   try {
-    const body = req.body
-    console.log(body);
-    const newCliente = await service.create(body)
-
-    res.status(201).json({
-      estado:'1',
-      id:newCliente,
-      respuesta: 'se agrego correctamente el cliente'})
+    const { numero_documento } = req.params;
+    const clientes = await service.findOneByNumeroDocumento(numero_documento);
+    //console.log(clientes);
+    res.json(clientes);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error);
   }
-})
+});
 
-router.post('/delete', async(req,res,next)=>{
+router.patch('/:id', async (req, res, next) => {
   try {
-    const {id} = req.body;
-  const cliente = await service.delete(id);
-  res.status(201).json(cliente);
+    const { id } = req.params;
+    const body = req.body;
+    const cliente = await service.update(id, body);
+    res.json(cliente);
   } catch (error) {
-    next(error)
+    res.status(error.codigo).send(error);
   }
-})
+});
+
+router.post('/', async (req, res, next) => {
+  respuesta = null;
+  codigo = 201;
+
+  try {
+    const body = req.body;
+    const newCliente = await service.create(body);
+
+    respuesta = {
+      estado: '1',
+      id: newCliente,
+      respuesta: 'se agrego correctamente el cliente',
+    };
+  } catch (error) {
+    respuesta = error;
+    codigo = 400;
+  }
+
+  res.status(codigo).json(respuesta);
+});
+
+router.post('/delete', async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const cliente = await service.delete(id);
+    res.status(201).json(cliente);
+  } catch (error) {
+    res.status(error.codigo).send(error);
+  }
+});
 
 module.exports = router;

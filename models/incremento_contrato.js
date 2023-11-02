@@ -1,39 +1,39 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('arrendador_punto_de_venta', {
-    id_pdv_arrendador: {
+  return sequelize.define('incremento_contrato', {
+    id_incremento_contrato: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    id_arrendador: {
+    id_contrato: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
-        model: 'arrendador',
-        key: 'id_arrendador'
+        model: 'contrato',
+        key: 'id_contrato'
       }
     },
-    id_punto_de_venta: {
+    fecha_incremento: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    valor_incremento: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'punto_de_venta',
-        key: 'id_punto_venta'
-      }
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'arrendador_punto_de_venta',
+    tableName: 'incremento_contrato',
     schema: 'arriendos',
     timestamps: false,
     indexes: [
       {
-        name: "arrendador_contrato_pkey",
+        name: "incremento_contrato_pkey",
         unique: true,
         fields: [
-          { name: "id_pdv_arrendador" },
+          { name: "id_incremento_contrato" },
         ]
       },
     ]
