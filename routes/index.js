@@ -98,8 +98,9 @@ function routerApi(app) {
 
 
   app.use('/api/novedades', router);
-  
   router.use('/novedad', novedadesRouter);
+  router.use('/motivoNovedad', motivoNovedad);
+
   router.use('/email', emailRouter);
 
 }
