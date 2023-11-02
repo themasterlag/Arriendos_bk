@@ -28,6 +28,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.BLOB,
         allowNull: true,
       },
+      orden: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       sequelize,
