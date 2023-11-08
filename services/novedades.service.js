@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const { compare } = require('bcryptjs');
-const con = require('../libs/sequelize')
+const con = require('../libs/sequelize');
 
 class novedadesService{
 
@@ -23,10 +21,11 @@ class novedadesService{
 
   async create(datos, fileData) {
     
-  console.log("-*-*--*-*-*-*-*-*-*-*--*-",fileData);
+  // console.log("-*-*--*-*-*-*-*-*-*-*--*-",fileData,"---------------------",datos);
   datos.firma_vinculado = fileData;
-    const rta = await con.models.novedades.create(datos);
-    return rta; 
+  console.log(datos.Novedad)
+   const rta = await con.models.novedades.create(datos);
+    return true; 
 }
 
 

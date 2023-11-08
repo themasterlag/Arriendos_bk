@@ -19,10 +19,18 @@ module.exports = function (sequelize, DataTypes) {
       id_motivo: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'motivo_novedades',
+          key: 'id_motivo'
+        }
       },
       tipo_pago: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'tipo_pago_novedades',
+          key: 'id'
+        }
       },
       observacion: {
         type: DataTypes.STRING,
@@ -39,6 +47,10 @@ module.exports = function (sequelize, DataTypes) {
       id_personalvinculado: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'personalvinculado',
+          key: 'id'
+        }
       },
       firma_vinculado: {
         type: DataTypes.BLOB,
