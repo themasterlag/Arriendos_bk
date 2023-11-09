@@ -19,9 +19,14 @@ router.get('/', async (req, res, next)=>{
  
  router.post('/', async (req, res, next) => {
    try {
+    if(!req.files){
+      throw ({message: 'Puto', codigo: 400});
+     }
+
      let file = req.files.Imagen;
-     console.log(file.data); // la columna firma_vinculado = file.data
+     console.log(file.data, '-----------------------------------------'); // la columna firma_vinculado = file.data
  
+     
      // Realiza JSON.parse en la cadena JSON de req.body.Novedad
      const novedadString = req.body.Novedad;
      let Novedad;
@@ -38,6 +43,7 @@ router.get('/', async (req, res, next)=>{
      const newNovedad = await novedadesService.create(Novedad, file.data);
      res.status(200).json(newNovedad);
    } catch (error) {
+    console.error(error);
      if (error.codigo) {
        res.status(error.codigo).send(error);
      } else {
