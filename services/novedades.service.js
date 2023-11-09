@@ -19,6 +19,26 @@ class novedadesService{
     return rta;
   }
 
+  async findByUser(documento){
+    const personal = await con.models.personalvinculado.findOne({
+      where:{
+        identificacion: documento
+      }
+    });
+
+    if (!personal) {
+      throw {message: 'no se encontro personal', codigo:404};
+    }
+
+    const novedades = await con.models.novedades.findAll({
+      where:{
+        id_personalvinculado: personal.id
+      }
+    });
+
+    return novedades;
+  }
+
   async create(datos, fileData) {
     
   // console.log("-*-*--*-*-*-*-*-*-*-*--*-",fileData,"---------------------",datos);

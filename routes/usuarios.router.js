@@ -39,6 +39,34 @@ router.get('/todos', async (req, res, next)=>{
   }
 })
 
+router.get('/subproceso/:subproceso', async (req, res, next)=>{
+  try {
+    const { subproceso } = req.params;
+    const usuarios = await service.findBySubprocess(subproceso);
+    res.status(200).json(usuarios);
+  } catch (error) {
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }else{ 
+      res.status(500).send(error);
+    }
+  }
+})
+
+router.get('/proceso/:proceso', async (req, res, next)=>{
+  try {
+    const { proceso } = req.params;
+    const usuarios = await service.findByProcess(proceso);
+    res.status(200).json(usuarios);
+  } catch (error) {
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }else{ 
+      res.status(500).send(error);
+    }
+  }
+})
+
 router.get('/documento/:id', async (req, res, next)=>{
   try {
     const { id } = req.params
