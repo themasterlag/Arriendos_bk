@@ -20,7 +20,7 @@ router.get('/', async (req, res, next)=>{
  router.post('/', async (req, res, next) => {
    try {
     if(!req.files){
-      throw ({message: 'Puto', codigo: 400});
+      throw ({message: 'No se encontro el archivo', codigo: 400});
      }
 
      let file = req.files.Imagen;
