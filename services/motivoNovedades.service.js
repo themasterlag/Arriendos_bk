@@ -19,40 +19,51 @@ class motivoNovedadesService{
   }
   
 
-async update(id, data) {
-  // Validar los datos proporcionados por el usuario
-  if (!data.nombre) {
-    throw new Error('El nombre del motivo de novedad es obligatorio');
-  }
-  if (data.descripcion.length > 1000) {
-    throw new Error('La descripción del motivo de novedad debe ser menor que 1000 caracteres');
-  }
 
-  // Obtener el motivo de novedad con el ID especificado
-  const motivoNovedad = await con.models.motivo_novedades.findByPk(id);
-
-  // Verificar si el motivo de novedad existe
-  if (!motivoNovedad) {
-    throw new Error('Motivo de novedad no encontrado', {
-      code: 404,
-      message: 'El motivo de novedad con el ID especificado no existe'
-    });
-  }
-
-  // Actualizar el motivo de novedad
-  const updatedMotivoNovedad = await motivoNovedad.update({
-    nombre: data.nombre,
-    descripcion: data.descripcion
-  });
-
-  return updatedMotivoNovedad;
+  async update(id, data){
+    const novedad = await this.findOne(id)
+    console.log(novedad)
+    const rta = await novedad.update(data)
+    return rta
 }
+// async update(id, data) {
+//   // Validar los datos proporcionados por el usuario
+//   if (!data.nombre) {
+//     throw new Error('El nombre del motivo de novedad es obligatorio');
+//   }
+//   if (data.descripcion.length > 1000) {
+//     throw new Error('La descripción del motivo de novedad debe ser menor que 1000 caracteres');
+//   }
+
+//   // Obtener el motivo de novedad con el ID especificado
+//   const motivoNovedad = await con.models.motivo_novedades.findByPk(id);
+
+//   // Verificar si el motivo de novedad existe
+//   if (!motivoNovedad) {
+//     throw new Error('Motivo de novedad no encontrado', {
+//       code: 404,
+//       message: 'El motivo de novedad con el ID especificado no existe'
+//     });
+//   }
+
+//   // Actualizar el motivo de novedad
+//   const updatedMotivoNovedad = await motivoNovedad.update({
+//     nombre: data.nombre,
+//     descripcion: data.descripcion
+//   });
+
+//   return updatedMotivoNovedad;
+// }
 
 
-  async findAll() {
-    const motivosNovedad = await con.models.motivo_novedades.findAll();
-    return motivosNovedad;
-  }
+  async findAll(){
+    const motivosNovedad = await con.models.motivo_novedades.findAll({
+        order: [
+            ['id_motivo', 'ASC']
+          ]
+    })
+    return motivosNovedad
+}
 
   async findOne(id) {
     const rta = await con.models.motivo_novedades.findByPk(id);
