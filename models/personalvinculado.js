@@ -48,10 +48,6 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: true,
         defaultValue: null,
       },
-      categoria: {
-        type: DataTypes.STRING(255),
-        allowNull: false
-      },
       tipo_personal: {
         type: DataTypes.STRING(255),
         allowNull: false

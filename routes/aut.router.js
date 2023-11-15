@@ -51,9 +51,14 @@ router.post('/login', async (req, res, next) => {
   res.status(codigo).send(respuesta);
 });
 
-router.get('/renovar/:token', async function(req, res) {
+router.post('/renovar', async (req, res) =>{
   try {
-    const token = req.params.token;
+    if (req.body) {
+      if(!req.body.token){
+        throw {message: "No se recibio token", codigo:400};
+      }
+    }
+    const token = req.body.token;
 
     nuevo = await service.renovarToken(token);
     
