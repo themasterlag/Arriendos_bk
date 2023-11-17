@@ -68,7 +68,7 @@ router.patch('/update/:id', async (req, res, next) => {
       const updatedData = req.body;
       const idMotivo =  req.params.id;
       const updatedEntity = await motivoNovedadesService.update(idMotivo, updatedData);
-      console.log('Motivo de novedad actualizado con éxito:', updatedEntity);
+      console.log('Motivo de novedad actualizado con éxito:', updatedEntity, idMotivo);
       res.status(200).json(updatedEntity);
     } catch (error) {
       console.log('Error al actualizar motivo de novedad:', error);
