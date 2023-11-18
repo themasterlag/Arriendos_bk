@@ -73,7 +73,12 @@ router.get('/', async (req, res, next)=>{
         // console.log(idNovedad, oldNovedad.novedad)
         res.json(updated).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -84,7 +89,12 @@ router.delete('/:id', async(req, res, next)=>{
         const deleted = await novedadesService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 

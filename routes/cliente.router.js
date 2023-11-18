@@ -11,7 +11,12 @@ router.get('/', async (req, res, next) => {
     const cliente = await service.find();
     res.json(cliente);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -22,7 +27,12 @@ router.get('/:id', async (req, res, next) => {
     console.log(clientes);
     res.json(clientes);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -33,7 +43,12 @@ router.get('/numero_documento/:numero_documento', async (req, res, next) => {
     //console.log(clientes);
     res.json(clientes);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -44,7 +59,12 @@ router.patch('/:id', async (req, res, next) => {
     const cliente = await service.update(id, body);
     res.json(cliente);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -75,7 +95,12 @@ router.post('/delete', async (req, res, next) => {
     const cliente = await service.delete(id);
     res.status(201).json(cliente);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

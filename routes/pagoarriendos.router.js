@@ -69,7 +69,12 @@ router.get('/prenomina', async (req, res, next) => {
 
     res.status(200).json(listaContratos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -91,7 +96,12 @@ router.get('/nomina', async (req, res, next) => {
 
     res.status(200).json(listaPagos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -103,7 +113,12 @@ router.get('/pagados/:anio/:mes', async (req, res, next) => {
     const listadoDePagos = await service.findPagados(mes, anio);
     res.status(200).json(listadoDePagos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/todos', async (req, res, next) => {
@@ -111,7 +126,12 @@ router.get('/todos', async (req, res, next) => {
     const listado = await service.findPagos();
     res.json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.post('/todos', async (req, res, next) => {
@@ -157,7 +177,12 @@ router.post('/todos', async (req, res, next) => {
       res.status(201).json(response);
     }
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/sitioventa/:id', async (req, res, next) => {
@@ -167,7 +192,12 @@ router.get('/sitioventa/:id', async (req, res, next) => {
     const listadoConceptos = await service.traerConceptosByCodigoSitioVenta(id);
     res.status(200).json({ listado, listadoConceptos });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 // Devuelve el listado de pagos de un responsable de iva, un no responsable de iva y un pago en efectivo
@@ -178,7 +208,12 @@ router.get('/bancolombia', async (req, res, next) => {
     const listado = await service.findAllArriendosByCodigosSitioVenta(opcion);
     res.status(200).json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/otrosbancos', async (req, res, next) => {
@@ -186,7 +221,12 @@ router.get('/otrosbancos', async (req, res, next) => {
     const listado = await service.findRegistrosByOtrosBancos();
     res.status(200).json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -195,7 +235,12 @@ router.get('/efectivo', async (req, res, next) => {
     const listado = await service.findRegistrosByEfectivo();
     res.status(200).json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -206,7 +251,12 @@ router.get('/:id/:anio', async (req, res, next) => {
     const listadoFiltrado = await service.findRegistros(id, anio);
     res.status(200).json(listadoFiltrado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -215,7 +265,12 @@ router.get('/pagados', async (req, res, next) => {
     const listadoDePagos = await listadoService.getPagos();
     res.status(200).json(listadoDePagos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -232,7 +287,12 @@ router.post('/liquidacion', async (req, res, next) => {
       respuesta: 'se agrego correctamente la liquidacion',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -246,7 +306,12 @@ router.post('/', async (req, res, next) => {
       respuesta: 'se agrego correctamente el pago arriendo',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -255,7 +320,12 @@ router.get('/liquidacion', async (req, res, next) => {
     const liquidaciones = await service.findLiquidaciones();
     res.status(200).json(liquidaciones);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 module.exports = router;

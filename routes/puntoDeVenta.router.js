@@ -12,7 +12,12 @@ router.get('/', async (req, res, next) => {
 
     res.status(201).json(puntosdeventa);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/sincontrato', async (req, res, next) => {
@@ -20,7 +25,12 @@ router.get('/sincontrato', async (req, res, next) => {
     const puntosdeventa = await service.findPuntoWithoutContrato();
     res.status(201).json(puntosdeventa);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -30,7 +40,12 @@ router.get('/codigo-sitventa/:codigo', async (req, res, next) => {
     const puntoDeventa = await service.findByCodigoSitioVenta(codigo);
     res.status(201).json(puntoDeventa);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -40,7 +55,12 @@ router.get('/:id', async (req, res, next) => {
     const puntoDeVenta = await service.findOne(id);
     res.status(200).json(puntoDeVenta);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -82,7 +102,12 @@ router.patch('/update', async (req, res, next) => {
       respuesta: 'Se actualizo correctamente el contrato',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -98,7 +123,12 @@ router.patch('/actualizar', async (req, res, next) => {
       respuesta: 'Se actualizo correctamente el desplegable',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -191,7 +221,12 @@ router.post('/delete', async (req, res, next) => {
     const puntoDeVenta = await service.delete(id);
     res.status(201).json(puntoDeVenta);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

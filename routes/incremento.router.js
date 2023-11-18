@@ -11,7 +11,12 @@ router.get('/', async (req, res, next) => {
     const incremento = await service.find();
     res.json(incremento);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -22,7 +27,12 @@ router.get('/:id', async (req, res, next) => {
     console.log(incrementos);
     res.json(incrementos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -32,7 +42,12 @@ router.post('/inc', async(req, res, next)=>{
       const newIncremento = await service.create(incremento)
       res.json(newIncremento).status(200)
   } catch (error) {
-      res.status(error.codigo).send(error)
+      if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 
@@ -50,7 +65,12 @@ router.put('/:id', async (req, res, next) => {
       })
     }
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -62,7 +82,12 @@ router.patch('/update', async(req, res, next)=>{
       const updated = await service.update(idIncremento, oldIncremento)
       res.json(updated).status(200)
   } catch (error) {
-      res.status(error.codigo).send(error)
+      if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 
@@ -73,7 +98,12 @@ router.delete('/inc:id', async(req, res, next)=>{
       const deleted = await service.delete(id)
       res.json(deleted).status(200)
   } catch (error) {
-      res.status(error.codigo).send(error)
+      if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 

@@ -11,7 +11,12 @@ router.get('/', async(req,res,next)=>{
     const servicios = await service.find();
     res.status(201).json(servicios);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 
@@ -21,7 +26,12 @@ router.get('/:id', async(req,res,next)=>{
     const servicio = await service.findOne(id);
     res.status(201).json(servicio);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 

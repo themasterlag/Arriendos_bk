@@ -12,7 +12,12 @@ router.get('/', async (req, res, next)=>{
         const procesos = await procesoService.find()
         res.json(procesos).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -21,7 +26,12 @@ router.get('/subprocesos/', async (req, res, next)=>{
         const subprocesos = await subprocesoService.find()
         res.json(subprocesos).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -31,7 +41,12 @@ router.get('/subprocesos/:id', async (req, res, next)=>{
         const subprocesos = await subprocesoService.findById(id)
         res.json(subprocesos).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -51,7 +66,12 @@ router.post('/subP', async(req, res, next)=>{
         const newSubProceso = await subprocesoService.create(subprocesos)
         res.json(newSubProceso).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -64,7 +84,12 @@ router.patch('/updateSub', async(req, res, next)=>{
         //  console.log(idSubProceso, oldSubProceso.subproceso)
         res.json(updated).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -75,7 +100,12 @@ router.delete('/subproceso/:id', async(req, res, next)=>{
         const deleted = await subprocesoService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -85,7 +115,12 @@ router.get('/:id', async (req, res, next)=>{
         const procesos = await procesoService.findOnde(id)
         res.json(procesos).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -95,7 +130,12 @@ router.post('/p', async(req, res, next)=>{
         const newProceso = await procesoService.create(proceso)
         res.json(newProceso).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -108,7 +148,12 @@ router.patch('/update', async(req, res, next)=>{
         console.log(idProceso, oldProceso.proceso)
         res.json(updated).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -119,7 +164,12 @@ router.delete('/proceso:id', async(req, res, next)=>{
         const deleted = await procesoService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 

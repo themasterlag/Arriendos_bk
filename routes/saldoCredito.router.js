@@ -11,7 +11,12 @@ router.get('/', async (req, res, next) => {
     const saldoCredito = await service.findWithDetails();
     res.json(saldoCredito);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -21,7 +26,12 @@ router.get('/pagos/:id', async (req, res, next) => {
     const saldoCredito = await service.findOneWithPagos(id);
     res.json(saldoCredito);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -31,7 +41,12 @@ router.get('/:id', async (req, res, next) => {
     const saldoCredito = await service.findOne(id);
     res.json(saldoCredito);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -42,7 +57,12 @@ router.post('/', async (req, res, next) => {
 
     res.status(201).json(newSaldoCredito);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -53,7 +73,12 @@ router.put('/', async (req, res, next) => {
 
     res.status(201).json(newSaldoCredito);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -63,7 +88,12 @@ router.delete('/:id', async (req, res, next) => {
     const saldoCredito = await service.delete(id);
     res.status(201).json(saldoCredito);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

@@ -11,18 +11,27 @@ router.get('/', async (req, res, next) => {
     const conceptos = await service.find();
     res.status(200).json(conceptos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
-router.post('/',
-  async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
       const body = req.body;
       const newCategory = await service.create(body);
       res.status(201).json(newCategory);
     } catch (error) {
-      res.status(error.codigo).send(error);
+      if (error.codigo) {
+        res.status(error.codigo).send(error);
+      }
+      else{
+        res.status(500).send(error);
+      }
     }
   });
   
@@ -33,7 +42,12 @@ router.post('/',
       const puntoDeventa = await service.findByCodigoConcepto(codigo);
       res.status(201).json(puntoDeventa);
     } catch (error) {
-      res.status(error.codigo).send(error);
+      if (error.codigo) {
+        res.status(error.codigo).send(error);
+      }
+      else{
+        res.status(500).send(error);
+      }
     }
   });
 
@@ -45,7 +59,12 @@ router.post('/',
       const newCategory = await service.update(id, body);
       res.status(201).json(newCategory);
     } catch (error) {
-      res.status(error.codigo).json(error);
+      if (error.codigo) {
+        res.status(error.codigo).send(error);
+      }
+      else{
+        res.status(500).send(error);
+      }
     }
   });
 
@@ -54,7 +73,12 @@ router.get('/asociados', async ( req, res, next) => {
     const conceptos = await service.findWhitAsociado();
     res.status(200).json(conceptos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -64,7 +88,12 @@ router.get('/:id', async (req, res, next) => {
     const conceptos = await service.findOne(id);
     res.status(200).json(conceptos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -74,7 +103,12 @@ router.get('/tipo/:id', async (req, res, next) => {
     const conceptos = await service.findTipo(id);
     res.status(200).json(conceptos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

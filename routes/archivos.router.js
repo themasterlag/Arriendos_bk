@@ -14,7 +14,7 @@ router.post('/upload', async(req,res, next)=>{
        // console.log(file.adjunto);
         fs.writeFile(`../Proyecto_Arriendos_bk/archivos/${[archivo.adjunto.name]}`, file.adjunto.data, function (err) {
           if (err) {
-             return next(err);
+            return next(err);
           }
           return resolve();
         });
@@ -34,7 +34,12 @@ router.post('/upload', async(req,res, next)=>{
 
 
   } catch (error) {
-    res.status(error.codigo).send(error)
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 
