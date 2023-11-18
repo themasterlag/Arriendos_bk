@@ -8,9 +8,21 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
+      id_novedad: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'novedades',
+          key: 'id_novedad'
+        }
+      },
       id_usuario: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'usuario',
+          key: 'id_usuario'
+        }
       },
       fecha: {
         type: DataTypes.DATE,
