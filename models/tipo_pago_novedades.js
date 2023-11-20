@@ -12,9 +12,13 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     descripcion: {
-        type: DataTypes.STRING,
-        allowNull: true
-      }
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    estado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    }
   }, {
     sequelize,
     tableName: 'tipo_pago_novedades',

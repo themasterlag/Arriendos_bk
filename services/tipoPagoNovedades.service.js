@@ -15,7 +15,7 @@ class TipoPagoNovedadesService{
     const rta = await con.models.tipo_pago_novedades.findByPk(id);
     
     if(!rta){
-      throw {message: 'no se encontro', codigo:404};
+      throw {message: 'no se encontro tipo', codigo:404};
     }
     
     return rta;
@@ -29,15 +29,24 @@ class TipoPagoNovedadesService{
   async update(data){
     const tipo = await con.models.tipo_pago_novedades.findByPk(data.id);
     
-    if(!rta){
-        throw {message: 'no se encontro', codigo:404};
+    if(!tipo){
+      throw {message: 'no se encontro tipo', codigo:404};
     }
     
-    const rta = tipo.update(data);
+    const rta = await tipo.update(data);
     return rta;
   }
   
-  
+  async changeEstado(id){
+    const tipo = await con.models.tipo_pago_novedades.findByPk(id);
+
+    if (!tipo) {
+      throw {message: 'no se encontro tipo', codigo:404};
+    }
+
+    const rta = tipo.update({estado: !tipo.estado});
+    return rta;
+  }
 }
 
 module.exports = TipoPagoNovedadesService;

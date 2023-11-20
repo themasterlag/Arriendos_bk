@@ -43,66 +43,67 @@ const carnetRouter = require("./carnet.router");
 const personalVinculadoRouter = require("./personalVinculado.router");
 const novedadesRouter = require("./novedades.router")
 const motivoNovedad = require('./motivoNovedad.router');
+const tipoPagoNovedadesRouter = require('./tipoPagoNovedades.router');
 
 function routerApi(app) {
   const router = express.Router();
 
   // RUTAS PUBLICAS
   app.use('/api/arriendos', router);
-  router.use('/aut', autRouter);
+    router.use('/aut', autRouter);
 
   app.use('/api/carnetVirtual', router);
-  router.use('/carnet', carnetRouter);
+    router.use('/carnet', carnetRouter);
 
-  // RUTAS PROTEGIDAS
-  router.use(verifyToken);
-  router.use('/personaVinculado', personalVinculadoRouter);
+    // RUTAS PROTEGIDAS
+    router.use(verifyToken);
+    router.use('/personaVinculado', personalVinculadoRouter);
   
   app.use('/api/arriendos', router);
-  router.use(verifyToken);
-  router.use('/cargos', cargoRouter);
-  router.use('/usuarios', usuarioRouter);
-  router.use('/departamentos', departamentoRouter);
-  router.use('/municipios', municipioRouter);
-  router.use('/solicitudes', solicitudRouter);
- // router.use('/procesos', procesoRouter); 
-  router.use('/arrendadores', arrendadorRouter);
-  router.use('/tipopersonas', tipoPersonaRouter);
-  router.use('/zona', zonaRouter);
-  router.use('/microzona', microZonaRouter);
-  router.use('/puntodeventa', puntoDeVentaRouter);
-  router.use('/contrato', contratoRouter);
-  router.use('/metodopago', metodoPagoRouter);
-  router.use('/entidadbancaria', entidadBancariaRouter);
-  router.use('/tipocontrato', tipoContratoRouter);
-  router.use('/registrarproceso', registrarPuntoRouter);
-  router.use('/autorizado', autorizadoRouter);
-  router.use('/responsable', responsableRouter);
-  router.use('/cliente', clienteRouter);
-  router.use('/propietariopunto', proPDV);
-  router.use('/tiposervicio', tipoServicioRouter);
-  router.use('/tipocuenta', tipoCuentaRouter);
-  router.use('/preliquidacion', pagoarriendosRouter);
-  router.use('/conceptos', conceptosRouter);
-  router.use('/contrato-conceptos', contratoConceptoRouter);
-  router.use('/incrementos', incrementoRouter);
-  router.use('/archivos', subirArchivoRouter);
-  router.use('/saldo-credito', saldoCreditoRouter);
-  router.use('/saldo-credito-pago', saldoCreditoPagoRouter);
-  router.use('/pago-conceptos', pagoConceptoRouter);
-  router.use('/reportes', reportesRouter);
-  router.use('/incremento-contrato', IncrementoContratoRouter);
-  router.use('/procesos', procesosRouter);
-  router.use('/permisos', permisoRouter);
-  router.use('/permiso-detalle', permisoDetalleRouter);
-  router.use('/tipo-concepto', tipoConceptoRouter);
+    router.use(verifyToken);
+    router.use('/cargos', cargoRouter);
+    router.use('/usuarios', usuarioRouter);
+    router.use('/departamentos', departamentoRouter);
+    router.use('/municipios', municipioRouter);
+    router.use('/solicitudes', solicitudRouter);
+  // router.use('/procesos', procesoRouter); 
+    router.use('/arrendadores', arrendadorRouter);
+    router.use('/tipopersonas', tipoPersonaRouter);
+    router.use('/zona', zonaRouter);
+    router.use('/microzona', microZonaRouter);
+    router.use('/puntodeventa', puntoDeVentaRouter);
+    router.use('/contrato', contratoRouter);
+    router.use('/metodopago', metodoPagoRouter);
+    router.use('/entidadbancaria', entidadBancariaRouter);
+    router.use('/tipocontrato', tipoContratoRouter);
+    router.use('/registrarproceso', registrarPuntoRouter);
+    router.use('/autorizado', autorizadoRouter);
+    router.use('/responsable', responsableRouter);
+    router.use('/cliente', clienteRouter);
+    router.use('/propietariopunto', proPDV);
+    router.use('/tiposervicio', tipoServicioRouter);
+    router.use('/tipocuenta', tipoCuentaRouter);
+    router.use('/preliquidacion', pagoarriendosRouter);
+    router.use('/conceptos', conceptosRouter);
+    router.use('/contrato-conceptos', contratoConceptoRouter);
+    router.use('/incrementos', incrementoRouter);
+    router.use('/archivos', subirArchivoRouter);
+    router.use('/saldo-credito', saldoCreditoRouter);
+    router.use('/saldo-credito-pago', saldoCreditoPagoRouter);
+    router.use('/pago-conceptos', pagoConceptoRouter);
+    router.use('/reportes', reportesRouter);
+    router.use('/incremento-contrato', IncrementoContratoRouter);
+    router.use('/procesos', procesosRouter);
+    router.use('/permisos', permisoRouter);
+    router.use('/permiso-detalle', permisoDetalleRouter);
+    router.use('/tipo-concepto', tipoConceptoRouter);
 
 
   app.use('/api/novedades', router);
-  router.use('/novedad', novedadesRouter);
-  router.use('/motivoNovedad', motivoNovedad);
-
-  router.use('/email', emailRouter);
+    router.use('/novedad', novedadesRouter);
+    router.use('/motivoNovedad', motivoNovedad);
+    router.use('/tipoPago', tipoPagoNovedadesRouter);
+    router.use('/email', emailRouter);
 
 }
 module.exports = routerApi;
