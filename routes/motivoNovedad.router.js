@@ -49,32 +49,38 @@ router.get('/', async (req, res, next) => {
     }
   });
 
-  router.post('/registrar', async (req, res) => {
-    const { nombre, descripcion } = req.body;
+  router.post('/registrar', async(req, res, next)=>{
+    console.log(req.body,"otra cosaaa");
 
-    // Crear un nuevo motivo de novedad
-    const nuevoMotivo = await motivoNovedadesService.create({
-      nombre,
-      descripcion,
-    });
-
-    // Devolver el motivo de novedad
-    res.status(201).json(nuevoMotivo);
-});
+    try {
+        const motivoNovedad = req.body
+        const newMotivoNovedad = await motivoNovedadesService.create(motivoNovedad)
+        res.json(newMotivoNovedad).status(200)
+    } catch (error) {
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
+    }
+})
 
 
 router.patch('/update/:id', async (req, res, next) => {
-    try {
-      const updatedData = req.body;
-      const idMotivo =  req.params.id;
-      const updatedEntity = await motivoNovedadesService.update(idMotivo, updatedData);
-      // console.log('Motivo de novedad actualizado con éxito:', updatedEntity, idMotivo);
-      res.status(200).json(updatedEntity);
-    } catch (error) {
-      console.log('Error al actualizar motivo de novedad:', error);
-      res.status(500).json({ error: 'Error al actualizar motivo de novedad' });
-    }
-  });
+  try {
+    console.log(req.body,"----------------------------------")
+    const updatedData = req.body;
+    const idMotivo = req.body.id_motivo;
+    console.log(idMotivo);
+    const updatedEntity = await motivoNovedadesService.update(idMotivo, updatedData);
+    console.log('Motivo de novedad actualizado con éxito:', updatedEntity);
+    res.status(200).json(updatedEntity);
+  } catch (error) {
+    console.log('Error al actualizar motivo de novedad:', error);
+    res.status(500).json({ error: 'Error al actualizar motivo de novedad' });
+  }
+});
 
 
 

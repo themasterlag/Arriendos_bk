@@ -5,18 +5,32 @@ class motivoNovedadesService{
     constructor(){}
 
 
-  async create(data) {
-    const nombre = data.nombre.toString().trim().toLowerCase();
-    const descripcion = data.descripcion.toString().trim().toLowerCase();
-  
-    // Crear un nuevo motivo de novedad
-    const nuevoMotivo = await con.models.motivo_novedades.create({
-      nombre,
-      descripcion,
-    });
-  
-    return nuevoMotivo;
+    async create(data) {
+      // console.log(data,"---------------------------");
+      const rta = await con.models.motivo_novedades.findAll({
+          where: {nombre: data.nombre},
+  });
+console.log(rta);
+  if(rta.length == 0){
+      const motivo_novedades = await con.models.motivo_novedades.create(data);
+      return motivo_novedades;
+  }else{
+      throw{message: 'motivo Novedad existente', codigo:404};
   }
+  }
+
+  // async create(data) {
+  //   const nombre = data.nombre.toString().trim().toLowerCase();
+  //   const descripcion = data.descripcion.toString().trim().toLowerCase();
+  
+  //   // Crear un nuevo motivo de novedad
+  //   const nuevoMotivo = await con.models.motivo_novedades.create({
+  //     nombre,
+  //     descripcion,
+  //   });
+  
+  //   return nuevoMotivo;
+  // }
   
 
 
@@ -79,6 +93,24 @@ class motivoNovedadesService{
     const motivoNovedad = await this.findOne(id);
     await motivoNovedad.destroy();
     return 'eliminado';
+  }
+
+  async delete(id) {
+    try {
+      const motivoNovedad = await this.findOne(id);
+      await motivoNovedad.destroy();
+      return 'Eliminado';
+
+    } catch (error) {
+      if (error) {
+        throw { 
+            message: 
+            'No se puede eliminar porque ya se esta usando en una novedad.'
+            , codigo: 404 };
+      } else {
+        throw error;
+      }
+    }
   }
 }
       
