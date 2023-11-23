@@ -26,16 +26,27 @@ class TipoPagoNovedadesService{
     return rta;
   }
 
-  async update(data){
-    const tipo = await con.models.tipo_pago_novedades.findByPk(data.id);
+  async update(id, data){
+    const tipo_pago_novedades = await this.findOne(id)
+    console.log(tipo_pago_novedades)
     
     if(!tipo){
       throw {message: 'no se encontro tipo', codigo:404};
     }
+    const rta = await tipo_pago_novedades.update(data)
+    return rta
+}
+
+  // async update(data){
+  //   const tipo = await con.models.tipo_pago_novedades.findByPk(data.id);
     
-    const rta = await tipo.update(data);
-    return rta;
-  }
+  //   if(!tipo){
+  //     throw {message: 'no se encontro tipo', codigo:404};
+  //   }
+    
+  //   const rta = await tipo.update(data);
+  //   return rta;
+  // }
   
   async changeEstado(id){
     const tipo = await con.models.tipo_pago_novedades.findByPk(id);

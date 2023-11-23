@@ -60,6 +60,23 @@ router.put('/', async (req, res) => {
     }
 });
 
+router.patch('/update', async(req, res, next)=>{
+    try {
+        const oldTipoPAgo = req.body
+        const idTipoPago = oldTipoPAgo.id
+        console.log(idTipoPago)
+        const updated = await service.update(idTipoPago, oldTipoPAgo)
+        res.json(updated).status(200)
+    } catch (error) {
+        if (error.codigo) {
+        res.status(error.codigo).send(error);
+      }
+      else{
+        res.status(500).send(error);
+      }
+    }
+  })
+
 router.put('/cambiarEstado', async (req, res) => {
     try {
         const datos = req.body;
