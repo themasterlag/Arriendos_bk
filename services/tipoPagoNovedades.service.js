@@ -7,7 +7,11 @@ class TipoPagoNovedadesService{
   }
 
   async find(){
-    const data = con.models.tipo_pago_novedades.findAll();
+    const data = con.models.tipo_pago_novedades.findAll({
+      order: [
+          ['id', 'ASC']
+        ]
+  })
     return data;
   }
 
