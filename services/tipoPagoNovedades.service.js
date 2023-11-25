@@ -48,6 +48,7 @@ class TipoPagoNovedadesService{
   //   return rta;
   // }
   
+
   async changeEstado(id){
     const tipo = await con.models.tipo_pago_novedades.findByPk(id);
 

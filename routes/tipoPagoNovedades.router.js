@@ -77,9 +77,11 @@ router.patch('/update', async(req, res, next)=>{
     }
   })
 
+
 router.put('/cambiarEstado', async (req, res) => {
     try {
         const datos = req.body;
+        console.log(req.body,"------------------------------------");
         const tipo = await service.changeEstado(datos.id);
         res.status(200).json(tipo);
     } catch (error) {
