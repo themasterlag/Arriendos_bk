@@ -72,9 +72,15 @@ console.log(rta);
 
   async findAll(){
     const motivosNovedad = await con.models.motivo_novedades.findAll({
-        order: [
-            ['id_motivo', 'ASC']
-          ]
+      order: [
+        ['id_motivo', 'ASC']
+      ],
+      // include: [
+      //   {
+      //     model: con.models.tipo_pago_novedades,
+      //     as: 'proppv',
+      //   },
+      // ],
     })
     return motivosNovedad
 }
