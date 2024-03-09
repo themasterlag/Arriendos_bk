@@ -52,14 +52,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/prenomina', async (req, res, next) => {
+router.post('/prenomina', async (req, res, next) => {
   try {
-    const idContratos = JSON.parse(req.query.idContratos);
-    // console.log('idContratos: ', idContratos);
+    // Cambia aquí: accede a los datos a través de req.body en lugar de req.query
+    const idContratos = req.body.idContratos;
     let listaContratos = [];
 
     for (let i = 0; i < idContratos.length; i++) {
-      let contrato =  await serviceContrato.findOne(idContratos[i]);
+      let contrato = await serviceContrato.findOne(idContratos[i]);
       contrato = contrato.toJSON();
       let conceptos = await contratoConceptoService.findByContrato(contrato.id_contrato);
 
@@ -69,23 +69,19 @@ router.get('/prenomina', async (req, res, next) => {
 
     res.status(200).json(listaContratos);
   } catch (error) {
-    if (error.codigo) {
-      res.status(error.codigo).send(error);
-    }
-    else{
-      res.status(500).send(error);
-    }
+    console.error(error); // Agregado para mejorar la depuración
+    res.status(500).send("Error interno del servidor");
   }
 });
 
-router.get('/nomina', async (req, res, next) => {
+router.post('/nomina', async (req, res, next) => {
   try {
-    const idPagos = JSON.parse(req.query.idPagos);
+    // Cambia aquí: accede a los datos a través de req.body en lugar de req.query
+    const idPagos = req.body.idPagos;
     let listaPagos = [];
     
     for (let i = 0; i < idPagos.length; i++) {
-      let pago =  await service.findOne(idPagos[i]);
-      console.log(pago);
+      let pago = await service.findOne(idPagos[i]);
       pago = pago[0].toJSON();
 
       let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
@@ -96,14 +92,64 @@ router.get('/nomina', async (req, res, next) => {
 
     res.status(200).json(listaPagos);
   } catch (error) {
-    if (error.codigo) {
-      res.status(error.codigo).send(error);
-    }
-    else{
-      res.status(500).send(error);
-    }
+    console.error(error); // Agregado para mejorar la depuración
+    res.status(500).send("Error interno del servidor");
   }
 });
+
+
+// router.get('/prenomina', async (req, res, next) => {
+//   try {
+//     const idContratos = JSON.parse(req.query.idContratos);
+//     console.log('idContratos: ', idContratos);
+//     let listaContratos = [];
+
+//     for (let i = 0; i < idContratos.length; i++) {
+//       let contrato =  await serviceContrato.findOne(idContratos[i]);
+//       contrato = contrato.toJSON();
+//       let conceptos = await contratoConceptoService.findByContrato(contrato.id_contrato);
+
+//       contrato["conceptos"] = conceptos;
+//       listaContratos.push(contrato);
+//     }
+
+//     res.status(200).json(listaContratos);
+//   } catch (error) {
+//     if (error.codigo) {
+//       res.status(error.codigo).send(error);
+//     }
+//     else{
+//       res.status(500).send(error);
+//     }
+//   }
+// });
+
+// router.get('/nomina', async (req, res, next) => {
+//   try {
+//     const idPagos = JSON.parse(req.query.idPagos);
+//     let listaPagos = [];
+    
+//     for (let i = 0; i < idPagos.length; i++) {
+//       let pago =  await service.findOne(idPagos[i]);
+//       console.log(pago);
+//       pago = pago[0].toJSON();
+
+//       let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
+
+//       pago["conceptos"] = conceptos;
+//       listaPagos.push(pago);
+//     }
+
+//     res.status(200).json(listaPagos);
+//   } catch (error) {
+//     if (error.codigo) {
+//       res.status(error.codigo).send(error);
+//     }
+//     else{
+//       res.status(500).send(error);
+//     }
+//   }
+// });
 
 router.get('/pagados/:anio/:mes', async (req, res, next) => {
   try {
