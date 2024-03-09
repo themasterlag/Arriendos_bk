@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const { compare } = require('bcryptjs');
-const con = require('../libs/sequelize')
+const con = require('../libs/sequelize');
 
 class novedadesService{
 
@@ -21,12 +19,33 @@ class novedadesService{
     return rta;
   }
 
+  async findByUser(documento){
+    const personal = await con.models.personalvinculado.findOne({
+      where:{
+        identificacion: documento
+      }
+    });
+
+    if (!personal) {
+      throw {message: 'no se encontro personal', codigo:404};
+    }
+
+    const novedades = await con.models.novedades.findAll({
+      where:{
+        id_personalvinculado: personal.id
+      }
+    });
+
+    return novedades;
+  }
+
   async create(datos, fileData) {
     
-  console.log("-*-*--*-*-*-*-*-*-*-*--*-",fileData);
+  // console.log("-*-*--*-*-*-*-*-*-*-*--*-",fileData,"---------------------",datos);
   datos.firma_vinculado = fileData;
-    const rta = await con.models.novedades.create(datos);
-    return rta; 
+  console.log(datos.Novedad)
+   const rta = await con.models.novedades.create(datos);
+    return true; 
 }
 
 

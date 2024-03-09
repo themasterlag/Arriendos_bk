@@ -10,7 +10,12 @@ router.get('/', async(req,res,next)=>{
     const zonas = await service.find();
     res.status(201).json(zonas);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 
@@ -20,7 +25,12 @@ router.get('/:id', async(req,res,next)=>{
     const zona = await service.findOne(id);
     res.status(201).json(zona);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 

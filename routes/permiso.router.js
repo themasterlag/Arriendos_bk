@@ -56,7 +56,12 @@ router.patch('/update', async (req, res, next)=>{
             respuesta: "Se agrego correctamente"
         }).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -69,7 +74,12 @@ router.delete('/:id', async (req, res, next)=>{
             respuesta: message
         })
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 

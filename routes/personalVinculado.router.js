@@ -74,7 +74,9 @@ router.get('/crearExcel', async function(req, res) {
     const año = fechaActual.getFullYear();
     // Crea la cadena de fecha en el formato deseado
     const fechaFormateada = `${dia}-${mes}-${año}`;
-
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Disposition');
+    res.header('Access-Control-Expose-Headers', 'Content-Disposition');
     res.setHeader('Content-Disposition', `filename=Peronal_Vinculado_${fechaFormateada}.xlsx`);
     res.type('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.send(personal);

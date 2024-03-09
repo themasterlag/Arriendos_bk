@@ -17,22 +17,22 @@ router.use(function (req, res, next) {
   next();
 });
 
-// router.post(
-//   "/singup", async (req, res, next) => {
-//   try {
-//     let verify = await veriReg.checkDuplicateUsernameOrEmail(req, res, next)
-//     if ( verify.statusCode==200) {
-//       verify = await service.registro(req.body);
-//       if (verify) {
-//         verify = {statusCode: 200, message :"Usuario registrado con exito"};
-//       }
-//     }
-//     res.json(verify);
+router.post(
+  "/singup", async (req, res, next) => {
+  try {
+    let verify = await veriReg.checkDuplicateUsernameOrEmail(req, res, next)
+    if ( verify.statusCode==200) {
+      verify = await service.registro(req.body);
+      if (verify) {
+        verify = {statusCode: 200, message :"Usuario registrado con exito"};
+      }
+    }
+    res.json(verify);
 
-//   } catch (error) {
-//     errorHandler.errorHandler(error, req, res, next)
-//   }
-// });
+  } catch (error) {
+    errorHandler.errorHandler(error, req, res, next)
+  }
+});
 
 
 router.post('/login', async (req, res, next) => {
@@ -51,9 +51,14 @@ router.post('/login', async (req, res, next) => {
   res.status(codigo).send(respuesta);
 });
 
-router.get('/renovar/:token', async function(req, res) {
+router.post('/renovar', async (req, res) =>{
   try {
-    const token = req.params.token;
+    if (req.body) {
+      if(!req.body.token){
+        throw {message: "No se recibio token", codigo:400};
+      }
+    }
+    const token = req.body.token;
 
     nuevo = await service.renovarToken(token);
     

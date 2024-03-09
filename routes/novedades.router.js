@@ -15,27 +15,44 @@ router.get('/', async (req, res, next)=>{
     }
  })
 
+
  
+ router.post('/', async (req, res, next) => {
+   try {
+    if(!req.files){
+      throw ({message: 'No se encontro el archivo', codigo: 400});
+     }
 
- router.post('/', async(req, res, next)=>{
-    try {
-        let file = req.files.firma;
-        console.log(file.data); // la columna firma_vinculado = file.data
-        const novedad = req.body
-        const newNovedad = await novedadesService.create(novedad,file.data)
-        res.json(newNovedad).status(200)
-    } catch (error) {
-        if(error.codigo){
-            res.status(error.codigo).send(error)
-
-        }else{
-            res.status(error).send(error)
-
-        }
-        
-
-    }
-})
+     let file = req.files.Imagen;
+     console.log(file.data, '-----------------------------------------'); // la columna firma_vinculado = file.data
+ 
+     
+     // Realiza JSON.parse en la cadena JSON de req.body.Novedad
+     const novedadString = req.body.Novedad;
+     let Novedad;
+     
+     try {
+       Novedad = JSON.parse(novedadString);
+     } catch (error) {
+       console.error('Error al analizar la cadena JSON:', error);
+       res.status(400).send('La cadena JSON en Novedad no es válida');
+       return;
+     }
+ 
+     console.log(Novedad, "-----------------------");
+     const newNovedad = await novedadesService.create(Novedad, file.data);
+     res.status(200).json(newNovedad);
+   } catch (error) {
+    console.error(error);
+     if (error.codigo) {
+       res.status(error.codigo).send(error);
+     } else {
+       res.status(500).send(error);
+     }
+   }
+ });
+ 
+ 
 
  router.get('/:id', async( req, res, next)=>{
     try {
@@ -56,7 +73,12 @@ router.get('/', async (req, res, next)=>{
         // console.log(idNovedad, oldNovedad.novedad)
         res.json(updated).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -67,7 +89,12 @@ router.delete('/:id', async(req, res, next)=>{
         const deleted = await novedadesService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 

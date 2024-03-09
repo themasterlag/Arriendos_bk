@@ -34,7 +34,12 @@ router.get('/', async (req, res, next) => {
     const contrato = await service.findAllContratos();
     res.json(contrato);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/concepto-municipio', async (req, res, next) => {
@@ -79,7 +84,12 @@ router.get('/proximosrenovar/:anio/:mes', async (req, res) => {
     const contratos = await service.traerContratosRenovacionProxima(anio, mes);
     res.status(201).send(contratos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -91,7 +101,12 @@ router.get('/:id', async (req, res, next) => {
     console.log(contratos);
     res.json(contratos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -172,7 +187,12 @@ router.post('/', async (req, res, next) => {
       next('No se registraron los conceptos');
     }
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.post('/delete', async (req, res, next) => {
@@ -181,7 +201,12 @@ router.post('/delete', async (req, res, next) => {
     const contrato = await service.delete(id);
     res.status(201).json(contrato);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -272,7 +297,12 @@ router.patch('/actualizar-contrato-incremento', async (req,res,next)=>{
     })
 
   } catch (error) {
-    res.status(error.codigo).send(error)
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 
@@ -290,7 +320,12 @@ router.patch('/inhabilitar', async (req, res, next) => {
       respuesta: 'Se ha inhabilitado el contrato de forma correcta',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 // router.patch('/aplicar-incremento', async(req,res,next)=>{

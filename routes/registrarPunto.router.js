@@ -13,8 +13,12 @@ router.post('/', async(req,res,next)=>{
       info: "registrado"
     })
   } catch (error) {
-    res.status(error.codigo).send(error);
-
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 })
 

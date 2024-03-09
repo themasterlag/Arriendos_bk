@@ -51,6 +51,27 @@ class UsuarioService {
 
     return rta
   }
+
+  async findBySubprocess(subproceso){
+    const usuarios = await con.models.usuario.findAll({
+      where:{
+        subproceso: subproceso
+      }
+    });
+
+    return usuarios;
+  }
+
+  async findByProcess(proceso){
+    const usuarios = await con.models.usuario.findAll({
+      where:{
+        proceso: proceso
+      }
+    });
+
+    return usuarios;
+  }
+
   async update(id, changes) {
     const usuario =  await this.findOne(id);
     

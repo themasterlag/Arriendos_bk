@@ -10,7 +10,12 @@ router.get('/', async (req, res, next) => {
     const incrementos = await service.findAllIncrementos();
     res.status(200).json(incrementos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -37,13 +42,23 @@ router.post('/guardar', async (req, res, next) => {
       res.status(201).json(response);
     }
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.patch('/update-incremento-contrato', async (req, res, next) => {
   try {
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 module.exports = router;

@@ -52,14 +52,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/prenomina', async (req, res, next) => {
+router.post('/prenomina', async (req, res, next) => {
   try {
-    const idContratos = JSON.parse(req.query.idContratos);
-    // console.log('idContratos: ', idContratos);
+    // Cambia aquí: accede a los datos a través de req.body en lugar de req.query
+    const idContratos = req.body.idContratos;
     let listaContratos = [];
 
     for (let i = 0; i < idContratos.length; i++) {
-      let contrato =  await serviceContrato.findOne(idContratos[i]);
+      let contrato = await serviceContrato.findOne(idContratos[i]);
       contrato = contrato.toJSON();
       let conceptos = await contratoConceptoService.findByContrato(contrato.id_contrato);
 
@@ -69,18 +69,19 @@ router.get('/prenomina', async (req, res, next) => {
 
     res.status(200).json(listaContratos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    console.error(error); // Agregado para mejorar la depuración
+    res.status(500).send("Error interno del servidor");
   }
 });
 
-router.get('/nomina', async (req, res, next) => {
+router.post('/nomina', async (req, res, next) => {
   try {
-    const idPagos = JSON.parse(req.query.idPagos);
+    // Cambia aquí: accede a los datos a través de req.body en lugar de req.query
+    const idPagos = req.body.idPagos;
     let listaPagos = [];
     
     for (let i = 0; i < idPagos.length; i++) {
-      let pago =  await service.findOne(idPagos[i]);
-      console.log(pago);
+      let pago = await service.findOne(idPagos[i]);
       pago = pago[0].toJSON();
 
       let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
@@ -91,9 +92,64 @@ router.get('/nomina', async (req, res, next) => {
 
     res.status(200).json(listaPagos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    console.error(error); // Agregado para mejorar la depuración
+    res.status(500).send("Error interno del servidor");
   }
 });
+
+
+// router.get('/prenomina', async (req, res, next) => {
+//   try {
+//     const idContratos = JSON.parse(req.query.idContratos);
+//     console.log('idContratos: ', idContratos);
+//     let listaContratos = [];
+
+//     for (let i = 0; i < idContratos.length; i++) {
+//       let contrato =  await serviceContrato.findOne(idContratos[i]);
+//       contrato = contrato.toJSON();
+//       let conceptos = await contratoConceptoService.findByContrato(contrato.id_contrato);
+
+//       contrato["conceptos"] = conceptos;
+//       listaContratos.push(contrato);
+//     }
+
+//     res.status(200).json(listaContratos);
+//   } catch (error) {
+//     if (error.codigo) {
+//       res.status(error.codigo).send(error);
+//     }
+//     else{
+//       res.status(500).send(error);
+//     }
+//   }
+// });
+
+// router.get('/nomina', async (req, res, next) => {
+//   try {
+//     const idPagos = JSON.parse(req.query.idPagos);
+//     let listaPagos = [];
+    
+//     for (let i = 0; i < idPagos.length; i++) {
+//       let pago =  await service.findOne(idPagos[i]);
+//       console.log(pago);
+//       pago = pago[0].toJSON();
+
+//       let conceptos = await PagoConceptoService.findByPago(pago.id_pago_arriendo);
+
+//       pago["conceptos"] = conceptos;
+//       listaPagos.push(pago);
+//     }
+
+//     res.status(200).json(listaPagos);
+//   } catch (error) {
+//     if (error.codigo) {
+//       res.status(error.codigo).send(error);
+//     }
+//     else{
+//       res.status(500).send(error);
+//     }
+//   }
+// });
 
 router.get('/pagados/:anio/:mes', async (req, res, next) => {
   try {
@@ -103,7 +159,12 @@ router.get('/pagados/:anio/:mes', async (req, res, next) => {
     const listadoDePagos = await service.findPagados(mes, anio);
     res.status(200).json(listadoDePagos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/todos', async (req, res, next) => {
@@ -111,7 +172,12 @@ router.get('/todos', async (req, res, next) => {
     const listado = await service.findPagos();
     res.json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.post('/todos', async (req, res, next) => {
@@ -157,7 +223,12 @@ router.post('/todos', async (req, res, next) => {
       res.status(201).json(response);
     }
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/sitioventa/:id', async (req, res, next) => {
@@ -167,7 +238,12 @@ router.get('/sitioventa/:id', async (req, res, next) => {
     const listadoConceptos = await service.traerConceptosByCodigoSitioVenta(id);
     res.status(200).json({ listado, listadoConceptos });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 // Devuelve el listado de pagos de un responsable de iva, un no responsable de iva y un pago en efectivo
@@ -178,7 +254,12 @@ router.get('/bancolombia', async (req, res, next) => {
     const listado = await service.findAllArriendosByCodigosSitioVenta(opcion);
     res.status(200).json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/otrosbancos', async (req, res, next) => {
@@ -186,7 +267,12 @@ router.get('/otrosbancos', async (req, res, next) => {
     const listado = await service.findRegistrosByOtrosBancos();
     res.status(200).json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -195,7 +281,12 @@ router.get('/efectivo', async (req, res, next) => {
     const listado = await service.findRegistrosByEfectivo();
     res.status(200).json(listado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -206,7 +297,12 @@ router.get('/:id/:anio', async (req, res, next) => {
     const listadoFiltrado = await service.findRegistros(id, anio);
     res.status(200).json(listadoFiltrado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -215,7 +311,12 @@ router.get('/pagados', async (req, res, next) => {
     const listadoDePagos = await listadoService.getPagos();
     res.status(200).json(listadoDePagos);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -232,7 +333,12 @@ router.post('/liquidacion', async (req, res, next) => {
       respuesta: 'se agrego correctamente la liquidacion',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -246,7 +352,12 @@ router.post('/', async (req, res, next) => {
       respuesta: 'se agrego correctamente el pago arriendo',
     });
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -255,7 +366,12 @@ router.get('/liquidacion', async (req, res, next) => {
     const liquidaciones = await service.findLiquidaciones();
     res.status(200).json(liquidaciones);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 module.exports = router;

@@ -53,7 +53,7 @@ var _personalVinculado = require("./personalvinculado");
 var _motivo_novedaddes = require("./motivo_novedades");
 var _novedaddes = require("./novedades");
 var _movimiento_novedaddes = require("./movimiento_novedades");
-
+var _tipo_pago_novedaddes = require("./tipo_pago_novedades");
 
 function initModels(sequelize) {
   var autorizado = _autorizado(sequelize, DataTypes);
@@ -110,6 +110,7 @@ function initModels(sequelize) {
   var motivo_novedades = _motivo_novedaddes(sequelize, DataTypes);
   var novedades = _novedaddes(sequelize, DataTypes);
   var movimiento_novedades = _movimiento_novedaddes(sequelize, DataTypes);
+  var tipo_pago_novedades = _tipo_pago_novedaddes(sequelize, DataTypes);
 
   contrato.belongsTo(autorizado, { as: "autdetalle", foreignKey: "id_autorizado"});
   autorizado.hasMany(contrato, { as: "contratodetalle", foreignKey: "id_autorizado"});
@@ -232,7 +233,7 @@ function initModels(sequelize) {
   saldo_credito.hasMany(saldo_credito_pago, { as: "creditopagos", foreignKey: "id_saldo_credito"});
   saldo_credito_pago.belongsTo(saldo_credito, { as: "saldocredito", foreignKey: "id_saldo_credito"});
   saldo_credito_pago.belongsTo(usuario, { as: "creditopagousuario", foreignKey: "id_usuario"});
-  motivo_novedades.belongsTo(novedades, { as: "motivoNovedad", foreignKey: "id_novedad"});
+  // motivo_novedades.belongsTo(novedades, { as: "motivoNovedad", foreignKey: "id_novedad"});
   novedades.hasMany(movimiento_novedades, { as: "movimientosNovedad", foreignKey: "id_novedad"});
   movimiento_novedades.belongsTo(novedades, { as: "motivoNovedad", foreignKey: "id_novedad"});
 
@@ -290,7 +291,8 @@ function initModels(sequelize) {
     personalVinculado,
     motivo_novedades,
     novedades,
-    movimiento_novedades
+    movimiento_novedades,
+    tipo_pago_novedades
   };
 }
 module.exports = initModels;

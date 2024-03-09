@@ -10,7 +10,12 @@ router.get('/', async (req, res, next) => {
     const responsable = await service.find();
     res.json(responsable);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.get('/cliente/:id', async (req, res, next) => {
@@ -19,7 +24,12 @@ router.get('/cliente/:id', async (req, res, next) => {
     const responsable = await service.findeByCliente(id);
     res.json(responsable);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -30,7 +40,12 @@ router.get('/:id', async (req, res, next) => {
     console.log(responsable);
     res.json(responsable);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -42,7 +57,12 @@ router.post('/', async (req, res, next) => {
 
     res.status(201).json(newResponsable);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.post('/delete', async (req, res, next) => {
@@ -51,7 +71,12 @@ router.post('/delete', async (req, res, next) => {
     const Responsable = await service.delete(id);
     res.status(201).json(Responsable);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

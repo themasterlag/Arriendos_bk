@@ -10,7 +10,12 @@ router.get('/', async (req, res, next) => {
     const autorizado = await service.find();
     res.json(autorizado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -21,7 +26,12 @@ router.get('/:id', async (req, res, next) => {
     console.log(autorizado);
     res.json(autorizado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -31,7 +41,12 @@ router.get('/cliente/:id', async (req, res, next) => {
     const autorizado = await service.findeByCliente(id);
     res.json(autorizado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -43,7 +58,12 @@ router.post('/', async (req, res, next) => {
 
     res.status(201).json(newAutorizado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 router.post('/delete', async (req, res, next) => {
@@ -52,7 +72,12 @@ router.post('/delete', async (req, res, next) => {
     const Autorizado = await service.delete(id);
     res.status(201).json(Autorizado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -65,7 +90,12 @@ router.patch('/:id', async (req, res, next) => {
 
     res.status(201).json(newAutorizado);
   } catch (error) {
-    res.status(error.codigo).send(error);
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
   }
 });
 

@@ -10,7 +10,12 @@ router.get('/', async (req, res, next)=>{
         const cargos = await cargoService.find()
         res.json(cargos).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -20,7 +25,12 @@ router.post('/', async(req, res, next)=>{
         const newCargo = await cargoService.create(cargo)
         res.json(newCargo).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -33,7 +43,12 @@ router.patch('/update', async(req, res, next)=>{
         console.log(idCargo, oldCargo.cargo)
         res.json(updated).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -43,7 +58,12 @@ router.get('/:id', async (req, res, next)=>{
         const cargo = await cargoService.findById(id)
         res.status(200).send(cargo)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
@@ -55,7 +75,12 @@ router.delete('/:id', async(req, res, next)=>{
         const deleted = await cargoService.delete(id)
         res.json(deleted).status(200)
     } catch (error) {
-        res.status(error.codigo).send(error)
+        if (error.codigo) {
+            res.status(error.codigo).send(error);
+        }
+        else{
+            res.status(500).send(error);
+        }
     }
 })
 
