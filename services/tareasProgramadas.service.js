@@ -43,7 +43,7 @@ class TareasProgramadas{
 
     enviarContratosRenovar(){
         try {
-            cron.schedule("0 0 8 19 * *", async function () {
+            cron.schedule("*/2 * * * *", async function () {
                 let servicioContrato = new contratoService();
                 let contratos = await servicioContrato.traerContratosRenovacionSiguienteMes();
 
@@ -120,11 +120,17 @@ class TareasProgramadas{
                     </html>`;
     
                     let servicioEmail = new EmailService();
+
+                    // Obtener el mes siguiente
+                    const mesActual = new Date().getMonth();
+                    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                    // Asegurar que el índice esté dentro del rango después de incrementarlo
+                    const nombreMesSiguiente = meses[(mesActual + 1) % 12];
     
                     const mailData = {
                         from: process.env.EMAIL_ADDRESS,
                         to: process.env.EMAIL_NOTIFICATION.split(','),
-                        subject: 'Contratos por vencer ' + new Date().toISOString(),
+                        subject: `Contratos por vencer en ${nombreMesSiguiente} ${new Date().getFullYear()}`,
                         text: '',
                         html: htmlTabla,
                     };
