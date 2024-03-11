@@ -28,7 +28,6 @@ class TareasProgramadas{
 
     alertaIncrementos(){
         cron.schedule("0 0 18 15 12 *", async function () {
-            console.log("Blue label");
             let servicioEmail = new EmailService();
     
             const mailData = {
@@ -44,9 +43,9 @@ class TareasProgramadas{
 
     enviarContratosRenovar(){
         try {
-            cron.schedule("0 0 8 11 * *", async function () {
+            cron.schedule("0 0 8 19 * *", async function () {
                 let servicioContrato = new contratoService();
-                let contratos = await servicioContrato.traerContratosRenovacionProxima(1);
+                let contratos = await servicioContrato.traerContratosRenovacionSiguienteMes();
 
                 if (contratos.length > 0) {
                     var estiloBootstrap = `

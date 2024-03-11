@@ -449,5 +449,49 @@ class ContratoService {
 
     return rta;
   }
+
+  // Método que obtiene todos los contratos a vencer del siguiente mes
+  // Es utilizado en TareasProgramadas para envío de correos automáticos
+  async traerContratosRenovacionSiguienteMes(){
+    const hoy = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+    const fin = new Date(new Date().getFullYear(), new Date().getMonth() + 2, 1);
+    console.log(hoy, fin);
+    // console.log(fin,'helooooooooo');
+    
+    const rta = await con.models.contrato.findAll({
+
+      attributes: {
+        exclude: ["id_autorizado", "id_autorizado_adm", "id_punto_venta", "id_responsable", "id_usuario"],
+      },
+      include: [
+        {
+          association: 'responsabledetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'autdetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'pvdetalle',
+        },
+      ],
+      where: { 
+        fecha_fin_contrato: {
+          [Op.between]: [hoy, fin],
+        },
+        fecha_inactivo: {
+          [Op.is]: null
+        }
+      }
+    });
+    // console.log(hoy, fin, '+++++++++')
+
+    return rta;
+  }
 }
 module.exports = ContratoService;
