@@ -43,7 +43,7 @@ class TareasProgramadas{
 
     enviarContratosRenovar(){
         try {
-            cron.schedule("*/2 * * * *", async function () {
+            cron.schedule("0 0 8 19 * *", async function () {
                 let servicioContrato = new contratoService();
                 let contratos = await servicioContrato.traerContratosRenovacionSiguienteMes();
 
