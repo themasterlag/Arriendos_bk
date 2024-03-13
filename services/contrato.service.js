@@ -175,6 +175,15 @@ class ContratoService {
     return contrato.id_contrato;
   }
 
+  async renovarContrato(id, new_fecha_fin_contrato) {
+    // console.log('Service ID: ', id);
+    const contrato = await this.findOne(id);
+    await contrato.update({
+      fecha_fin_contrato: new_fecha_fin_contrato
+    });
+    return contrato.id_contrato;
+  }
+
   async traerContratosConConceptos(id) {
     const result = await con.models.contrato.findAll({
       attributes: [
