@@ -93,7 +93,7 @@ router.get('/proximosrenovar/:anio/:mes', async (req, res) => {
   }
 });
 
-router.get('/proximosrenovar', async (req, res, next) => {
+router.get('/proximosrenovar/', async (req, res, next) => {
   try {
     const contrato = await service.traerContratosRenovacionSiguienteMes();
     res.json(contrato);

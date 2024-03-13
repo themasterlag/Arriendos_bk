@@ -487,7 +487,10 @@ class ContratoService {
         fecha_inactivo: {
           [Op.is]: null
         }
-      }
+      },
+      order: [
+        ['fecha_fin_contrato','ASC']
+      ]
     });
     // console.log(hoy, fin, '+++++++++')
 
