@@ -24,6 +24,7 @@ class TareasProgramadas{
     programarTareas(){
         this.enviarContratosRenovar();
         this.alertaIncrementos();
+        this.actualizarCanonDiario();
     }
 
     alertaIncrementos(){
@@ -167,6 +168,18 @@ class TareasProgramadas{
             servicioEmail.enviarEmail(mailData);
         }
     }
+
+    actualizarCanonDiario(){
+        cron.schedule("5 0 * * *", async () => {
+            try {
+                let servicioContrato = new contratoService();
+                let contratosActualizados = await servicioContrato.actualizarCanonContratoDiario();
+                console.log(`${contratosActualizados} contratos han sido actualizados en su aniversario.`);
+            } catch (error) {
+                console.error('Error al actualizar el canon de los contratos en su aniversario cada 2 minutos: ', error);
+            }
+        });
+    }    
 }
 
 module.exports = TareasProgramadas;

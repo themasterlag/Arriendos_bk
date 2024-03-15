@@ -505,5 +505,33 @@ class ContratoService {
 
     return rta;
   }
+
+  // Incrementos
+  async actualizarCanonContratoDiario() {
+    const hoy = new Date();
+    const dia = hoy.getDate();
+    const mes = hoy.getMonth() + 1; // JavaScript cuenta los meses desde 0
+  
+    const query = `
+      SELECT id_contrato
+      FROM arriendos.contrato
+      WHERE EXTRACT(MONTH FROM fecha_inicio_contrato) = :mes
+        AND EXTRACT(DAY FROM fecha_inicio_contrato) = :dia
+        AND fecha_inactivo IS NULL;
+    `;
+  
+    const contratosParaActualizar = await con.query(query, {
+      replacements: { dia, mes },
+      type: con.QueryTypes.SELECT,
+    });
+  
+    for (const contrato of contratosParaActualizar) {
+      await this.darIncrementoCanon(contrato.id_contrato);
+    }
+  
+    return contratosParaActualizar.length; // Retorna el número de contratos actualizados
+  }
+  
+  
 }
 module.exports = ContratoService;
