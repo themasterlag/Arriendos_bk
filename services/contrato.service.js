@@ -175,6 +175,15 @@ class ContratoService {
     return contrato.id_contrato;
   }
 
+  async renovarContrato(id, new_fecha_fin_contrato) {
+    // console.log('Service ID: ', id);
+    const contrato = await this.findOne(id);
+    await contrato.update({
+      fecha_fin_contrato: new_fecha_fin_contrato
+    });
+    return contrato.id_contrato;
+  }
+
   async traerContratosConConceptos(id) {
     const result = await con.models.contrato.findAll({
       attributes: [
@@ -449,5 +458,80 @@ class ContratoService {
 
     return rta;
   }
+
+  // Método que obtiene todos los contratos a vencer del siguiente mes
+  // Es utilizado en TareasProgramadas para envío de correos automáticos
+  async traerContratosRenovacionSiguienteMes(){
+    const hoy = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
+    const fin = new Date(new Date().getFullYear(), new Date().getMonth() + 2, 1);
+    console.log(hoy, fin);
+    // console.log(fin,'helooooooooo');
+    
+    const rta = await con.models.contrato.findAll({
+
+      attributes: {
+        exclude: ["id_autorizado", "id_autorizado_adm", "id_punto_venta", "id_responsable", "id_usuario"],
+      },
+      include: [
+        {
+          association: 'responsabledetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'autdetalle',
+          include: {
+            association: 'clientedetalle',
+          },
+        },
+        {
+          association: 'pvdetalle',
+        },
+      ],
+      where: { 
+        fecha_fin_contrato: {
+          [Op.between]: [hoy, fin],
+        },
+        fecha_inactivo: {
+          [Op.is]: null
+        }
+      },
+      order: [
+        ['fecha_fin_contrato','ASC']
+      ]
+    });
+    // console.log(hoy, fin, '+++++++++')
+
+    return rta;
+  }
+
+  // Incrementos
+  async actualizarCanonContratoDiario() {
+    const hoy = new Date();
+    const dia = hoy.getDate();
+    const mes = hoy.getMonth() + 1; // JavaScript cuenta los meses desde 0
+  
+    const query = `
+      SELECT id_contrato
+      FROM arriendos.contrato
+      WHERE EXTRACT(MONTH FROM fecha_inicio_contrato) = :mes
+        AND EXTRACT(DAY FROM fecha_inicio_contrato) = :dia
+        AND fecha_inactivo IS NULL;
+    `;
+  
+    const contratosParaActualizar = await con.query(query, {
+      replacements: { dia, mes },
+      type: con.QueryTypes.SELECT,
+    });
+  
+    for (const contrato of contratosParaActualizar) {
+      await this.darIncrementoCanon(contrato.id_contrato);
+    }
+  
+    return contratosParaActualizar.length; // Retorna el número de contratos actualizados
+  }
+  
+  
 }
 module.exports = ContratoService;

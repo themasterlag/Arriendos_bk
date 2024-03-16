@@ -24,11 +24,11 @@ class TareasProgramadas{
     programarTareas(){
         this.enviarContratosRenovar();
         this.alertaIncrementos();
+        this.actualizarCanonDiario();
     }
 
     alertaIncrementos(){
         cron.schedule("0 0 18 15 12 *", async function () {
-            console.log("Blue label");
             let servicioEmail = new EmailService();
     
             const mailData = {
@@ -44,9 +44,9 @@ class TareasProgramadas{
 
     enviarContratosRenovar(){
         try {
-            cron.schedule("0 0 8 11 * *", async function () {
+            cron.schedule("0 0 8 19 * *", async function () {
                 let servicioContrato = new contratoService();
-                let contratos = await servicioContrato.traerContratosRenovacionProxima(1);
+                let contratos = await servicioContrato.traerContratosRenovacionSiguienteMes();
 
                 if (contratos.length > 0) {
                     var estiloBootstrap = `
@@ -121,11 +121,17 @@ class TareasProgramadas{
                     </html>`;
     
                     let servicioEmail = new EmailService();
+
+                    // Obtener el mes siguiente
+                    const mesActual = new Date().getMonth();
+                    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                    // Asegurar que el índice esté dentro del rango después de incrementarlo
+                    const nombreMesSiguiente = meses[(mesActual + 1) % 12];
     
                     const mailData = {
                         from: process.env.EMAIL_ADDRESS,
                         to: process.env.EMAIL_NOTIFICATION.split(','),
-                        subject: 'Contratos por vencer ' + new Date().toISOString(),
+                        subject: `Contratos por vencer en ${nombreMesSiguiente} ${new Date().getFullYear()}`,
                         text: '',
                         html: htmlTabla,
                     };
@@ -162,6 +168,18 @@ class TareasProgramadas{
             servicioEmail.enviarEmail(mailData);
         }
     }
+
+    actualizarCanonDiario(){
+        cron.schedule("5 0 * * *", async () => {
+            try {
+                let servicioContrato = new contratoService();
+                let contratosActualizados = await servicioContrato.actualizarCanonContratoDiario();
+                console.log(`${contratosActualizados} contratos han sido actualizados en su aniversario.`);
+            } catch (error) {
+                console.error('Error al actualizar el canon de los contratos en su aniversario cada 2 minutos: ', error);
+            }
+        });
+    }    
 }
 
 module.exports = TareasProgramadas;

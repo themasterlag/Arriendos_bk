@@ -93,6 +93,19 @@ router.get('/proximosrenovar/:anio/:mes', async (req, res) => {
   }
 });
 
+router.get('/proximosrenovar/', async (req, res, next) => {
+  try {
+    const contrato = await service.traerContratosRenovacionSiguienteMes();
+    res.json(contrato);
+  } catch (error) {
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
+  }
+});
 
 router.get('/:id', async (req, res, next) => {
   try {
@@ -328,6 +341,29 @@ router.patch('/inhabilitar', async (req, res, next) => {
     }
   }
 });
+
+router.patch('/renovarcontrato', async (req, res, next) => {
+  try {
+    const { id, new_fecha_fin_contrato } = req.body;
+    const resultado = await service.renovarContrato(
+      id,
+      new_fecha_fin_contrato
+    );
+    res.status(200).json({
+      estado: '1',
+      id: resultado,
+      respuesta: 'Se ha renovado el contrato de forma correcta',
+    });
+  } catch (error) {
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
+  }
+});
+
 // router.patch('/aplicar-incremento', async(req,res,next)=>{
 //   try {
 //     const body = req.body
