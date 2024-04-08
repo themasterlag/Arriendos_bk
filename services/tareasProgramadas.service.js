@@ -170,7 +170,7 @@ class TareasProgramadas{
     }
 
     actualizarCanonDiario(){
-        cron.schedule("5 0 * * *", async () => {
+        cron.schedule("0 6 * * *", async () => {
             try {
                 let servicioContrato = new contratoService();
                 let contratosActualizados = await servicioContrato.actualizarCanonContratoDiario();

@@ -107,6 +107,20 @@ router.get('/proximosrenovar/', async (req, res, next) => {
   }
 });
 
+router.get('/contratosAVencer', async (req, res, next) => {
+  try {
+    const contratos = await service.obtenerContratosAVencer();
+    res.json(contratos);
+  } catch (error) {
+    if (error.codigo) {
+      res.status(error.codigo).send(error);
+    }
+    else{
+      res.status(500).send(error);
+    }
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;

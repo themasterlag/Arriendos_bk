@@ -532,6 +532,28 @@ class ContratoService {
     return contratosParaActualizar.length; // Retorna el número de contratos actualizados
   }
   
+  // Pagos
+  async obtenerContratosAVencer() {
+    const hoy = new Date();
+    const dia = 10;
+    const mes = 4; // JavaScript cuenta los meses desde 0
+  
+    const query = `
+      SELECT contrato.*, incremento.id_incremento, incremento.incremento
+      FROM arriendos.contrato AS contrato
+      INNER JOIN arriendos.incremento AS incremento ON contrato.incremento_anual = incremento.id_incremento
+      WHERE EXTRACT(MONTH FROM contrato.fecha_inicio_contrato) = :mes
+      AND EXTRACT(DAY FROM contrato.fecha_inicio_contrato) = :dia
+      AND contrato.fecha_inactivo IS NULL;
+    `;
+
+    const contratosParaActualizar = await con.query(query, {
+      replacements: { dia, mes },
+      type: con.QueryTypes.SELECT,
+    });
+
+    return contratosParaActualizar; // Retorna el número de contratos actualizados
+  }
   
 }
 module.exports = ContratoService;
