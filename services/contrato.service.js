@@ -22,14 +22,18 @@ class ContratoService {
             {
               model: con.models.cliente,
               as: 'clientedetalle',
-              attributes: ['numero_documento']
-            }
-          ]
+              attributes: ['numero_documento'],
+            },
+          ],
         },
       ],
       order: [
-        [{ model: con.models.punto_de_venta, as: 'pvdetalle' }, 'codigo_sitio_venta', 'ASC']
-      ]
+        [
+          { model: con.models.punto_de_venta, as: 'pvdetalle' },
+          'codigo_sitio_venta',
+          'ASC',
+        ],
+      ],
     });
     return result;
   }
@@ -73,7 +77,7 @@ class ContratoService {
       ],
     });
     if (!rta || rta.length == 0) {
-      throw {message: 'no se encontro', codigo:404};
+      throw { message: 'no se encontro', codigo: 404 };
     }
     return rta;
   }
@@ -97,28 +101,28 @@ class ContratoService {
         },
       ],
       where: {
-        '$pvdetalle.codigo_sitio_venta$': id      
-      }
+        '$pvdetalle.codigo_sitio_venta$': id,
+      },
     });
 
-    if (!rta || rta.length == 0){
-      throw {message: 'no se encontro', codigo:404};
+    if (!rta || rta.length == 0) {
+      throw { message: 'no se encontro', codigo: 404 };
     }
 
     return rta;
   }
 
-  async findByCliente(tipo,documento) {
+  async findByCliente(tipo, documento) {
     let cliente = null;
-    if(!tipo){
-      throw {message: 'Falta tipo de cliente', codigo:400};
-    } else{
-      if (tipo == "responsable") {
+    if (!tipo) {
+      throw { message: 'Falta tipo de cliente', codigo: 400 };
+    } else {
+      if (tipo == 'responsable') {
         cliente = '$responsabledetalle.clientedetalle.numero_documento$';
-      } else if (tipo == "autorizado"){
+      } else if (tipo == 'autorizado') {
         cliente = '$autdetalle.clientedetalle.numero_documento$';
-      }else{
-        throw {message: 'Falta tipo de cliente', codigo:400};
+      } else {
+        throw { message: 'Falta tipo de cliente', codigo: 400 };
       }
     }
 
@@ -141,12 +145,12 @@ class ContratoService {
         },
       ],
       where: {
-        [cliente]: documento      
-      }
+        [cliente]: documento,
+      },
     });
 
-    if (!rta || rta.length == 0){
-      throw {message: 'no se encontro', codigo:404};
+    if (!rta || rta.length == 0) {
+      throw { message: 'no se encontro', codigo: 404 };
     }
 
     return rta;
@@ -179,7 +183,7 @@ class ContratoService {
     // console.log('Service ID: ', id);
     const contrato = await this.findOne(id);
     await contrato.update({
-      fecha_fin_contrato: new_fecha_fin_contrato
+      fecha_fin_contrato: new_fecha_fin_contrato,
     });
     return contrato.id_contrato;
   }
@@ -256,7 +260,12 @@ class ContratoService {
 
   async traerConceptosPagado(id, fecha_periodo) {
     const result = await con.models.contrato.findAll({
-      attributes: ['id_contrato', 'valor_canon', 'fecha_inicio_contrato','fecha_fin_contrato'],
+      attributes: [
+        'id_contrato',
+        'valor_canon',
+        'fecha_inicio_contrato',
+        'fecha_fin_contrato',
+      ],
       include: [
         {
           model: con.models.autorizado,
@@ -418,15 +427,20 @@ class ContratoService {
     }
   }
 
-  async traerContratosRenovacionProxima(anio, mes){
+  async traerContratosRenovacionProxima(anio, mes) {
     const hoy = new Date();
     const fin = new Date(anio, mes);
     // console.log(fin,'helooooooooo');
-    
-    const rta = await con.models.contrato.findAll({
 
+    const rta = await con.models.contrato.findAll({
       attributes: {
-        exclude: ["id_autorizado", "id_autorizado_adm", "id_punto_venta", "id_responsable", "id_usuario"],
+        exclude: [
+          'id_autorizado',
+          'id_autorizado_adm',
+          'id_punto_venta',
+          'id_responsable',
+          'id_usuario',
+        ],
       },
       include: [
         {
@@ -445,14 +459,14 @@ class ContratoService {
           association: 'pvdetalle',
         },
       ],
-      where: { 
+      where: {
         fecha_fin_contrato: {
           [Op.between]: [hoy, fin],
         },
         fecha_inactivo: {
-          [Op.is]: null
-        }
-      }
+          [Op.is]: null,
+        },
+      },
     });
     // console.log(hoy, fin, '+++++++++')
 
@@ -461,16 +475,29 @@ class ContratoService {
 
   // Método que obtiene todos los contratos a vencer del siguiente mes
   // Es utilizado en TareasProgramadas para envío de correos automáticos
-  async traerContratosRenovacionSiguienteMes(){
-    const hoy = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
-    const fin = new Date(new Date().getFullYear(), new Date().getMonth() + 2, 1);
+  async traerContratosRenovacionSiguienteMes() {
+    const hoy = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      1
+    );
+    const fin = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 2,
+      1
+    );
     console.log(hoy, fin);
     // console.log(fin,'helooooooooo');
-    
-    const rta = await con.models.contrato.findAll({
 
+    const rta = await con.models.contrato.findAll({
       attributes: {
-        exclude: ["id_autorizado", "id_autorizado_adm", "id_punto_venta", "id_responsable", "id_usuario"],
+        exclude: [
+          'id_autorizado',
+          'id_autorizado_adm',
+          'id_punto_venta',
+          'id_responsable',
+          'id_usuario',
+        ],
       },
       include: [
         {
@@ -489,17 +516,24 @@ class ContratoService {
           association: 'pvdetalle',
         },
       ],
-      where: { 
-        fecha_fin_contrato: {
-          [Op.between]: [hoy, fin],
-        },
+      where: {
+        [Op.or]: [
+          {
+            fecha_fin_contrato: {
+              [Op.between]: [hoy, fin],
+            },
+          },
+          {
+            fecha_fin_contrato: {
+              [Op.lt]: hoy,
+            },
+          },
+        ],
         fecha_inactivo: {
-          [Op.is]: null
-        }
+          [Op.is]: null,
+        },
       },
-      order: [
-        ['fecha_fin_contrato','ASC']
-      ]
+      order: [['fecha_fin_contrato', 'ASC']],
     });
     // console.log(hoy, fin, '+++++++++')
 
@@ -511,7 +545,7 @@ class ContratoService {
     const hoy = new Date();
     const dia = hoy.getDate();
     const mes = hoy.getMonth() + 1; // JavaScript cuenta los meses desde 0
-  
+
     const query = `
       SELECT id_contrato
       FROM arriendos.contrato
@@ -519,25 +553,25 @@ class ContratoService {
         AND EXTRACT(DAY FROM fecha_inicio_contrato) = :dia
         AND fecha_inactivo IS NULL;
     `;
-  
+
     const contratosParaActualizar = await con.query(query, {
       replacements: { dia, mes },
       type: con.QueryTypes.SELECT,
     });
-  
+
     for (const contrato of contratosParaActualizar) {
       await this.darIncrementoCanon(contrato.id_contrato);
     }
-  
+
     return contratosParaActualizar.length; // Retorna el número de contratos actualizados
   }
-  
+
   // Pagos
   async obtenerContratosAVencer() {
     const hoy = new Date();
-    const dia = 10;
-    const mes = 4; // JavaScript cuenta los meses desde 0
-  
+    const dia = hoy.getDate();
+    const mes = hoy.getMonth() + 1; // JavaScript cuenta los meses desde 0
+
     const query = `
       SELECT contrato.*, incremento.id_incremento, incremento.incremento
       FROM arriendos.contrato AS contrato
@@ -554,6 +588,5 @@ class ContratoService {
 
     return contratosParaActualizar; // Retorna el número de contratos actualizados
   }
-  
 }
 module.exports = ContratoService;
