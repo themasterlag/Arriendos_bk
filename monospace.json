@@ -1,0 +1,9 @@
+{
+    "scripts": {
+      "start": "./init.sh && node index.js" 
+    },
+    "ports": {
+      "backend": 3000
+    }
+  }
+  
