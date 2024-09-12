@@ -6,12 +6,17 @@ const {logErrors, errorHandler, boomErrorHandler} = require('./middlewares/error
 const cors = require('cors');
 
 const app = express();
-const port = process.env.port || 3000;
+const port = process.env.port || 4000;
 const tareasProgramadas = new tareasProgramadasService();
 tareasProgramadas.programarTareas();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(fileUpload());
 app.use(logErrors);
 app.use(boomErrorHandler);

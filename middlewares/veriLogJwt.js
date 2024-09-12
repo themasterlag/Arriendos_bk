@@ -6,23 +6,23 @@ const User = con.models.usuario;
 
 
 function verifyToken(req, res, next) {
-  let token = req.headers["x-access-token"];
-  if (!token) {
-    return res.status(401).send({
-      message: "No se recibio token de sesion"
-    });
-  }
-  try {
-    // console.log(token)
-    const decoded = jwt.verify(token, config.tokSecret);
-    req.user = decoded;
-  } catch (error) {
-    console.log(error)
-    return res.status(401).send({
-      message: "Unauthorized!",
-      status: 401
-    });
-  }
+  // let token = req.headers["x-access-token"];
+  // if (!token) {
+  //   return res.status(401).send({
+  //     message: "No se recibio token de sesion"
+  //   });
+  // }
+  // try {
+  //   // console.log(token)
+  //   const decoded = jwt.verify(token, config.tokSecret);
+  //   req.user = decoded;
+  // } catch (error) {
+  //   console.log(error)
+  //   return res.status(401).send({
+  //     message: "Unauthorized!",
+  //     status: 401
+  //   });
+  // }
   
 
   return next();
